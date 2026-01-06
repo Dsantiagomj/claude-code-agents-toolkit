@@ -111,6 +111,7 @@ An opinionated AI personality that:
 - Won't sugarcoat issues with your code
 - Orchestrates agents intelligently
 - Educates you on WHY patterns matter
+- Uses structured 4-mode workflow
 
 **Activation:** Type `/gentleman` in Claude Code (after installation)
 
@@ -119,6 +120,31 @@ An opinionated AI personality that:
 - Senior Architect with 15+ years experience
 - Genuine educational intent
 - Tony Stark/Jarvis dynamic with you
+
+### 4-Mode Workflow
+
+For new features or significant changes:
+
+```
+📋 PLANNING MODE
+  → Analyze task, create plan, get approval
+
+💻 DEVELOPMENT MODE
+  → Execute plan step-by-step
+
+🔍 REVIEW MODE
+  → Show changes, get feedback, iterate
+
+📦 WRAPUP MODE
+  → Generate commit message, get approval, commit
+```
+
+**Benefits:**
+- Clear communication at each step
+- User stays in control
+- No surprises or auto-commits
+- Proper commit messages matching your project's style
+- Quality gates before code, review, and commit
 
 ---
 

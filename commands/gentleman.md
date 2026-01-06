@@ -184,6 +184,137 @@ Read .claude/RULEBOOK.md
 - **FOLLOW THE RULEBOOK**: Patterns exist for a reason - years of experience and pain points
 - **RULEBOOK IS LAW**: It's the single source of truth for THIS project
 
+## Workflow Modes (Structured Development)
+
+**For new features or significant changes, use the 4-mode workflow:**
+
+```
+📋 PLANNING → 💻 DEVELOPMENT → 🔍 REVIEW → 📦 WRAPUP
+```
+
+### When to Use Workflow Modes
+
+**Automatically enter Planning Mode when:**
+- User requests a new feature
+- Task is moderate or complex (>50 lines of code)
+- User says "plan this first"
+
+**Skip Planning Mode for:**
+- Trivial changes (<10 lines)
+- Simple bug fixes with clear solution
+- Documentation updates
+- User explicitly says "just do it" or "no planning needed"
+
+### The 4 Modes
+
+**📋 PLANNING MODE:**
+- Read RULEBOOK for context
+- Analyze task complexity
+- Select appropriate agents
+- Create step-by-step plan
+- Ask clarifying questions
+- Wait for user approval ("ok", "proceed", "let's do it")
+
+**💻 DEVELOPMENT MODE:**
+- Execute the plan step by step
+- Follow RULEBOOK strictly
+- Delegate to agents if planned
+- Keep user informed of progress
+- Handle blockers gracefully
+
+**🔍 REVIEW MODE:**
+- Show complete summary of changes
+- Verify RULEBOOK compliance
+- Request user feedback
+- Make adjustments based on feedback
+- Loop until user approves ("looks good", "approved")
+
+**📦 WRAPUP MODE:**
+- Analyze project's commit style (git log)
+- Generate matching commit message
+- Show files to be committed
+- Request final approval
+- **ONLY commit after user says "yes" or "commit"**
+
+### Mode Indicators
+
+Always show current mode clearly:
+```
+═══════════════════════════════════════════════════════════
+📋 PLANNING MODE ACTIVE
+───────────────────────────────────────────────────────────
+[Mode-specific content]
+═══════════════════════════════════════════════════════════
+```
+
+### Critical Rules
+
+**Planning Mode:**
+- ✅ Create detailed plan
+- ✅ Ask clarifying questions
+- ✅ Get user approval before proceeding
+- ❌ Don't start coding without approval
+
+**Development Mode:**
+- ✅ Follow the plan exactly
+- ✅ Show progress updates
+- ✅ Stick to RULEBOOK patterns
+- ❌ Don't deviate without asking
+
+**Review Mode:**
+- ✅ Show all changes clearly
+- ✅ Verify RULEBOOK compliance
+- ✅ Wait for user feedback
+- ❌ Don't assume approval
+
+**Wrapup Mode:**
+- ✅ Match project's commit style
+- ✅ Show exact commit message
+- ✅ Get explicit approval
+- ❌ **NEVER auto-commit** (most important!)
+
+### Example Flow
+
+```
+User: "Add user profile editing"
+
+You: [Enter PLANNING MODE]
+  → Analyze task
+  → Check RULEBOOK
+  → Select agents
+  → Create plan
+  → Ask questions
+  → Wait for "ok"
+
+User: "ok, proceed"
+
+You: [Enter DEVELOPMENT MODE]
+  → Step 1: Create component
+  → Step 2: Add API
+  → Step 3: Add tests
+  → [Auto-transition to REVIEW MODE]
+
+You: [Enter REVIEW MODE]
+  → Show changes
+  → Verify RULEBOOK
+  → Ask for feedback
+
+User: "looks good"
+
+You: [Enter WRAPUP MODE]
+  → Generate commit message
+  → Show files
+  → Ask "Ready to commit?"
+
+User: "yes, commit"
+
+You: [Create commit]
+  → git commit -m "..."
+  → Return to normal mode
+```
+
+**For complete details:** See `.claude/commands/workflow-modes.md`
+
 ## Agent Intelligence (Optional Enhancement)
 
 For complex tasks that require deep expertise, you can leverage specialized agents:
