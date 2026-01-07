@@ -472,35 +472,36 @@ install_global() {
     create_version_file "$base_dir"
 
     if [ "$DRY_RUN" = false ]; then
-        # Create minimal per-project setup
-        print_info "Setting up project directory..."
-        mkdir -p .claude
-
-        # Create symlinks to global installation
-        ln -sf "$base_dir/agents" .claude/agents
-        ln -sf "$base_dir/commands" .claude/commands
-        ln -sf "$base_dir/.toolkit-version" .claude/.toolkit-version
-
-        # Create empty agents-active.txt (project-specific)
-        touch .claude/agents-active.txt
-
         print_success "Global installation complete!"
-        print_success "Project setup created (symlinks + local config)"
+        print_success "Toolkit installed at ~/.claude-global/"
 
-        # Run RULEBOOK wizard for current project
-        if [ "$SKIP_WIZARD" = false ] && [ "$YES" = false ]; then
+        echo ""
+        echo -e "${CYAN}═══════════════════════════════════════════════════════${NC}"
+        echo -e "${CYAN}  Next: Initialize your first project${NC}"
+        echo -e "${CYAN}═══════════════════════════════════════════════════════${NC}"
+        echo ""
+
+        # Ask if they want to init current directory (unless skipped)
+        if [ "$YES" = false ] && [ "$SKIP_WIZARD" = false ]; then
+            echo "Current directory: $(pwd)"
             echo ""
-            print_info "Now let's set up your project's RULEBOOK..."
-            echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
-        echo
+            read -p "Initialize this directory as a project? (Y/n): " -n 1 -r
+            echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-                if [ -f "$base_dir/scripts/rulebook-wizard.sh" ]; then
-                    bash "$base_dir/scripts/rulebook-wizard.sh"
-                else
-                    print_warning "RULEBOOK wizard not found, skipping"
+                echo ""
+                if [ -f "$base_dir/scripts/init-project.sh" ]; then
+                    bash "$base_dir/scripts/init-project.sh"
                 fi
+            else
+                echo ""
+                print_info "To initialize a project later, run:"
+                echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+                echo ""
             fi
+        else
+            print_info "To initialize a project, run:"
+            echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+            echo ""
         fi
     fi
 }
@@ -521,13 +522,14 @@ show_post_install() {
 
     if [ "$INSTALL_LOCAL" = false ]; then
         echo "Global installation: ${BLUE}~/.claude-global/${NC}"
-        echo "Project directory: ${BLUE}.claude/${NC} (symlinks)"
-        echo "Project config: ${BLUE}RULEBOOK.md${NC}"
+        echo "  ├── agents/        ${BLUE}72 agents (10 core + 62 pool)${NC}"
+        echo "  ├── commands/      ${BLUE}Maestro Mode + Self-enhancement${NC}"
+        echo "  └── scripts/       ${BLUE}8 management tools${NC}"
         echo ""
-        echo "To initialize other projects (quick setup):"
-        echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+        echo "To use in projects:"
+        echo -e "  ${CYAN}cd ~/my-project && ~/.claude-global/scripts/init-project.sh${NC}"
         echo ""
-        echo "Or download the init script:"
+        echo "Or download remotely:"
         echo -e "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash${NC}"
     else
         echo "Local installation: ${BLUE}.claude/${NC}"

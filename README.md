@@ -41,7 +41,11 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agen
 **What gets installed:**
 
 - **Global** (`~/.claude-global/`): All 72 agents, commands, and scripts (installed once)
-- **Per-project** (`.claude/`): Symlinks to global + project-specific `RULEBOOK.md`
+- **Per-project** (`.claude/`): Created when you run `init-project.sh`
+
+**Two-step process:**
+1. **Install globally** (once): Downloads toolkit to `~/.claude-global/`
+2. **Initialize projects** (per-project): Creates symlinks + `RULEBOOK.md`
 
 This keeps your projects clean while sharing agents across all your work!
 
