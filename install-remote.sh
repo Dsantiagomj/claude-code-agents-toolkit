@@ -341,7 +341,7 @@ install_local() {
     # Check if already installed
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning ".claude directory already exists"
-        read -p "Overwrite? (y/N): " -n 1 -r
+        read -p "Overwrite? (y/N): " -n 1 -r < /dev/tty
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             print_info "Installation cancelled"
@@ -371,7 +371,7 @@ install_local() {
             echo ""
             print_info "Now let's set up your RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r < /dev/tty
             echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "scripts/rulebook-wizard.sh" ]; then
@@ -393,7 +393,7 @@ install_global() {
     # Check if already installed
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning "Global installation already exists"
-        read -p "Overwrite? (y/N): " -n 1 -r
+        read -p "Overwrite? (y/N): " -n 1 -r < /dev/tty
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             print_info "Installation cancelled"
@@ -430,7 +430,7 @@ install_global() {
             echo ""
             print_info "Now let's set up your project's RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r < /dev/tty
             echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "$HOME/.claude-global-scripts/rulebook-wizard.sh" ]; then
@@ -497,7 +497,7 @@ main() {
 
     # Confirm installation
     if [ "$DRY_RUN" = false ]; then
-        read -p "Continue with installation? (Y/n): " -n 1 -r
+        read -p "Continue with installation? (Y/n): " -n 1 -r < /dev/tty
         echo
         if [[ $REPLY =~ ^[Nn]$ ]]; then
             print_info "Installation cancelled"
