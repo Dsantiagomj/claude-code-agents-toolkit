@@ -351,6 +351,87 @@ your-project/
 
 ---
 
+## 📋 RULEBOOK Questionnaire
+
+### Generate Your Custom RULEBOOK Interactively
+
+Don't want to manually create your RULEBOOK? Use the interactive questionnaire:
+
+```bash
+./questionnaire.sh
+```
+
+### What It Does
+
+The questionnaire asks about your project and generates a comprehensive, customized RULEBOOK.md with:
+
+- ✅ **Tech Stack** - Framework, language, database, ORM
+- ✅ **Architecture** - Folder structure, patterns
+- ✅ **State Management** - Redux, Zustand, Context, etc.
+- ✅ **Styling** - Tailwind, CSS Modules, Styled Components
+- ✅ **Testing** - Vitest, Jest, Playwright setup
+- ✅ **API Design** - REST, GraphQL, tRPC patterns
+- ✅ **Code Patterns** - Naming conventions, import order
+- ✅ **Security & Performance** - Best practices
+- ✅ **Active Agents** - Auto-populated based on stack
+
+### Questions Asked
+
+1. **Project Information** - Name and description
+2. **Framework** - Next.js, React, Vue, Express, etc.
+3. **Language** - TypeScript, JavaScript, Python, Go
+4. **State Management** - Redux Toolkit, Zustand, Context
+5. **Styling** - Tailwind, CSS Modules, Styled Components
+6. **Testing** - Vitest, Jest, Playwright, Cypress
+7. **Database** - PostgreSQL, MongoDB, MySQL, Redis
+8. **ORM** - Prisma, Drizzle, TypeORM, Sequelize
+9. **API Type** - REST, GraphQL, tRPC, gRPC
+10. **Deployment** - Vercel, AWS, Docker, etc.
+11. **Code Organization** - File naming, structure
+
+### Example Flow
+
+```bash
+$ ./questionnaire.sh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Framework & Language
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+What is your primary framework?
+
+  [1] Next.js
+  [2] React (CRA/Vite)
+  [3] Vue.js
+  [4] Angular
+  [5] Svelte/SvelteKit
+  [6] Express.js
+  [7] Fastify
+  [8] NestJS
+  [9] Other
+
+Enter choice [1-9]: 1
+
+# ... more questions ...
+
+✓ RULEBOOK generated successfully!
+```
+
+### Output
+
+Creates `.claude/RULEBOOK.md` with:
+- Complete tech stack documentation
+- Recommended folder structure
+- Code organization patterns
+- Testing requirements
+- Security guidelines
+- Performance targets
+- Activated agents list
+
+**Backup:** If RULEBOOK exists, it creates `.claude/RULEBOOK.md.backup` before overwriting.
+
+---
+
 ## 🌐 Language Switching
 
 ### Change Maestro Language Without Reinstalling
