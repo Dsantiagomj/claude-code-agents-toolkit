@@ -73,8 +73,42 @@ scan_project_context() {
     print_info "Analyzing project files in: $(pwd)"
     echo ""
 
+    # List all files in current directory first
+    print_info "Files in current directory:"
+    ls -1 | head -20 | while read -r file; do
+        echo "  • $file"
+    done
+
+    local total_files=$(ls -1 | wc -l | tr -d ' ')
+    if [ "$total_files" -gt 20 ]; then
+        echo "  ... and $((total_files - 20)) more files"
+    fi
+    echo ""
+
     local files_scanned=0
     local files_helpful=0
+
+    # Scan markdown files for project context
+    if ls *.md &> /dev/null; then
+        print_info "Reading markdown files for context..."
+        for md_file in *.md; do
+            if [ -f "$md_file" ]; then
+                files_scanned=$((files_scanned + 1))
+                print_found "Found: $md_file"
+
+                # Try to extract useful info from markdown
+                if [ "$md_file" = "README.md" ] || [ "$md_file" = "readme.md" ]; then
+                    # Extract first few lines for project description
+                    local description=$(head -10 "$md_file" | grep -v "^#" | grep -v "^$" | head -3)
+                    if [ -n "$description" ]; then
+                        files_helpful=$((files_helpful + 1))
+                        SCAN_RESULTS+=("$md_file: Project documentation found")
+                    fi
+                fi
+            fi
+        done
+        echo ""
+    fi
 
     # Node.js / JavaScript / TypeScript projects
     if [ -f "package.json" ]; then
@@ -271,8 +305,15 @@ show_wizard_options() {
 generate_from_context() {
     print_section "🔨 Generating RULEBOOK from detected context"
 
-    local rulebook_path=".claude/RULEBOOK.md"
+    local rulebook_path="RULEBOOK.md"
     local project_name=$(basename "$(pwd)")
+
+    # Read README.md if it exists for project description
+    local readme_description=""
+    if [ -f "README.md" ]; then
+        # Extract first paragraph (skip title)
+        readme_description=$(head -20 README.md | grep -v "^#" | grep -v "^$" | head -5 | tr '\n' ' ')
+    fi
 
     # Create RULEBOOK
     cat > "$rulebook_path" << EOF
@@ -285,6 +326,8 @@ generate_from_context() {
 **Project Name:** $project_name
 **Type:** $([ -n "$DETECTED_FRAMEWORK" ] && echo "$DETECTED_FRAMEWORK application" || echo "Software project")
 **Primary Language:** $([ -n "$DETECTED_LANGUAGE" ] && echo "$DETECTED_LANGUAGE" || echo "Multiple/Unknown")
+
+$(if [ -n "$readme_description" ]; then echo "**Description:** $readme_description"; fi)
 
 ## 🛠️ Tech Stack
 
@@ -335,8 +378,8 @@ Based on your detected stack, the following agents are recommended:
 $(generate_recommended_agents)
 
 > **Note:** You can activate/deactivate agents using:
-> - \`scripts/select-agents.sh\` - Interactive agent selector
-> - \`scripts/test-agent.sh --list\` - View all 78 available agents
+> - \`~/.claude-global/scripts/select-agents.sh\` - Interactive agent selector
+> - \`~/.claude-global/scripts/test-agent.sh\` - Browse all 72 available agents
 
 ## 📝 Code Organization
 
@@ -451,22 +494,32 @@ generate_recommended_agents() {
 launch_questionnaire() {
     print_info "Launching interactive questionnaire..."
 
-    if [ -f "scripts/questionnaire.sh" ]; then
-        bash scripts/questionnaire.sh
+    # Try multiple locations
+    local script_path=""
+
+    if [ -f "$HOME/.claude-global/scripts/questionnaire.sh" ]; then
+        script_path="$HOME/.claude-global/scripts/questionnaire.sh"
+    elif [ -f "scripts/questionnaire.sh" ]; then
+        script_path="scripts/questionnaire.sh"
     elif [ -f "../scripts/questionnaire.sh" ]; then
-        bash ../scripts/questionnaire.sh
+        script_path="../scripts/questionnaire.sh"
     else
         print_error "Questionnaire script not found"
-        print_info "Please run from toolkit directory or ensure scripts are installed"
+        print_info "Searched locations:"
+        echo "  - ~/.claude-global/scripts/questionnaire.sh"
+        echo "  - scripts/questionnaire.sh"
+        echo "  - ../scripts/questionnaire.sh"
         exit 1
     fi
+
+    bash "$script_path"
 }
 
 # Create minimal template
 create_minimal_template() {
     print_section "📄 Creating minimal RULEBOOK template"
 
-    local rulebook_path=".claude/RULEBOOK.md"
+    local rulebook_path="RULEBOOK.md"
     local project_name=$(basename "$(pwd)")
 
     cat > "$rulebook_path" << 'EOF'
