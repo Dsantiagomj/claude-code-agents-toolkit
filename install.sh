@@ -302,6 +302,7 @@ main() {
     SKIP_MAESTRO=false
     SKIP_SELF_ENHANCEMENT=false
     LANGUAGE="en"
+    DRY_RUN=false
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -319,6 +320,10 @@ main() {
                 ;;
             --skip-self-enhancement)
                 SKIP_SELF_ENHANCEMENT=true
+                shift
+                ;;
+            --dry-run)
+                DRY_RUN=true
                 shift
                 ;;
             --lang=*)
@@ -341,6 +346,7 @@ main() {
                 echo "  --lang=LANG                Set Maestro language (en or es, default: en)"
                 echo "                             en: English communication, English code"
                 echo "                             es: Spanish communication (Colombian), English code"
+                echo "  --dry-run                  Preview installation without making changes"
                 echo "  --help                     Show this help message"
                 echo ""
                 echo "Examples:"
@@ -348,6 +354,7 @@ main() {
                 echo "  ./install.sh --lang=es                    # Spanish Maestro with self-enhancement"
                 echo "  ./install.sh --skip-self-enhancement      # Maestro without learning capability"
                 echo "  ./install.sh --agents-only                # Only agents, no Maestro"
+                echo "  ./install.sh --dry-run                    # Preview what will be installed"
                 echo ""
                 exit 0
                 ;;
@@ -359,19 +366,57 @@ main() {
         esac
     done
 
+    # Show dry-run notification
+    if [ "$DRY_RUN" = true ]; then
+        echo ""
+        echo -e "${YELLOW}╔══════════════════════════════════════════════════════╗${NC}"
+        echo -e "${YELLOW}║${NC}  🔍 DRY RUN MODE - No changes will be made      ${YELLOW}║${NC}"
+        echo -e "${YELLOW}╚══════════════════════════════════════════════════════╝${NC}"
+        echo ""
+    fi
+
     # Check project directory
     check_project_directory
 
     # Create .claude directory
-    create_claude_directory
+    if [ "$DRY_RUN" = true ]; then
+        echo ""
+        print_info "[DRY RUN] Would create .claude directory..."
+        print_success ".claude/ directory"
+    else
+        create_claude_directory
+    fi
 
     # Install agents
-    install_agents
+    if [ "$DRY_RUN" = true ]; then
+        echo ""
+        print_info "[DRY RUN] Would install 78 agents..."
+        echo "  ${BLUE}→${NC} 10 core agents (code-reviewer, refactoring-specialist, etc.)"
+        echo "  ${BLUE}→${NC} 68 specialized agents (framework-specific, language-specific)"
+        echo "  ${BLUE}→${NC} Documentation files"
+        print_success "Would copy: agents/core → .claude/agents-global/core"
+        print_success "Would copy: agents/pool → .claude/agents-global/pool"
+    else
+        install_agents
+    fi
 
     # Install Maestro Mode (unless skipped)
     if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
         echo ""
-        if [ "$CUSTOM" = true ]; then
+        if [ "$DRY_RUN" = true ]; then
+            print_info "[DRY RUN] Would install Maestro Mode..."
+            echo "  ${BLUE}→${NC} Language: $LANGUAGE"
+            echo "  ${BLUE}→${NC} Self-enhancement: $([ "$SKIP_SELF_ENHANCEMENT" = true ] && echo "Disabled" || echo "Enabled")"
+            if [ "$LANGUAGE" = "es" ]; then
+                print_success "Would copy: commands/maestro.es.md → .claude/commands/maestro.md"
+            else
+                print_success "Would copy: commands/maestro.md → .claude/commands/maestro.md"
+            fi
+            print_success "Would copy: agent-intelligence.md, agent-router.md, workflow-modes.md"
+            if [ "$SKIP_SELF_ENHANCEMENT" != true ]; then
+                print_success "Would copy: self-enhancement.md"
+            fi
+        elif [ "$CUSTOM" = true ]; then
             read -p "Install Maestro Mode? (Y/n): " -n 1 -r
             echo
             if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
@@ -386,7 +431,14 @@ main() {
 
     # Generate RULEBOOK
     echo ""
-    generate_rulebook
+    if [ "$DRY_RUN" = true ]; then
+        print_info "[DRY RUN] Would generate RULEBOOK.md..."
+        echo "  ${BLUE}→${NC} Template: RULEBOOK_TEMPLATE.md"
+        echo "  ${BLUE}→${NC} Project name: $(basename "$PWD")"
+        print_success "Would create: .claude/RULEBOOK.md"
+    else
+        generate_rulebook
+    fi
 
     # Detect tech stack
     echo ""
@@ -398,57 +450,83 @@ main() {
 
     # Installation complete
     echo ""
-    print_success "════════════════════════════════════════════════════════"
-    print_success "  Installation Complete!"
-    print_success "════════════════════════════════════════════════════════"
-    echo ""
+    if [ "$DRY_RUN" = true ]; then
+        print_success "════════════════════════════════════════════════════════"
+        print_success "  Dry Run Complete - Preview Only!"
+        print_success "════════════════════════════════════════════════════════"
+        echo ""
+        echo -e "${GREEN}Summary of what WOULD be installed:${NC}"
+        echo ""
+        echo "📁 Directories:"
+        echo "  ${BLUE}→${NC} .claude/"
+        echo "  ${BLUE}→${NC} .claude/agents-global/"
+        echo "  ${BLUE}→${NC} .claude/commands/"
+        echo ""
+        echo "📦 Files:"
+        echo "  ${BLUE}→${NC} 78 agents (10 core + 68 specialized)"
+        if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
+            echo "  ${BLUE}→${NC} Maestro Mode ($LANGUAGE, self-enhancement: $([ "$SKIP_SELF_ENHANCEMENT" = true ] && echo "disabled" || echo "enabled"))"
+        fi
+        echo "  ${BLUE}→${NC} RULEBOOK.md (from template)"
+        echo "  ${BLUE}→${NC} Documentation files"
+        echo ""
+        echo -e "${YELLOW}To actually install:${NC}"
+        echo "  ${BLUE}→${NC} Run without --dry-run flag:"
+        echo "     ./install.sh"
+        echo ""
+    else
+        print_success "════════════════════════════════════════════════════════"
+        print_success "  Installation Complete!"
+        print_success "════════════════════════════════════════════════════════"
+        echo ""
 
-    # Next steps
-    echo -e "${GREEN}Next Steps:${NC}"
-    echo ""
-    echo "1. 📝 Customize your RULEBOOK:"
-    echo "   ${BLUE}→${NC} Edit .claude/RULEBOOK.md with your project specifics"
-    echo ""
+        # Next steps
+        echo -e "${GREEN}Next Steps:${NC}"
+        echo ""
+        echo "1. 📝 Customize your RULEBOOK:"
+        echo "   ${BLUE}→${NC} Edit .claude/RULEBOOK.md with your project specifics"
+        echo ""
 
-    if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
-        echo "2. 🎭 Activate Maestro Mode (if installed):"
-        echo "   ${BLUE}→${NC} Type ${YELLOW}/maestro${NC} in Claude Code"
+        if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
+            echo "2. 🎭 Activate Maestro Mode (if installed):"
+            echo "   ${BLUE}→${NC} Type ${YELLOW}/maestro${NC} in Claude Code"
+            if [ "$LANGUAGE" = "es" ]; then
+                echo "   ${BLUE}→${NC} Language: Spanish (Colombian) | Code: English"
+            else
+                echo "   ${BLUE}→${NC} Language: English | Code: English"
+            fi
+            if [ "$SKIP_SELF_ENHANCEMENT" = false ]; then
+                echo "   ${BLUE}→${NC} Self-Enhancement: Enabled (learns with your approval)"
+            else
+                echo "   ${BLUE}→${NC} Self-Enhancement: Disabled (static behavior)"
+            fi
+            echo ""
+        fi
+
+        echo "3. 🤖 Use specialized agents:"
+        echo "   ${BLUE}→${NC} Agents auto-activate based on your RULEBOOK"
+        echo "   ${BLUE}→${NC} See .claude/agents-global/AGENT_SELECTION_GUIDE.md"
+        echo ""
+        echo "4. 📚 Read the documentation:"
+        echo "   ${BLUE}→${NC} Check .claude/agents-global/README.md for details"
+        echo ""
+
         if [ "$LANGUAGE" = "es" ]; then
-            echo "   ${BLUE}→${NC} Language: Spanish (Colombian) | Code: English"
+            echo "💡 ${BLUE}Tip:${NC} To switch to English, reinstall with: ./install.sh"
         else
-            echo "   ${BLUE}→${NC} Language: English | Code: English"
+            echo "💡 ${BLUE}Tip:${NC} To switch to Spanish, reinstall with: ./install.sh --lang=es"
         fi
-        if [ "$SKIP_SELF_ENHANCEMENT" = false ]; then
-            echo "   ${BLUE}→${NC} Self-Enhancement: Enabled (learns with your approval)"
-        else
-            echo "   ${BLUE}→${NC} Self-Enhancement: Disabled (static behavior)"
+
+        if [ "$SKIP_SELF_ENHANCEMENT" = true ]; then
+            echo "💡 ${BLUE}Tip:${NC} To enable self-enhancement, reinstall without --skip-self-enhancement"
         fi
+
+        echo "💡 ${BLUE}Note:${NC} Code will ALWAYS be in English regardless of language setting"
+        echo ""
+
+        print_info "Happy coding! 💪"
         echo ""
     fi
-
-    echo "3. 🤖 Use specialized agents:"
-    echo "   ${BLUE}→${NC} Agents auto-activate based on your RULEBOOK"
-    echo "   ${BLUE}→${NC} See .claude/agents-global/AGENT_SELECTION_GUIDE.md"
-    echo ""
-    echo "4. 📚 Read the documentation:"
-    echo "   ${BLUE}→${NC} Check .claude/agents-global/README.md for details"
-    echo ""
-
-    if [ "$LANGUAGE" = "es" ]; then
-        echo "💡 ${BLUE}Tip:${NC} To switch to English, reinstall with: ./install.sh"
-    else
-        echo "💡 ${BLUE}Tip:${NC} To switch to Spanish, reinstall with: ./install.sh --lang=es"
-    fi
-
-    if [ "$SKIP_SELF_ENHANCEMENT" = true ]; then
-        echo "💡 ${BLUE}Tip:${NC} To enable self-enhancement, reinstall without --skip-self-enhancement"
-    fi
-
-    echo "💡 ${BLUE}Note:${NC} Code will ALWAYS be in English regardless of language setting"
-    echo ""
-
-    print_info "Happy coding! 💪"
-    echo ""
 }
 
 # Run main installation

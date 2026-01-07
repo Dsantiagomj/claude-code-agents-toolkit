@@ -314,6 +314,18 @@ Built for real projects, not demos:
 - **Node.js**: 18+ (for detection scripts)
 - **Git**: For cloning the repository
 
+### Preview Before Installing (Recommended)
+
+**Dry Run Mode - See what will be installed:**
+```bash
+./install.sh --dry-run
+# Shows:
+# - What directories will be created
+# - What files will be copied
+# - What agents will be activated
+# - No actual changes made
+```
+
 ### Installation Options
 
 **Option 1: Full Installation (Recommended)**
@@ -332,6 +344,12 @@ Built for real projects, not demos:
 ```bash
 ./install.sh --custom
 # Interactive: Choose which agent categories to install
+```
+
+**Option 4: Preview Installation**
+```bash
+./install.sh --dry-run
+# Preview what will be installed without making changes
 ```
 
 ### What Gets Installed
