@@ -222,22 +222,56 @@ download_agents() {
 
     # Download core agents
     for agent in "${core_agents[@]}"; do
-        if download_file "$REPO_RAW_URL/agents-global/core/$agent" "$base_dir/agents-global/core/$agent"; then
+        if download_file "$REPO_RAW_URL/agents/core/$agent" "$base_dir/agents-global/core/$agent"; then
             echo -e "  ${GREEN}✓${NC} Downloaded: core/$agent"
         else
             print_warning "Failed to download: core/$agent"
         fi
     done
 
-    # For now, we'll try to download a complete agent pool archive if available
-    # Otherwise, individual downloads would be needed
+    # Download pool agents by category
     print_info "Downloading specialized agents pool..."
-    # Note: This would need to be implemented based on how agents are stored
-    # Option 1: Download individual files (68 more agents)
-    # Option 2: Download a tar.gz archive
-    # Option 3: Git sparse checkout
 
-    print_success "Agents downloaded"
+    local pool_agents=(
+        "01-frontend/react-specialist.md" "01-frontend/vue-specialist.md" "01-frontend/angular-specialist.md"
+        "01-frontend/svelte-specialist.md" "01-frontend/tailwind-expert.md" "01-frontend/css-architect.md"
+        "01-frontend/ui-accessibility.md" "01-frontend/animation-specialist.md"
+        "02-backend/express-specialist.md" "02-backend/nest-specialist.md" "02-backend/fastify-expert.md"
+        "02-backend/koa-expert.md" "02-backend/graphql-specialist.md" "02-backend/rest-api-architect.md"
+        "02-backend/microservices-architect.md" "02-backend/websocket-expert.md"
+        "03-fullstack-frameworks/nextjs-specialist.md" "03-fullstack-frameworks/nuxt-specialist.md"
+        "03-fullstack-frameworks/remix-specialist.md" "03-fullstack-frameworks/sveltekit-specialist.md"
+        "03-fullstack-frameworks/astro-specialist.md" "03-fullstack-frameworks/solidstart-specialist.md"
+        "04-languages/typescript-pro.md" "04-languages/javascript-modernizer.md" "04-languages/python-specialist.md"
+        "04-languages/rust-expert.md" "04-languages/go-specialist.md" "04-languages/java-specialist.md"
+        "04-languages/php-modernizer.md" "04-languages/csharp-specialist.md"
+        "05-databases/postgres-expert.md" "05-databases/mysql-specialist.md" "05-databases/mongodb-expert.md"
+        "05-databases/redis-specialist.md" "05-databases/prisma-specialist.md" "05-databases/drizzle-specialist.md"
+        "05-databases/typeorm-expert.md" "05-databases/sequelize-expert.md"
+        "06-infrastructure/docker-specialist.md" "06-infrastructure/kubernetes-expert.md"
+        "06-infrastructure/aws-cloud-specialist.md" "06-infrastructure/vercel-deployment-specialist.md"
+        "06-infrastructure/cloudflare-edge-specialist.md" "06-infrastructure/terraform-iac-specialist.md"
+        "06-infrastructure/cicd-automation-specialist.md" "06-infrastructure/nginx-load-balancer-specialist.md"
+        "06-infrastructure/monitoring-observability-specialist.md"
+        "07-testing/jest-testing-specialist.md" "07-testing/vitest-specialist.md" "07-testing/cypress-specialist.md"
+        "07-testing/playwright-e2e-specialist.md" "07-testing/testing-library-specialist.md"
+        "07-testing/storybook-testing-specialist.md" "07-testing/test-automation-strategist.md"
+        "08-specialized/react-native-mobile-specialist.md" "08-specialized/electron-desktop-specialist.md"
+        "08-specialized/cli-tools-specialist.md" "08-specialized/browser-extension-specialist.md"
+        "08-specialized/ai-ml-integration-specialist.md" "08-specialized/blockchain-web3-specialist.md"
+        "08-specialized/data-pipeline-specialist.md" "08-specialized/game-development-specialist.md"
+    )
+
+    local downloaded=0
+    for agent in "${pool_agents[@]}"; do
+        local dir=$(dirname "$agent")
+        mkdir -p "$base_dir/agents-global/pool/$dir"
+        if download_file "$REPO_RAW_URL/agents/pool/$agent" "$base_dir/agents-global/pool/$agent"; then
+            ((downloaded++))
+        fi
+    done
+
+    print_success "Downloaded $downloaded/${#pool_agents[@]} pool agents"
 }
 
 # Download Maestro Mode
