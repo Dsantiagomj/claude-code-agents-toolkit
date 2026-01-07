@@ -42,6 +42,38 @@ The installer will:
 **Installation time:** < 2 minutes
 **Manual configuration:** Zero (for common stacks)
 
+### 🌍 Global Installation (Multi-Project Support)
+
+For developers working on multiple projects with the same tech stack:
+
+```bash
+# Install globally once
+./install-global.sh
+
+# Use in another project
+cd ~/my-other-project
+cd /path/to/toolkit && ./install-global.sh --link-only
+```
+
+**How it works:**
+- Installs agents to `~/.claude-global/` (one copy for all projects)
+- Creates symlinks from each project's `.claude/` to global installation
+- Per-project RULEBOOK.md (customize for each project)
+- Update once, applies to all projects
+- Saves disk space (~500KB per project)
+
+**Benefits:**
+- ✅ Share 78 agents across all your projects
+- ✅ Update agents once with `git pull && ./install-global.sh`
+- ✅ Per-project RULEBOOK customization
+- ✅ Centralized Maestro Mode configuration
+- ✅ Save disk space (one copy of agents)
+
+**When to use:**
+- You have 3+ projects using similar tech stacks
+- You want consistent agent behavior across projects
+- You want to update agents once and apply everywhere
+
 ---
 
 ## 📦 What's Included
