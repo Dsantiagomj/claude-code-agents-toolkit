@@ -90,18 +90,51 @@ install_agents() {
 
 # Install Maestro Mode
 install_maestro_mode() {
-    print_info "Installing Maestro Mode..."
+    local lang=$1
+    local skip_self_enhancement=$2
+
+    if [ "$lang" = "es" ]; then
+        print_info "Installing Maestro Mode (Spanish version)..."
+    else
+        print_info "Installing Maestro Mode (English version)..."
+    fi
 
     mkdir -p .claude/commands
 
-    # Copy command files
-    cp commands/maestro.md .claude/commands/
+    # Copy appropriate maestro file based on language
+    if [ "$lang" = "es" ]; then
+        cp commands/maestro.es.md .claude/commands/maestro.md
+        if [ "$skip_self_enhancement" = "true" ]; then
+            print_success "Maestro Mode installed (Spanish - without self-enhancement)"
+        else
+            print_success "Maestro Mode installed (Spanish - with self-enhancement)"
+        fi
+        print_info "  Communication: Spanish (Colombian)"
+        print_info "  Code: English (always)"
+    else
+        cp commands/maestro.md .claude/commands/maestro.md
+        if [ "$skip_self_enhancement" = "true" ]; then
+            print_success "Maestro Mode installed (English - without self-enhancement)"
+        else
+            print_success "Maestro Mode installed (English - with self-enhancement)"
+        fi
+        print_info "  Communication: English"
+        print_info "  Code: English (always)"
+    fi
+
+    # Copy other command files
     cp commands/agent-intelligence.md .claude/commands/
     cp commands/agent-router.md .claude/commands/
     cp commands/workflow-modes.md .claude/commands/
-    cp commands/self-enhancement.md .claude/commands/
 
-    print_success "Maestro Mode installed (with self-enhancement)"
+    # Conditionally copy self-enhancement
+    if [ "$skip_self_enhancement" != "true" ]; then
+        cp commands/self-enhancement.md .claude/commands/
+        print_info "  Self-enhancement: Enabled (requires approval for changes)"
+    else
+        print_info "  Self-enhancement: Disabled"
+    fi
+
     print_info "  Activate with: /maestro in Claude Code"
 }
 
@@ -267,6 +300,8 @@ main() {
     AGENTS_ONLY=false
     CUSTOM=false
     SKIP_MAESTRO=false
+    SKIP_SELF_ENHANCEMENT=false
+    LANGUAGE="en"
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -282,14 +317,37 @@ main() {
                 SKIP_MAESTRO=true
                 shift
                 ;;
+            --skip-self-enhancement)
+                SKIP_SELF_ENHANCEMENT=true
+                shift
+                ;;
+            --lang=*)
+                LANGUAGE="${1#*=}"
+                if [ "$LANGUAGE" != "en" ] && [ "$LANGUAGE" != "es" ]; then
+                    print_error "Unsupported language: $LANGUAGE"
+                    echo "Supported languages: en (English), es (Spanish)"
+                    exit 1
+                fi
+                shift
+                ;;
             --help)
                 echo "Usage: ./install.sh [OPTIONS]"
                 echo ""
                 echo "Options:"
-                echo "  --agents-only      Install only agents (skip Maestro Mode)"
-                echo "  --skip-maestro     Skip Maestro Mode installation"
-                echo "  --custom           Interactive installation (choose components)"
-                echo "  --help             Show this help message"
+                echo "  --agents-only              Install only agents (skip Maestro Mode)"
+                echo "  --skip-maestro             Skip Maestro Mode installation"
+                echo "  --skip-self-enhancement    Skip self-enhancement system (Maestro won't learn/adapt)"
+                echo "  --custom                   Interactive installation (choose components)"
+                echo "  --lang=LANG                Set Maestro language (en or es, default: en)"
+                echo "                             en: English communication, English code"
+                echo "                             es: Spanish communication (Colombian), English code"
+                echo "  --help                     Show this help message"
+                echo ""
+                echo "Examples:"
+                echo "  ./install.sh                              # Full installation (English)"
+                echo "  ./install.sh --lang=es                    # Spanish Maestro with self-enhancement"
+                echo "  ./install.sh --skip-self-enhancement      # Maestro without learning capability"
+                echo "  ./install.sh --agents-only                # Only agents, no Maestro"
                 echo ""
                 exit 0
                 ;;
@@ -317,12 +375,12 @@ main() {
             read -p "Install Maestro Mode? (Y/n): " -n 1 -r
             echo
             if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
-                install_maestro_mode
+                install_maestro_mode "$LANGUAGE" "$SKIP_SELF_ENHANCEMENT"
             else
                 print_info "Skipping Maestro Mode installation"
             fi
         else
-            install_maestro_mode
+            install_maestro_mode "$LANGUAGE" "$SKIP_SELF_ENHANCEMENT"
         fi
     fi
 
@@ -351,15 +409,42 @@ main() {
     echo "1. 📝 Customize your RULEBOOK:"
     echo "   ${BLUE}→${NC} Edit .claude/RULEBOOK.md with your project specifics"
     echo ""
-    echo "2. 🎭 Activate Maestro Mode (if installed):"
-    echo "   ${BLUE}→${NC} Type ${YELLOW}/maestro${NC} in Claude Code"
-    echo ""
+
+    if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
+        echo "2. 🎭 Activate Maestro Mode (if installed):"
+        echo "   ${BLUE}→${NC} Type ${YELLOW}/maestro${NC} in Claude Code"
+        if [ "$LANGUAGE" = "es" ]; then
+            echo "   ${BLUE}→${NC} Language: Spanish (Colombian) | Code: English"
+        else
+            echo "   ${BLUE}→${NC} Language: English | Code: English"
+        fi
+        if [ "$SKIP_SELF_ENHANCEMENT" = false ]; then
+            echo "   ${BLUE}→${NC} Self-Enhancement: Enabled (learns with your approval)"
+        else
+            echo "   ${BLUE}→${NC} Self-Enhancement: Disabled (static behavior)"
+        fi
+        echo ""
+    fi
+
     echo "3. 🤖 Use specialized agents:"
     echo "   ${BLUE}→${NC} Agents auto-activate based on your RULEBOOK"
     echo "   ${BLUE}→${NC} See .claude/agents-global/AGENT_SELECTION_GUIDE.md"
     echo ""
     echo "4. 📚 Read the documentation:"
     echo "   ${BLUE}→${NC} Check .claude/agents-global/README.md for details"
+    echo ""
+
+    if [ "$LANGUAGE" = "es" ]; then
+        echo "💡 ${BLUE}Tip:${NC} To switch to English, reinstall with: ./install.sh"
+    else
+        echo "💡 ${BLUE}Tip:${NC} To switch to Spanish, reinstall with: ./install.sh --lang=es"
+    fi
+
+    if [ "$SKIP_SELF_ENHANCEMENT" = true ]; then
+        echo "💡 ${BLUE}Tip:${NC} To enable self-enhancement, reinstall without --skip-self-enhancement"
+    fi
+
+    echo "💡 ${BLUE}Note:${NC} Code will ALWAYS be in English regardless of language setting"
     echo ""
 
     print_info "Happy coding! 💪"
