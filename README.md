@@ -22,22 +22,68 @@ A production-ready toolkit of **78 specialized AI agents** that work seamlessly 
 
 ## 🚀 Quick Start
 
+### 📡 Remote Installation (Recommended)
+
+Install directly without cloning the repository:
+
 ```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/claude-code-agents-toolkit
-cd claude-code-agents-toolkit
+# Standard installation
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
 
-# 2. Run the installer
-./install.sh
+# Or with wget
+wget -qO- https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
 
-# 3. That's it! Your project now has 78 agents ready to use.
+# With options
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --lang=es  # Spanish
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --global   # Global
 ```
 
-The installer will:
-- Copy all 78 agents to `.claude/agents-global/`
-- Generate a RULEBOOK.md from template (if you don't have one)
-- Detect your tech stack and activate relevant agents
-- Set up Maestro Mode (optional)
+### 📦 Repository-Based Installation
+
+For development or contributing:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Dsantiagomj/claude-code-agents-toolkit
+cd claude-code-agents-toolkit
+
+# 2. Navigate to your project
+cd /path/to/your/project
+
+# 3. Run the installer
+/path/to/toolkit/install.sh
+```
+
+### 🧙 Smart RULEBOOK Wizard
+
+After installation, the wizard will help you set up your RULEBOOK:
+
+```
+🧙 RULEBOOK Wizard - Smart Project Setup
+
+📂 Scanning Current Directory
+  ✓ Found: package.json
+  ✓ Framework: Next.js
+  ✓ Language: TypeScript
+  ✓ Database/ORM: Prisma
+
+🎯 How would you like to create your RULEBOOK?
+
+  [1] Use detected configuration (auto-generate) → Recommended
+  [2] Answer questions interactively
+  [3] Start with minimal template
+  [4] Skip for now
+
+Enter your choice [1-4]:
+```
+
+The wizard:
+- ✅ Scans your current directory for project files
+- ✅ Detects framework, language, database, tools
+- ✅ Shows what it found and if it helped
+- ✅ Auto-generates RULEBOOK with recommended agents
+- ✅ Works in empty directories (uses interactive mode)
+- ✅ Can be run anytime with `scripts/rulebook-wizard.sh`
 
 **Installation time:** < 2 minutes
 **Manual configuration:** Zero (for common stacks)

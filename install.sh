@@ -17,8 +17,9 @@ NC='\033[0m' # No Color
 print_header() {
     echo ""
     echo -e "${BLUE}╔══════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║${NC}  🤖 Claude Code Agents Global Toolkit Installer  ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  🤖 Claude Code Agents Toolkit - Repo Installer  ${BLUE}║${NC}"
     echo -e "${BLUE}║${NC}     78 Specialized Agents for Claude Code          ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}     Installing from cloned repository              ${BLUE}║${NC}"
     echo -e "${BLUE}╚══════════════════════════════════════════════════════╝${NC}"
     echo ""
 }
@@ -39,16 +40,14 @@ print_error() {
     echo -e "${RED}✗${NC} $1"
 }
 
-# Check if we're in a project directory
+# Check if we're in a project directory (informational only)
 check_project_directory() {
     if [ ! -f "package.json" ] && [ ! -f "pyproject.toml" ] && [ ! -f "go.mod" ] && [ ! -f "Cargo.toml" ]; then
-        print_warning "No project files detected (package.json, pyproject.toml, etc.)"
-        read -p "Continue anyway? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            echo "Installation cancelled."
-            exit 1
-        fi
+        print_info "No project files detected in current directory"
+        print_info "The toolkit can be installed in empty directories"
+        print_info "The RULEBOOK wizard will help you set up your project"
+    else
+        print_success "Project files detected - will use for RULEBOOK setup"
     fi
 }
 
@@ -487,6 +486,7 @@ main() {
     SKIP_MAESTRO=false
     SKIP_SELF_ENHANCEMENT=false
     SKIP_BACKUP=false
+    SKIP_WIZARD=false
     LANGUAGE="en"
     DRY_RUN=false
 
@@ -512,6 +512,10 @@ main() {
                 SKIP_BACKUP=true
                 shift
                 ;;
+            --skip-wizard)
+                SKIP_WIZARD=true
+                shift
+                ;;
             --dry-run)
                 DRY_RUN=true
                 shift
@@ -533,6 +537,7 @@ main() {
                 echo "  --skip-maestro             Skip Maestro Mode installation"
                 echo "  --skip-self-enhancement    Skip self-enhancement system (Maestro won't learn/adapt)"
                 echo "  --skip-backup              Skip automatic backup (not recommended)"
+                echo "  --skip-wizard              Skip RULEBOOK wizard (create manually later)"
                 echo "  --custom                   Interactive installation (choose components)"
                 echo "  --lang=LANG                Set Maestro language (en or es, default: en)"
                 echo "                             en: English communication, English code"
@@ -545,12 +550,15 @@ main() {
                 echo "  ./install.sh --lang=es                    # Spanish Maestro with self-enhancement"
                 echo "  ./install.sh --skip-self-enhancement      # Maestro without learning capability"
                 echo "  ./install.sh --agents-only                # Only agents, no Maestro"
+                echo "  ./install.sh --skip-wizard                # Skip RULEBOOK setup wizard"
                 echo "  ./install.sh --dry-run                    # Preview what will be installed"
                 echo ""
                 echo "Safety:"
                 echo "  • Existing .claude/ directories are backed up automatically"
                 echo "  • Backups are timestamped: .claude.backup.YYYY-MM-DD-HHMMSS/"
                 echo "  • Use --skip-backup to disable (not recommended)"
+                echo ""
+                echo "Note: For remote installation without cloning, see install-remote.sh"
                 echo ""
                 exit 0
                 ;;
@@ -698,15 +706,23 @@ main() {
         fi
     fi
 
-    # Generate RULEBOOK
+    # Run RULEBOOK wizard
     echo ""
     if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would generate RULEBOOK.md..."
-        echo "  ${BLUE}→${NC} Template: RULEBOOK_TEMPLATE.md"
-        echo "  ${BLUE}→${NC} Project name: $(basename "$PWD")"
+        print_info "[DRY RUN] Would run RULEBOOK wizard..."
+        echo "  ${BLUE}→${NC} Options: Auto-generate, Interactive, Template, Skip"
+        echo "  ${BLUE}→${NC} Would scan current directory for project context"
         print_success "Would create: .claude/RULEBOOK.md"
+    elif [ "$SKIP_WIZARD" = false ]; then
+        if [ -f "scripts/rulebook-wizard.sh" ]; then
+            bash scripts/rulebook-wizard.sh
+        else
+            print_warning "RULEBOOK wizard not found, using template..."
+            generate_rulebook
+        fi
     else
-        generate_rulebook
+        print_info "RULEBOOK wizard skipped (--skip-wizard)"
+        print_warning "You can run it later with: scripts/rulebook-wizard.sh"
     fi
 
     # Detect tech stack
