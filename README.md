@@ -855,6 +855,130 @@ To activate this agent:
 - 💡 Find the right agent for your task
 - ✅ Verify which agents are currently active
 
+### Agent Statistics & Analytics
+
+Get insights about your agent configuration and optimization recommendations:
+
+```bash
+scripts/agent-stats.sh
+```
+
+**Features:**
+- **Activation Overview** - Total active vs available agents
+- **Category Breakdown** - Visual progress bars for each category
+- **Performance Analysis** - Context usage and impact estimates
+- **Smart Recommendations** - Suggestions based on your stack
+- **Project Size Guidance** - Optimal agent counts for small/medium/large projects
+
+**Usage Examples:**
+
+```bash
+# Quick summary (default)
+scripts/agent-stats.sh
+
+# Detailed breakdown by category
+scripts/agent-stats.sh --detailed
+
+# Get optimization recommendations
+scripts/agent-stats.sh --recommendations
+
+# Performance impact analysis
+scripts/agent-stats.sh --performance
+```
+
+**Example Output:**
+
+```bash
+$ scripts/agent-stats.sh
+
+📊 Agent Statistics Summary
+
+Overall:
+  Total Agents Available: 78
+  Total Agents Active:    15
+  Activation Rate:        ████████████░░░░░░░░░░░░░░░░  19% (15/78)
+
+By Category:
+  Core             ██████████████████████████████████████████  100% (10/10)
+  Frontend         ████████████░░░░░░░░░░░░░░░░  38% (3/8)
+  Backend          ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
+  Full-Stack       ████████████████░░░░░░░░░░░░  33% (2/6)
+  Languages        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
+  Databases        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
+  Infrastructure   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/9)
+  Testing          ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/7)
+  Specialized      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
+
+Quick Check:
+  ✓  All core agents active
+  ✓  Balanced activation (19%)
+```
+
+**Performance Analysis:**
+
+```bash
+$ scripts/agent-stats.sh --performance
+
+⚡ Performance Impact Analysis
+
+Context Usage:
+  Base System:        ~5000 tokens
+  Agents (15 active): ~3000 tokens (200 per agent)
+  Total Estimated:    ~8000 tokens
+
+Performance Impact:
+  ✓ Minimal - Optimal for all project sizes
+
+Recommendations by Project Size:
+
+  Small Projects (< 1000 lines):
+    Suggested: 10-15 agents (Core + main stack)
+    Your setup: ✓ Optimal (15 agents)
+
+  Medium Projects (1K-10K lines):
+    Suggested: 15-25 agents (Core + stack + domain)
+    Your setup: ✓ Optimal (15 agents)
+
+  Large Projects (10K+ lines):
+    Suggested: 25-40 agents (Core + full stack + specialized)
+    Your setup: Room for 15 more specialized agents
+```
+
+**Smart Recommendations:**
+
+The recommendations mode analyzes your RULEBOOK to detect your tech stack and suggests relevant agents:
+
+```bash
+$ scripts/agent-stats.sh --recommendations
+
+💡 Agent Optimization Recommendations
+
+Current Configuration:
+  Active Agents: 15 / 78 (19%)
+
+1. Core Agents (Essential)
+   ✓ All core agents active
+
+2. Stack-Specific Agents
+   💡 Detected Next.js - consider activating:
+      • nextjs-specialist
+      • react-specialist
+
+   💡 Detected PostgreSQL - consider activating:
+      • postgres-expert
+      • prisma-orm-specialist
+
+3. Activation Density
+   ✓ Good balance (19%)
+```
+
+**When to Use:**
+- 📊 Understand your current agent configuration
+- 🎯 Optimize agent activation for your project size
+- 💡 Get suggestions based on detected tech stack
+- ⚡ Analyze performance impact
+- 🔧 Fine-tune agent selection
+
 ---
 
 ## ✓ RULEBOOK Validation
