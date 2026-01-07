@@ -305,7 +305,7 @@ show_wizard_options() {
 generate_from_context() {
     print_section "🔨 Generating RULEBOOK from detected context"
 
-    local rulebook_path="RULEBOOK.md"
+    local rulebook_path=".claude/RULEBOOK.md"
     local project_name=$(basename "$(pwd)")
 
     # Read README.md if it exists for project description
@@ -519,7 +519,7 @@ launch_questionnaire() {
 create_minimal_template() {
     print_section "📄 Creating minimal RULEBOOK template"
 
-    local rulebook_path="RULEBOOK.md"
+    local rulebook_path=".claude/RULEBOOK.md"
     local project_name=$(basename "$(pwd)")
 
     cat > "$rulebook_path" << 'EOF'
