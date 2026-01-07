@@ -27,15 +27,16 @@ A production-ready toolkit of **78 specialized AI agents** that work seamlessly 
 Install directly without cloning the repository:
 
 ```bash
-# Standard installation
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
+# Quick install (interactive)
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
 
-# Or with wget
-wget -qO- https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
+# Or with the bootstrap script
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh | bash
 
 # With options
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --lang=es  # Spanish
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --global   # Global
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --lang=es  # Spanish
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --global    # Global
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --yes      # Non-interactive
 ```
 
 ### 📦 Repository-Based Installation
