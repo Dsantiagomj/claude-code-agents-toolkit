@@ -14,15 +14,6 @@
 
 set -e
 
-# Redirect stdin to /dev/tty for interactive prompts when piped from curl
-if [ -t 0 ]; then
-    # stdin is a terminal, no need to redirect
-    :
-else
-    # stdin is not a terminal (piped), redirect to /dev/tty
-    exec < /dev/tty
-fi
-
 # Configuration
 REPO_URL="${TOOLKIT_REPO_URL:-https://github.com/Dsantiagomj/claude-code-agents-toolkit}"
 REPO_RAW_URL="${REPO_URL/github.com/raw.githubusercontent.com}/main"
@@ -499,6 +490,17 @@ show_post_install() {
 main() {
     # Parse arguments
     parse_args "$@"
+
+    # Auto-detect if running in non-interactive mode (piped from curl)
+    if [ ! -t 0 ] && [ "$YES" = false ]; then
+        # stdin is not a terminal (piped), auto-enable non-interactive mode
+        echo ""
+        echo -e "${YELLOW}⚠${NC} Non-interactive mode detected (piped installation)"
+        echo -e "${YELLOW}⚠${NC} Auto-confirming prompts. Use 'bash <(curl ...)' for interactive mode"
+        echo ""
+        YES=true
+        SKIP_WIZARD=true
+    fi
 
     print_header
 
