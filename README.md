@@ -351,6 +351,57 @@ your-project/
 
 ---
 
+## 🌐 Language Switching
+
+### Change Maestro Language Without Reinstalling
+
+Switch between English and Spanish Maestro Mode instantly:
+
+**Toggle Language (Auto-detect current)**
+```bash
+./switch-language.sh
+# Automatically switches to the other language
+```
+
+**Switch to Specific Language**
+```bash
+./switch-language.sh es        # Switch to Spanish
+./switch-language.sh english   # Switch to English
+```
+
+### What Gets Changed
+
+- ✅ **Maestro Communication** - Language for responses and messages
+- ✅ **Automatic Backup** - Creates `.claude/commands/maestro.md.backup`
+
+### What Stays the Same
+
+- ✅ **All Agents** - 78 agents remain unchanged
+- ✅ **RULEBOOK** - Your project patterns preserved
+- ✅ **Settings** - All configurations intact
+- ✅ **Self-Enhancement** - Enabled/disabled state preserved
+- ✅ **Code Language** - Always English, regardless of communication language
+
+### Quick Examples
+
+```bash
+# Currently English → Switch to Spanish
+./switch-language.sh es
+
+# Currently Spanish → Switch to English
+./switch-language.sh en
+
+# Don't know current language? Toggle it
+./switch-language.sh
+
+# Restore previous language
+mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
+```
+
+**No reinstallation required!** Changes take effect immediately when you next activate Maestro.
+
+---
+
 ## 🏥 Health Check
 
 ### Verify Your Installation
