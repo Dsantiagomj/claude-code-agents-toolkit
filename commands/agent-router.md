@@ -2,7 +2,7 @@
 
 **Purpose**: Automatically route tasks to the right agents based on project context (from RULEBOOK.md), task type, and complexity.
 
-**Integration**: Works with `gentleman.md` and `agent-intelligence.md` to provide smart agent selection.
+**Integration**: Works with `maestro.md` and `agent-intelligence.md` to provide smart agent selection.
 
 ---
 
@@ -123,7 +123,7 @@ Agents Pipeline:
       - [ui-accessibility if UI]: Accessibility audit
     output: Review report, improvements
 
-Gentleman Oversight:
+Maestro Oversight:
   - Approve architecture (Step 1)
   - Verify RULEBOOK compliance (all steps)
   - Final review before merge
@@ -159,7 +159,7 @@ Agents Pipeline:
     task: Review fix quality
     output: Approval or revision requests
 
-Gentleman Oversight:
+Maestro Oversight:
   - Verify fix doesn't violate RULEBOOK
   - Check for similar bugs elsewhere
   - Ensure proper error handling
@@ -194,7 +194,7 @@ Agents Pipeline:
       - code-reviewer: Review changes
     output: Test report, metrics, review
 
-Gentleman Oversight:
+Maestro Oversight:
   - Approve refactoring plan
   - Verify RULEBOOK patterns maintained
   - Check improvement metrics
@@ -228,7 +228,7 @@ Agents Pipeline:
       - test-strategist: Add performance tests
     output: Before/after metrics, tests
 
-Gentleman Oversight:
+Maestro Oversight:
   - Approve optimization tradeoffs
   - Verify metrics improve significantly
   - Ensure no functionality sacrificed
@@ -270,7 +270,7 @@ Agents Pipeline:
       - code-reviewer: Review security code
     output: Clean audit report
 
-Gentleman Oversight:
+Maestro Oversight:
   - CRITICAL: Review EVERY security change
   - Verify OWASP Top 10 compliance
   - Demand 100% test coverage (no exceptions)
@@ -306,7 +306,7 @@ Agents Pipeline:
       - test-strategist: Coverage verification
     output: Quality report, coverage %
 
-Gentleman Oversight:
+Maestro Oversight:
   - Enforce coverage minimum (check RULEBOOK)
   - Verify test quality (not just quantity)
   - Check edge cases covered
@@ -333,7 +333,7 @@ Agents Pipeline:
     task: Review documentation quality
     output: Approval or improvements
 
-Gentleman Oversight:
+Maestro Oversight:
   - Verify documentation standards (check RULEBOOK)
   - Check code examples work
   - Verify completeness
@@ -360,7 +360,7 @@ Examples:
   - "Fix typo in error message"
   - "Update import path"
 
-Routing Decision: Gentleman handles directly
+Routing Decision: Maestro handles directly
 Agent Count: 0
 ```
 
@@ -378,7 +378,7 @@ Examples:
   - "Create simple utility function"
   - "Update component styling"
 
-Routing Decision: Gentleman + 1 specialist for verification
+Routing Decision: Maestro + 1 specialist for verification
 Agent Count: 1
 Agent Examples: [framework-specialist from RULEBOOK]
 ```
@@ -397,7 +397,7 @@ Examples:
   - "Create reusable form component"
   - "Refactor store structure"
 
-Routing Decision: Gentleman orchestrates 2-4 specialists
+Routing Decision: Maestro orchestrates 2-4 specialists
 Agent Count: 2-4
 Agent Examples (from RULEBOOK):
   - framework-specialist + styling-specialist
@@ -460,7 +460,7 @@ Router Analysis:
 
 Routing Decision: Trivial → No agents needed
 
-Output to Gentleman:
+Output to Maestro:
 "Handle directly. Add loading state following existing pattern in RULEBOOK.
 Check other forms for consistency.
 No agents needed for this simple change."
@@ -480,7 +480,7 @@ Router Analysis:
 
 Routing Decision: Moderate → Delegate to 3 agents
 
-Output to Gentleman:
+Output to Maestro:
 "Delegate to agent pipeline:
 [Read RULEBOOK.md to get framework and styling]
 1. [framework-specialist]: Design filter UI components
@@ -506,7 +506,7 @@ Router Analysis:
 
 Routing Decision: Complex → Full pipeline (8 agents)
 
-Output to Gentleman:
+Output to Maestro:
 "Route to Feature Development Pipeline:
 [Read RULEBOOK.md to get stack]
 1. architecture-advisor: Design analytics feature
@@ -536,7 +536,7 @@ Router Analysis:
 
 Routing Decision: Critical → Security Audit Pipeline
 
-Output to Gentleman:
+Output to Maestro:
 "CRITICAL TASK - Route to Security Audit Pipeline:
 [Read RULEBOOK.md for tech stack]
 1. security-auditor: OWASP Top 10 scan
@@ -597,7 +597,7 @@ function routeTask(taskDescription, projectRULEBOOK) {
     route: selectedRoute,
     agents: agents,
     pipeline: pipelineSteps,
-    gentlemanRole: oversightRequirements,
+    maestroRole: oversightRequirements,
     estimatedTime: timeEstimate
   };
 }
@@ -605,12 +605,12 @@ function routeTask(taskDescription, projectRULEBOOK) {
 
 ---
 
-## Integration with Gentleman Mode
+## Integration with Maestro Mode
 
-### Gentleman Calls Router
+### Maestro Calls Router
 
 ```markdown
-# In gentleman.md:
+# In maestro.md:
 
 ## Complex Task Handling
 
@@ -628,7 +628,7 @@ When you encounter a complex task:
 ```
 User: [complex task]
 
-Gentleman:
+Maestro:
 "Let me check the router for the best approach..."
 [Reads .claude/RULEBOOK.md for stack]
 [Reads agent-router.md for routing logic]
@@ -650,7 +650,7 @@ Want me to proceed with this approach?"
 - Match complexity to agent count
 - Provide clear delegation instructions
 - Verify agent output at each step
-- Gentleman maintains oversight always
+- Maestro maintains oversight always
 
 ### Routing Don'ts ❌
 
@@ -674,13 +674,13 @@ The Agent Router provides:
 ✅ Pre-defined routing pipelines
 ✅ Clear delegation instructions
 ✅ Verification checklists
-✅ Integration with Gentleman Mode
+✅ Integration with Maestro Mode
 
 **Remember**:
 - RULEBOOK.md is the source of truth
 - Router reads it to understand your stack
 - Agents are selected based on YOUR project
-- Gentleman makes final decisions
+- Maestro makes final decisions
 
 ---
 

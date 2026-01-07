@@ -1,6 +1,6 @@
 # RULEBOOK Template
 
-This template is used by Gentleman Mode to generate a comprehensive RULEBOOK.md for new projects or enhance existing ones. The RULEBOOK serves as the single source of truth for project patterns, conventions, and standards.
+This template is used by Maestro Mode to generate a comprehensive RULEBOOK.md for new projects or enhance existing ones. The RULEBOOK serves as the single source of truth for project patterns, conventions, and standards.
 
 ---
 

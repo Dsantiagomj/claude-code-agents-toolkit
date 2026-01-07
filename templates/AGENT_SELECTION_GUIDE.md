@@ -267,7 +267,7 @@ Specialized:
 
 **Workflow:**
 ```
-Gentleman Mode → architecture-advisor (design)
+Maestro Mode → architecture-advisor (design)
               → [specialists] (implement)
               → test-strategist + testing-specialist (test)
               → code-reviewer (review)
@@ -503,7 +503,7 @@ model: opus  # Slowest, most capable, expensive
 
 ### Lazy Loading
 
-Gentleman Mode activates agents **on-demand**:
+Maestro Mode activates agents **on-demand**:
 
 1. Core agents always ready
 2. Specialized agents loaded when needed
@@ -668,7 +668,7 @@ Specialized:
 
 - **Core agents**: Always active, tech-agnostic
 - **Specialized agents**: Activated based on project/task
-- **Gentleman Mode**: Handles selection automatically
+- **Maestro Mode**: Handles selection automatically
 - **MCP integration**: Extends agent capabilities
 - **Performance**: Balance agent count vs capability
 - **Flexibility**: Manual override always available

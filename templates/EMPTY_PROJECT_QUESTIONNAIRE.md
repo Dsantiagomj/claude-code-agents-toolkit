@@ -1,10 +1,10 @@
 # Empty Project Questionnaire
 
-This questionnaire is designed to help set up new projects with the optimal tech stack, agents, MCP servers, and best practices. Gentleman Mode uses this to conduct a deep discovery process when working with empty or new projects.
+This questionnaire is designed to help set up new projects with the optimal tech stack, agents, MCP servers, and best practices. Maestro Mode uses this to conduct a deep discovery process when working with empty or new projects.
 
 ## How It Works
 
-When Gentleman Mode detects an empty project (no `package.json`, `requirements.txt`, etc.), it will:
+When Maestro Mode detects an empty project (no `package.json`, `requirements.txt`, etc.), it will:
 
 1. Run through this questionnaire interactively
 2. Analyze responses to recommend tech stack
@@ -384,7 +384,7 @@ When Gentleman Mode detects an empty project (no `package.json`, `requirements.t
 
 ## Analysis & Recommendations
 
-After collecting responses, Gentleman Mode will:
+After collecting responses, Maestro Mode will:
 
 ### 1. Recommend Tech Stack
 
@@ -455,7 +455,7 @@ project/
 - **Q4.1:** All testing types
 - **Q5.1:** Vercel
 
-### Gentleman Mode Recommendations:
+### Maestro Mode Recommendations:
 
 **Tech Stack:**
 ```
@@ -535,7 +535,7 @@ project/
 ```
 User: "I'm starting a new project"
 
-Gentleman Mode:
+Maestro Mode:
 "I've detected an empty project. Let me help you set it up properly.
 I'll ask you a series of questions to recommend the best tech stack,
 agents, and best practices.
@@ -544,7 +544,7 @@ This will take about 5 minutes. Ready to begin?"
 
 User: "Yes"
 
-Gentleman Mode:
+Maestro Mode:
 "Great! Let's start with project overview...
 
 Q1: What type of project are you building?
@@ -556,7 +556,7 @@ Q1: What type of project are you building?
 
 [User answers questions]
 
-Gentleman Mode:
+Maestro Mode:
 "Thank you! Based on your responses, here's what I recommend:
 
 **Tech Stack:**
@@ -586,7 +586,7 @@ Shall I proceed with this setup?"
 
 User: "Yes, go ahead"
 
-Gentleman Mode:
+Maestro Mode:
 "Perfect! I'm now delegating to the specialized agents:
 - project-analyzer: Creating project structure
 - nextjs-specialist: Setting up Next.js configuration

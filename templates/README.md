@@ -9,14 +9,14 @@ This toolkit implements a **two-tier agent architecture**:
 1. **Core Agents** (10 agents, always active) - Tech-stack agnostic agents for fundamental development tasks
 2. **Specialized Agent Pool** (60+ agents) - Domain-specific agents activated based on project analysis
 
-All agents are orchestrated through **Gentleman Mode** (`/gentleman` command), which delegates tasks to the appropriate subagents based on project context.
+All agents are orchestrated through **Maestro Mode** (`/maestro` command), which delegates tasks to the appropriate subagents based on project context.
 
 ## Quick Start
 
 ### For Existing Projects
 
 1. Copy `.claude/agents-global/` to your project's `.claude/` directory
-2. Run `/gentleman` to start the main orchestrator
+2. Run `/maestro` to start the main orchestrator
 3. The system will:
    - Analyze your project structure and dependencies
    - Detect your tech stack
@@ -28,7 +28,7 @@ All agents are orchestrated through **Gentleman Mode** (`/gentleman` command), w
 ### For Empty/New Projects
 
 1. Copy `.claude/agents-global/` to your new project's `.claude/` directory
-2. Run `/gentleman`
+2. Run `/maestro`
 3. The system will run the **Empty Project Questionnaire** to:
    - Understand your project goals and requirements
    - Recommend appropriate tech stack
@@ -90,19 +90,19 @@ Located in `.claude/agents-global/pool/` organized by category:
 - mobile-specialist, desktop-electron, cli-builder, browser-extension
 - ai-ml-integration, blockchain-specialist, game-dev-specialist, data-pipeline-architect
 
-## How Gentleman Mode Works
+## How Maestro Mode Works
 
-**Gentleman Mode** is the main orchestrator agent. Users always interact with Gentleman Mode, never directly with subagents.
+**Maestro Mode** is the main orchestrator agent. Users always interact with Maestro Mode, never directly with subagents.
 
 ### Delegation Pattern
 
 ```
-User → /gentleman → [Analyzes request] → Delegates to subagents → Reports results
+User → /maestro → [Analyzes request] → Delegates to subagents → Reports results
 ```
 
 ### Agent Activation Reporting
 
-Gentleman Mode ALWAYS explicitly reports which agents were activated:
+Maestro Mode ALWAYS explicitly reports which agents were activated:
 
 ```
 I've analyzed your request and activated the following agents:
@@ -114,7 +114,7 @@ Let me delegate the task...
 
 ### Smart Project Analysis
 
-On first run, Gentleman Mode:
+On first run, Maestro Mode:
 1. Reads `package.json`, `requirements.txt`, `go.mod`, etc.
 2. Scans project structure and file types
 3. Checks for existing RULEBOOK.md
@@ -156,7 +156,7 @@ cp -r .claude/agents-global /path/to/your/project/.claude/
 # Start using
 cd /path/to/your/project
 # In Claude Code CLI, run:
-/gentleman
+/maestro
 ```
 
 ### Script Installation (Coming Soon)
@@ -171,7 +171,7 @@ curl -fsSL https://raw.githubusercontent.com/YOUR_ORG/claude-agents-toolkit/main
 
 1. Keep global agents in `.claude/agents-global/`
 2. Add project-specific agents to `.claude/agents/` (separate directory)
-3. Gentleman Mode will check both locations
+3. Maestro Mode will check both locations
 
 ### Modifying Agent Behavior
 
@@ -202,8 +202,8 @@ See `AGENT_SELECTION_GUIDE.md` for detailed guidance on:
 
 ### Agent Interaction Patterns
 
-1. **Always go through Gentleman Mode** - Don't call subagents directly
-2. **Trust the delegation** - Gentleman Mode selects appropriate agents
+1. **Always go through Maestro Mode** - Don't call subagents directly
+2. **Trust the delegation** - Maestro Mode selects appropriate agents
 3. **Review activation reports** - Know which agents are working on your task
 4. **Check RULEBOOK** - Ensure agents follow project conventions
 5. **Update agent pool** - Deactivate unused agents for better performance
@@ -222,14 +222,14 @@ See `AGENT_SELECTION_GUIDE.md` for detailed guidance on:
 
 1. Check project structure - ensure standard file locations
 2. Verify `package.json` or dependency files exist
-3. Run Gentleman Mode analysis manually
+3. Run Maestro Mode analysis manually
 4. Check `.claude/agents-global/` directory structure
 
 ### Wrong Agents Activated
 
 1. Review project-analyzer detection logic
 2. Manually specify agents in RULEBOOK.md
-3. Add custom detection rules to Gentleman Mode
+3. Add custom detection rules to Maestro Mode
 
 ### MCP Servers Not Suggested
 
@@ -241,7 +241,7 @@ See `AGENT_SELECTION_GUIDE.md` for detailed guidance on:
 
 1. Use separate directories: `agents-global/` vs `agents/`
 2. Rename conflicting agents
-3. Update Gentleman Mode priority order
+3. Update Maestro Mode priority order
 
 ## Contributing
 
@@ -262,7 +262,7 @@ This toolkit is designed to be community-driven:
 - **Lazy loading** only activates what's needed
 - **Extensibility** easy to add new domains without affecting core
 
-### Why Gentleman Mode?
+### Why Maestro Mode?
 
 - **Single interface** - users don't need to know all agents
 - **Smart delegation** - automatic agent selection

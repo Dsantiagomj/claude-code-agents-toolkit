@@ -669,7 +669,7 @@ src/
 All other agents based on detected tech stack
 
 ### Report to:
-- **Gentleman Mode**: For agent activation and orchestration
+- **Maestro Mode**: For agent activation and orchestration
 
 ## Remember
 

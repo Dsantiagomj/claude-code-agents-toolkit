@@ -88,19 +88,20 @@ install_agents() {
     print_success "All 78 agents installed successfully"
 }
 
-# Install Gentleman Mode
-install_gentleman_mode() {
-    print_info "Installing Gentleman Mode..."
+# Install Maestro Mode
+install_maestro_mode() {
+    print_info "Installing Maestro Mode..."
 
     mkdir -p .claude/commands
 
     # Copy command files
-    cp commands/gentleman.md .claude/commands/
+    cp commands/maestro.md .claude/commands/
     cp commands/agent-intelligence.md .claude/commands/
     cp commands/agent-router.md .claude/commands/
+    cp commands/workflow-modes.md .claude/commands/
 
-    print_success "Gentleman Mode installed"
-    print_info "  Activate with: /gentleman in Claude Code"
+    print_success "Maestro Mode installed"
+    print_info "  Activate with: /maestro in Claude Code"
 }
 
 # Generate RULEBOOK if it doesn't exist
@@ -264,7 +265,7 @@ main() {
     # Parse arguments
     AGENTS_ONLY=false
     CUSTOM=false
-    SKIP_GENTLEMAN=false
+    SKIP_MAESTRO=false
 
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -276,16 +277,16 @@ main() {
                 CUSTOM=true
                 shift
                 ;;
-            --skip-gentleman)
-                SKIP_GENTLEMAN=true
+            --skip-maestro)
+                SKIP_MAESTRO=true
                 shift
                 ;;
             --help)
                 echo "Usage: ./install.sh [OPTIONS]"
                 echo ""
                 echo "Options:"
-                echo "  --agents-only      Install only agents (skip Gentleman Mode)"
-                echo "  --skip-gentleman   Skip Gentleman Mode installation"
+                echo "  --agents-only      Install only agents (skip Maestro Mode)"
+                echo "  --skip-maestro     Skip Maestro Mode installation"
                 echo "  --custom           Interactive installation (choose components)"
                 echo "  --help             Show this help message"
                 echo ""
@@ -308,19 +309,19 @@ main() {
     # Install agents
     install_agents
 
-    # Install Gentleman Mode (unless skipped)
-    if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_GENTLEMAN" = false ]; then
+    # Install Maestro Mode (unless skipped)
+    if [ "$AGENTS_ONLY" = false ] && [ "$SKIP_MAESTRO" = false ]; then
         echo ""
         if [ "$CUSTOM" = true ]; then
-            read -p "Install Gentleman Mode? (Y/n): " -n 1 -r
+            read -p "Install Maestro Mode? (Y/n): " -n 1 -r
             echo
             if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
-                install_gentleman_mode
+                install_maestro_mode
             else
-                print_info "Skipping Gentleman Mode installation"
+                print_info "Skipping Maestro Mode installation"
             fi
         else
-            install_gentleman_mode
+            install_maestro_mode
         fi
     fi
 
@@ -349,8 +350,8 @@ main() {
     echo "1. 📝 Customize your RULEBOOK:"
     echo "   ${BLUE}→${NC} Edit .claude/RULEBOOK.md with your project specifics"
     echo ""
-    echo "2. 🎭 Activate Gentleman Mode (if installed):"
-    echo "   ${BLUE}→${NC} Type ${YELLOW}/gentleman${NC} in Claude Code"
+    echo "2. 🎭 Activate Maestro Mode (if installed):"
+    echo "   ${BLUE}→${NC} Type ${YELLOW}/maestro${NC} in Claude Code"
     echo ""
     echo "3. 🤖 Use specialized agents:"
     echo "   ${BLUE}→${NC} Agents auto-activate based on your RULEBOOK"

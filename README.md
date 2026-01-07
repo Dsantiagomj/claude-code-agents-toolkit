@@ -37,7 +37,7 @@ The installer will:
 - Copy all 78 agents to `.claude/agents-global/`
 - Generate a RULEBOOK.md from template (if you don't have one)
 - Detect your tech stack and activate relevant agents
-- Set up Gentleman Mode (optional)
+- Set up Maestro Mode (optional)
 
 **Installation time:** < 2 minutes
 **Manual configuration:** Zero (for common stacks)
@@ -103,7 +103,7 @@ Agents automatically activate based on your project's tech stack (detected from 
 
 ---
 
-## 🎭 Gentleman Mode (Optional)
+## 🎭 Maestro Mode (Optional)
 
 An opinionated AI personality that:
 - Enforces your RULEBOOK patterns strictly
@@ -113,7 +113,7 @@ An opinionated AI personality that:
 - Educates you on WHY patterns matter
 - Uses structured 4-mode workflow
 
-**Activation:** Type `/gentleman` in Claude Code (after installation)
+**Activation:** Type `/maestro` in Claude Code (after installation)
 
 **Personality:**
 - Direct, confrontational, no filter
@@ -135,7 +135,7 @@ For new features or significant changes:
 🔍 REVIEW MODE
   → Show changes, get feedback, iterate
 
-📦 WRAPUP MODE
+📦 COMMIT MODE
   → Generate commit message, get approval, commit
 ```
 
@@ -180,7 +180,7 @@ The toolkit reads your `.claude/RULEBOOK.md` to understand your stack:
 Tasks are automatically routed based on complexity:
 
 ```
-Trivial (<10 lines)     → 0 agents  (Gentleman handles directly)
+Trivial (<10 lines)     → 0 agents  (Maestro handles directly)
 Simple (<50 lines)      → 1 agent   (Quick verification)
 Moderate (50-200 lines) → 2-4 agents (Orchestrated workflow)
 Complex (>200 lines)    → 5-10 agents (Full pipeline)
@@ -215,7 +215,7 @@ Phase 3 - Quality:
 - [Agent Selection Guide](templates/AGENT_SELECTION_GUIDE.md)
 - [MCP Integration Guide](templates/MCP_INTEGRATION_GUIDE.md)
 - [RULEBOOK Template](templates/RULEBOOK_TEMPLATE.md)
-- [Gentleman Mode Guide](docs/GENTLEMAN_MODE.md)
+- [Maestro Mode Guide](docs/MAESTRO_MODE.md)
 
 ---
 
@@ -319,13 +319,13 @@ Built for real projects, not demos:
 **Option 1: Full Installation (Recommended)**
 ```bash
 ./install.sh
-# Installs: 78 agents + Gentleman Mode + RULEBOOK generator
+# Installs: 78 agents + Maestro Mode + RULEBOOK generator
 ```
 
 **Option 2: Agents Only**
 ```bash
 ./install.sh --agents-only
-# Installs: 78 agents (skip Gentleman Mode)
+# Installs: 78 agents (skip Maestro Mode)
 ```
 
 **Option 3: Custom Selection**
@@ -342,8 +342,8 @@ your-project/
     ├── agents-global/          # 78 agents
     │   ├── core/              # 10 core agents
     │   └── pool/              # 68 specialized agents
-    ├── commands/              # Optional: Gentleman Mode
-    │   ├── gentleman.md
+    ├── commands/              # Optional: Maestro Mode
+    │   ├── maestro.md
     │   ├── agent-intelligence.md
     │   └── agent-router.md
     └── RULEBOOK.md            # Generated from template (if missing)

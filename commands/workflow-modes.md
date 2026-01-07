@@ -2,7 +2,7 @@
 
 **Purpose**: Define clear modes for task execution to ensure quality, clarity, and proper process.
 
-**Integration**: Works with Gentleman Mode and Agent Intelligence to provide structured development workflow.
+**Integration**: Works with Maestro Mode and Agent Intelligence to provide structured development workflow.
 
 ---
 
@@ -11,7 +11,7 @@
 Every task goes through **4 distinct modes**:
 
 ```
-📋 PLANNING MODE → 💻 DEVELOPMENT MODE → 🔍 REVIEW MODE → 📦 WRAPUP MODE
+📋 PLANNING MODE → 💻 DEVELOPMENT MODE → 🔍 REVIEW MODE → 📦 COMMIT MODE
 ```
 
 Each mode has:
@@ -412,7 +412,7 @@ All RULEBOOK requirements met ✓
 - What needs changes?
 - Any bugs or issues?
 
-Type your feedback, or say "looks good" / "todo ok" to proceed to wrapup.
+Type your feedback, or say "looks good" / "approved" to proceed to commit mode.
 ```
 
 **4. Handle Feedback**
@@ -440,7 +440,7 @@ User says:
 - ✅ "ship it"
 - ✅ Any confirmation that review is complete
 
-**Automatic transition** to Wrapup Mode when approved.
+**Automatic transition** to Commit Mode when approved.
 
 ### Example Review Mode Output
 
@@ -487,7 +487,7 @@ Say "looks good" to proceed to commit, or provide feedback for adjustments.
 
 ---
 
-## Mode 4: 📦 WRAPUP MODE
+## Mode 4: 📦 COMMIT MODE
 
 ### When to Enter
 - After user approves in Review Mode
@@ -496,7 +496,7 @@ Say "looks good" to proceed to commit, or provide feedback for adjustments.
 ### Mode Indicator
 ```
 ═══════════════════════════════════════════════════════════
-📦 WRAPUP MODE ACTIVE
+📦 COMMIT MODE ACTIVE
 ───────────────────────────────────────────────────────────
 Preparing final commit
 ───────────────────────────────────────────────────────────
@@ -595,13 +595,13 @@ Returning to normal mode. Ready for next task.
 **NEVER commit without user approval:**
 - ❌ Don't auto-commit
 - ❌ Don't commit on "looks good" (that's for Review Mode)
-- ✅ Only commit when user explicitly approves in Wrapup Mode
+- ✅ Only commit when user explicitly approves in Commit Mode
 
-### Example Wrapup Mode Output
+### Example Commit Mode Output
 
 ```
 ═══════════════════════════════════════════════════════════
-📦 WRAPUP MODE ACTIVE
+📦 COMMIT MODE ACTIVE
 ───────────────────────────────────────────────────────────
 Preparing final commit
 ───────────────────────────────────────────────────────────
@@ -675,7 +675,7 @@ All steps complete
     ↓
 User: "looks good"
     ↓
-[📦 WRAPUP MODE]
+[📦 COMMIT MODE]
   → Generate commit message
   → Show files
   → Request approval
@@ -689,9 +689,9 @@ Return to idle mode
 
 ---
 
-## Integration with Gentleman Mode
+## Integration with Maestro Mode
 
-Add to `gentleman.md`:
+Add to `maestro.md`:
 
 ```markdown
 ## Workflow Modes
@@ -701,7 +701,7 @@ For structured development, use the 4-mode workflow:
 1. 📋 Planning Mode: Analyze, plan, get approval
 2. 💻 Development Mode: Execute the plan
 3. 🔍 Review Mode: Get user feedback, iterate
-4. 📦 Wrapup Mode: Commit with proper message
+4. 📦 Commit Mode: Commit with proper message
 
 See `.claude/commands/workflow-modes.md` for details.
 
@@ -746,7 +746,7 @@ See `.claude/commands/workflow-modes.md` for details.
 ❌ Don't assume approval
 ❌ Don't skip showing changes
 
-### For Wrapup Mode
+### For Commit Mode
 ✅ Match project's commit style
 ✅ Show exactly what will be committed
 ✅ Get explicit approval
@@ -762,7 +762,7 @@ See `.claude/commands/workflow-modes.md` for details.
 - 📋 Planning: Think before coding
 - 💻 Development: Execute with clarity
 - 🔍 Review: Quality and feedback
-- 📦 Wrapup: Proper commits
+- 📦 Commit: Proper commits
 
 **Benefits:**
 - User always knows what mode you're in

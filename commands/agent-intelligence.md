@@ -1,16 +1,16 @@
 # Agent Intelligence System
 
-**Purpose**: Enhance Gentleman Mode with automatic agent selection and smart task routing WITHOUT changing core behavior.
+**Purpose**: Enhance Maestro Mode with automatic agent selection and smart task routing WITHOUT changing core behavior.
 
-**Usage**: Import this intelligence when Gentleman Mode needs agent assistance for complex tasks.
+**Usage**: Import this intelligence when Maestro Mode needs agent assistance for complex tasks.
 
 ---
 
 ## How It Works
 
-This system works **alongside** Gentleman Mode, not replacing it:
+This system works **alongside** Maestro Mode, not replacing it:
 
-- Gentleman Mode handles: personality, RULEBOOK enforcement, direct tasks
+- Maestro Mode handles: personality, RULEBOOK enforcement, direct tasks
 - Agent Intelligence handles: complex task breakdown, specialist selection, coordination
 
 ---
@@ -157,7 +157,7 @@ Phase 3 - Quality:
   - code-reviewer: Code review
   - documentation-engineer: Documentation
 
-Gentleman Oversight:
+Maestro Oversight:
   - Verify RULEBOOK compliance at each phase
   - Approve architecture before implementation
   - Final review before completion
@@ -181,7 +181,7 @@ Phase 3 - Verification:
   - code-reviewer: Review fix
   - [testing-specialist]: Verify tests pass
 
-Gentleman Oversight:
+Maestro Oversight:
   - Verify fix doesn't violate RULEBOOK
   - Ensure proper error handling
   - Check for similar bugs elsewhere
@@ -205,7 +205,7 @@ Phase 3 - Verification:
   - test-strategist: Ensure test coverage
   - code-reviewer: Review changes
 
-Gentleman Oversight:
+Maestro Oversight:
   - Approve refactoring plan
   - Verify improvement metrics
   - Ensure RULEBOOK patterns followed
@@ -230,7 +230,7 @@ Phase 3 - Verification:
   - performance-optimizer: Measure improvements
   - test-strategist: Add performance tests
 
-Gentleman Oversight:
+Maestro Oversight:
   - Approve optimization tradeoffs
   - Verify metrics improve
   - Ensure no functionality loss
@@ -255,7 +255,7 @@ Phase 3 - Verification:
   - test-strategist: Security test coverage
   - code-reviewer: Review security fixes
 
-Gentleman Oversight:
+Maestro Oversight:
   - CRITICAL: Review ALL security changes
   - Verify OWASP Top 10 compliance
   - Ensure RULEBOOK security patterns
@@ -280,7 +280,7 @@ Phase 3 - Review:
   - code-reviewer: Review test quality
   - test-strategist: Verify coverage (80% minimum from RULEBOOK)
 
-Gentleman Oversight:
+Maestro Oversight:
   - Enforce coverage minimum (check RULEBOOK)
   - Demand 100% for critical paths
   - Verify test quality, not just quantity
@@ -300,7 +300,7 @@ Phase 2 - Review:
   - code-reviewer: Review documentation
   - [check against RULEBOOK]: Doc standards compliance
 
-Gentleman Oversight:
+Maestro Oversight:
   - Verify documentation standards (check RULEBOOK)
   - Ensure code examples work
   - Check completeness
@@ -314,21 +314,21 @@ Gentleman Oversight:
 START: Task received
 
 ├─ Is task trivial? (simple change, <10 lines, clear pattern in RULEBOOK)
-│  └─ YES → Gentleman handles directly (no agents)
+│  └─ YES → Maestro handles directly (no agents)
 │
 ├─ Is task simple? (clear pattern exists in RULEBOOK, <50 lines, single file)
-│  └─ YES → Gentleman handles + maybe 1 agent for verification
+│  └─ YES → Maestro handles + maybe 1 agent for verification
 │
 ├─ Is task moderate? (multiple files, existing patterns, <200 lines)
 │  └─ YES → Delegate specific parts to 2-3 agents
-│              Gentleman orchestrates + verifies RULEBOOK
+│              Maestro orchestrates + verifies RULEBOOK
 │
 ├─ Is task complex? (new patterns, architecture, >200 lines)
 │  └─ YES → Full multi-agent delegation (5+ agents)
-│              Gentleman supervises all phases
+│              Maestro supervises all phases
 │
 └─ Is task critical? (security, auth, payments, data integrity)
-   └─ YES → Multi-agent review + Gentleman 100% oversight
+   └─ YES → Multi-agent review + Maestro 100% oversight
                RULEBOOK compliance mandatory
                Multiple verification rounds
 ```
@@ -356,7 +356,7 @@ Constraints:
 [Project-specific constraints from RULEBOOK]
 
 Expected Output:
-[What Gentleman needs back]
+[What Maestro needs back]
 
 Return Format:
 - Code with file paths
@@ -392,7 +392,7 @@ Decision:
 [ ] REJECT - Does not meet standards (specify below)
 
 Notes:
-[Gentleman's review notes]
+[Maestro's review notes]
 ```
 
 ---
@@ -434,7 +434,7 @@ Phase 4 - Quality:
   - code-reviewer: "Review entire feature"
 ```
 
-**Gentleman's Role**:
+**Maestro's Role**:
 - Review architecture against RULEBOOK
 - Verify component structure follows RULEBOOK patterns
 - Approve data fetching strategy (check RULEBOOK for state management rules)
@@ -463,7 +463,7 @@ Phase 3 - Testing:
   - [testing-specialist from RULEBOOK]: "Implement test"
 ```
 
-**Gentleman's Role**:
+**Maestro's Role**:
 - Verify fix follows RULEBOOK patterns (validation schema location, error handling)
 - Check test coverage
 - Ensure error messages follow RULEBOOK UX guidelines
@@ -496,7 +496,7 @@ Phase 3 - Verification:
   - code-reviewer: Final review
 ```
 
-**Gentleman's Role**:
+**Maestro's Role**:
 - CRITICAL: Review every single security change
 - Verify OWASP Top 10 compliance
 - Check against RULEBOOK security patterns
@@ -505,16 +505,16 @@ Phase 3 - Verification:
 
 ---
 
-## Integration with Gentleman Mode
+## Integration with Maestro Mode
 
 ### Option 1: Manual Activation
 
-Gentleman Mode reads this file when needed:
+Maestro Mode reads this file when needed:
 
 ```
 User: "Create an analytics dashboard"
 
-Gentleman Mode:
+Maestro Mode:
 "This is complex. Let me consult the agent intelligence system.
 
 [Reads agent-intelligence.md]
@@ -527,12 +527,12 @@ Architecture advisor suggests... [continues]"
 
 ### Option 2: Auto-Detection
 
-Gentleman Mode auto-detects complex tasks:
+Maestro Mode auto-detects complex tasks:
 
 ```
 User: "Security audit"
 
-Gentleman Mode:
+Maestro Mode:
 "Security is serious business. This needs proper specialists.
 
 [Reads .claude/RULEBOOK.md to understand stack]
@@ -588,9 +588,9 @@ Every agent output must pass:
 
 ## Summary
 
-This agent intelligence system **enhances** Gentleman Mode without changing its core:
+This agent intelligence system **enhances** Maestro Mode without changing its core:
 
-- Gentleman Mode: Personality, RULEBOOK enforcement, direct tasks
+- Maestro Mode: Personality, RULEBOOK enforcement, direct tasks
 - Agent Intelligence: Complex task breakdown, specialist coordination
 - RULEBOOK.md: Single source of truth for project patterns and stack
 - Together: Production-grade software at scale
@@ -598,7 +598,7 @@ This agent intelligence system **enhances** Gentleman Mode without changing its 
 **Remember**:
 - Agents are tools
 - RULEBOOK is law
-- Gentleman is the architect
+- Maestro is the architect
 - Everything is driven by YOUR project's .claude/RULEBOOK.md
 
 ---
