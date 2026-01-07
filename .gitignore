@@ -46,3 +46,6 @@ build/
 *.tmp
 *.bak
 *.backup
+
+# Internal roadmap (local only)
+.tmp-improvements-roadmap.md
