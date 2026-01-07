@@ -14,6 +14,14 @@
 
 set -e
 
+# Redirect stdin to /dev/tty for interactive prompts when piped from curl
+if [ -t 0 ]; then
+    # stdin is a terminal, no need to redirect
+    :
+else
+    # stdin is not a terminal (piped), redirect to /dev/tty
+    exec fi
+
 # Configuration
 REPO_URL="${TOOLKIT_REPO_URL:-https://github.com/Dsantiagomj/claude-code-agents-toolkit}"
 REPO_RAW_URL="${REPO_URL/github.com/raw.githubusercontent.com}/main"
@@ -32,6 +40,7 @@ MAESTRO_LANG="en"
 SELF_ENHANCEMENT=true
 DRY_RUN=false
 SKIP_WIZARD=false
+YES=false
 
 # Helper functions
 print_header() {
@@ -73,6 +82,7 @@ OPTIONS:
     --lang=LANG            Set Maestro language (en or es) [default: en]
     --skip-self-enhancement Disable self-enhancement mode
     --skip-wizard          Skip RULEBOOK wizard after installation
+    --yes                  Skip all prompts (auto-confirm)
     --dry-run              Show what would be installed without making changes
     --help                 Show this help message
 
@@ -115,6 +125,10 @@ parse_args() {
                 ;;
             --skip-wizard)
                 SKIP_WIZARD=true
+                shift
+                ;;
+            --yes|-y)
+                YES=true
                 shift
                 ;;
             --dry-run)
@@ -341,11 +355,12 @@ install_local() {
     # Check if already installed
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning ".claude directory already exists"
-        read -p "Overwrite? (y/N): " -n 1 -r < /dev/tty
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            print_info "Installation cancelled"
-            exit 0
+        if [ "$YES" = false ]; then
+            read -p "Overwrite? (y/N): " -n 1 -r             echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                print_info "Installation cancelled"
+                exit 0
+            fi
         fi
 
         # Backup existing installation
@@ -367,12 +382,11 @@ install_local() {
         print_success "Installation complete!"
 
         # Run RULEBOOK wizard
-        if [ "$SKIP_WIZARD" = false ]; then
+        if [ "$SKIP_WIZARD" = false ] && [ "$YES" = false ]; then
             echo ""
             print_info "Now let's set up your RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r < /dev/tty
-            echo
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r             echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "scripts/rulebook-wizard.sh" ]; then
                     bash scripts/rulebook-wizard.sh
@@ -393,11 +407,12 @@ install_global() {
     # Check if already installed
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning "Global installation already exists"
-        read -p "Overwrite? (y/N): " -n 1 -r < /dev/tty
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            print_info "Installation cancelled"
-            exit 0
+        if [ "$YES" = false ]; then
+            read -p "Overwrite? (y/N): " -n 1 -r             echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                print_info "Installation cancelled"
+                exit 0
+            fi
         fi
 
         mv "$base_dir" "${base_dir}.backup-$(date +%Y%m%d-%H%M%S)"
@@ -426,12 +441,11 @@ install_global() {
         print_success "Symlinks created in current directory"
 
         # Run RULEBOOK wizard for current project
-        if [ "$SKIP_WIZARD" = false ]; then
+        if [ "$SKIP_WIZARD" = false ] && [ "$YES" = false ]; then
             echo ""
             print_info "Now let's set up your project's RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r < /dev/tty
-            echo
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r             echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "$HOME/.claude-global-scripts/rulebook-wizard.sh" ]; then
                     bash "$HOME/.claude-global-scripts/rulebook-wizard.sh"
@@ -496,9 +510,8 @@ main() {
     echo ""
 
     # Confirm installation
-    if [ "$DRY_RUN" = false ]; then
-        read -p "Continue with installation? (Y/n): " -n 1 -r < /dev/tty
-        echo
+    if [ "$DRY_RUN" = false ] && [ "$YES" = false ]; then
+        read -p "Continue with installation? (Y/n): " -n 1 -r         echo
         if [[ $REPLY =~ ^[Nn]$ ]]; then
             print_info "Installation cancelled"
             exit 0
