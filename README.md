@@ -99,26 +99,46 @@ The wizard:
 
 ### 🌍 Using in Multiple Projects
 
-Since global installation is the default, using the toolkit in other projects is simple:
+Since global installation is the default, setting up new projects is fast and easy:
+
+#### Option 1: Quick Init (Recommended)
+
+If you already have the global installation:
 
 ```bash
-# Navigate to another project
-cd ~/my-other-project
+cd ~/my-new-project
+~/.claude-global/scripts/init-project.sh
+```
 
-# Run the installer again (it detects existing global installation)
+Or download and run remotely:
+
+```bash
+cd ~/my-new-project
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash
+```
+
+**What it does:**
+- ✅ Checks for global installation at `~/.claude-global/`
+- ✅ Creates `.claude/` with symlinks (instant)
+- ✅ Creates `.claude/agents-active.txt` for project-specific agent selection
+- ✅ Adds `.claude/` to `.gitignore`
+- ✅ Runs RULEBOOK wizard for project config
+
+**Time:** < 10 seconds
+
+#### Option 2: Full Installer
+
+```bash
+cd ~/my-new-project
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
 ```
 
-The installer will:
-- ✅ Detect existing `~/.claude-global/` installation
-- ✅ Skip re-downloading agents (already installed)
-- ✅ Create symlinks in the new project
-- ✅ Run RULEBOOK wizard for project-specific config
+The installer detects existing global installation and skips re-downloading agents.
 
 **Benefits:**
 - ✅ Share 72 agents across all your projects
 - ✅ Each project has its own `RULEBOOK.md`
-- ✅ Each project can activate different agents
+- ✅ Each project can activate different agents via `agents-active.txt`
 - ✅ Saves disk space (one copy of agents)
 - ✅ Update agents once, applies everywhere
 

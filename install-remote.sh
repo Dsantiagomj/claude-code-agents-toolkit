@@ -352,6 +352,7 @@ download_scripts() {
     mkdir -p "$scripts_dir"
 
     local scripts=(
+        "init-project.sh"
         "rulebook-wizard.sh"
         "questionnaire.sh"
         "select-agents.sh"
@@ -523,8 +524,11 @@ show_post_install() {
         echo "Project directory: ${BLUE}.claude/${NC} (symlinks)"
         echo "Project config: ${BLUE}RULEBOOK.md${NC}"
         echo ""
-        echo "To use in other projects:"
-        echo "  ${BLUE}bash <(curl -fsSL URL/install-remote.sh)${NC}"
+        echo "To initialize other projects (quick setup):"
+        echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+        echo ""
+        echo "Or download the init script:"
+        echo -e "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash${NC}"
     else
         echo "Local installation: ${BLUE}.claude/${NC}"
         echo "Project config: ${BLUE}RULEBOOK.md${NC}"
