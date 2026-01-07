@@ -410,6 +410,78 @@ mv .claude.backup.2026-01-07-143022 .claude
 # - No actual changes made
 ```
 
+### 🔍 Conflict Detection
+
+**The installer automatically detects potential conflicts before making changes:**
+
+**Types of Conflicts Detected:**
+
+1. **Version Conflicts**
+   - Detects existing toolkit version
+   - Recommends using `./update.sh` instead of reinstalling
+   - Prevents version mismatches
+
+2. **Partial Installations**
+   - Identifies missing critical directories (agents-global/)
+   - Detects missing critical files (RULEBOOK.md)
+   - Warns about potentially corrupted installations
+
+3. **Custom Agent Conflicts**
+   - Counts agents in pool directory
+   - Warns if custom agents might be overwritten
+   - Preserves your custom work
+
+4. **RULEBOOK Format Issues**
+   - Validates required sections exist
+   - Detects outdated format (GENTLEMAN MODE → MAESTRO MODE)
+   - Ensures compatibility
+
+5. **Multiple Maestro Files**
+   - Detects duplicate maestro configurations
+   - Ensures clean installation
+
+6. **Permission Conflicts** (Critical)
+   - Checks write permissions on .claude directory
+   - Provides fix command if needed
+   - Prevents installation failure
+
+7. **Symbolic Link Detection**
+   - Warns if .claude is a symlink
+   - Alerts about potential impact on linked locations
+
+8. **Settings Validation**
+   - Validates settings.json syntax
+   - Detects invalid JSON
+   - Prevents configuration issues
+
+**Example Output:**
+
+```bash
+./install.sh
+
+ℹ Checking for potential conflicts...
+
+⚠ Partial installation detected:
+  → Missing: .claude/agents-global/
+  → Missing: .claude/RULEBOOK.md
+  → This may indicate a corrupted installation
+
+⚠ Warnings detected. Review the issues above.
+
+These are non-critical but may require attention.
+Continue with installation anyway? (y/N):
+```
+
+**Conflict Types:**
+- **Critical Conflicts** - Installation cannot proceed (e.g., permission errors)
+- **Warnings** - Installation can continue but may need attention
+
+**Resolution:**
+- Follow the recommendations provided in warnings
+- Use `./update.sh` for version updates
+- Fix permissions with suggested commands
+- Review and backup custom work before proceeding
+
 ---
 
 ## 📋 RULEBOOK Questionnaire

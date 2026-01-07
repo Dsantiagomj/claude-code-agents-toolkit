@@ -52,6 +52,158 @@ check_project_directory() {
     fi
 }
 
+# Detect conflicts before installation
+detect_conflicts() {
+    local conflicts_found=false
+    local warnings_found=false
+
+    echo ""
+    print_info "Checking for potential conflicts..."
+    echo ""
+
+    # Check 1: Version conflicts
+    if [ -f ".claude/.toolkit-version" ]; then
+        local current_version=$(cat .claude/.toolkit-version 2>/dev/null || echo "unknown")
+        local new_version="1.0.0"  # This should match the version at the top of this script
+
+        if [ "$current_version" != "$new_version" ]; then
+            print_warning "Version conflict detected:"
+            echo "  → Current: $current_version"
+            echo "  → New: $new_version"
+            echo "  → Recommendation: Use ./update.sh instead of ./install.sh"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 2: Partial installation
+    if [ -d ".claude" ]; then
+        local missing_files=()
+
+        # Check for critical directories
+        if [ ! -d ".claude/agents-global" ]; then
+            missing_files+=("agents-global/")
+        fi
+
+        # Check for critical files
+        if [ ! -f ".claude/RULEBOOK.md" ]; then
+            missing_files+=("RULEBOOK.md")
+        fi
+
+        if [ ${#missing_files[@]} -gt 0 ]; then
+            print_warning "Partial installation detected:"
+            for file in "${missing_files[@]}"; do
+                echo "  → Missing: .claude/$file"
+            done
+            echo "  → This may indicate a corrupted installation"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 3: Custom agents that might conflict
+    if [ -d ".claude/agents-global/pool" ]; then
+        # Count files in pool directory
+        local custom_count=$(find .claude/agents-global/pool -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        local expected_count=68
+
+        if [ "$custom_count" -gt "$expected_count" ]; then
+            print_warning "Custom agents detected:"
+            echo "  → Found: $custom_count agents (expected: $expected_count)"
+            echo "  → You may have custom agents that could be overwritten"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 4: RULEBOOK format issues
+    if [ -f ".claude/RULEBOOK.md" ]; then
+        # Check if RULEBOOK has required sections
+        if ! grep -q "## Active Agents" .claude/RULEBOOK.md 2>/dev/null; then
+            print_warning "RULEBOOK format issue:"
+            echo "  → Missing '## Active Agents' section"
+            echo "  → RULEBOOK may need manual review after installation"
+            warnings_found=true
+        fi
+
+        # Check for very old RULEBOOK format
+        if grep -q "# GENTLEMAN MODE" .claude/RULEBOOK.md 2>/dev/null; then
+            print_warning "Outdated RULEBOOK detected:"
+            echo "  → Contains old 'GENTLEMAN MODE' references"
+            echo "  → Should be updated to 'MAESTRO MODE'"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 5: Multiple maestro files
+    if [ -d ".claude/commands" ]; then
+        local maestro_count=$(find .claude/commands -name "maestro*.md" 2>/dev/null | wc -l | tr -d ' ')
+
+        if [ "$maestro_count" -gt 1 ]; then
+            print_warning "Multiple Maestro configurations detected:"
+            echo "  → Found: $maestro_count maestro files"
+            echo "  → Only one should exist: maestro.md"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 6: Permission conflicts
+    if [ -d ".claude" ] && [ ! -w ".claude" ]; then
+        print_error "Permission conflict:"
+        echo "  → .claude directory is not writable"
+        echo "  → Fix with: chmod -R u+w .claude"
+        conflicts_found=true
+    fi
+
+    # Check 7: Symlinks that might break
+    if [ -d ".claude" ]; then
+        if [ -L ".claude" ]; then
+            print_warning "Symbolic link detected:"
+            echo "  → .claude is a symbolic link"
+            echo "  → Installation may affect linked location"
+            warnings_found=true
+        fi
+    fi
+
+    # Check 8: Conflicting settings
+    if [ -f ".claude/settings.json" ]; then
+        # Check if settings.json is valid JSON
+        if ! python3 -m json.tool .claude/settings.json >/dev/null 2>&1; then
+            print_warning "Settings conflict:"
+            echo "  → settings.json appears to be invalid JSON"
+            echo "  → May cause issues after installation"
+            warnings_found=true
+        fi
+    fi
+
+    echo ""
+
+    # Summary
+    if [ "$conflicts_found" = true ]; then
+        print_error "Critical conflicts found! Installation cannot proceed."
+        echo ""
+        echo "Please resolve the issues above and try again."
+        echo ""
+        return 1
+    elif [ "$warnings_found" = true ]; then
+        print_warning "Warnings detected. Review the issues above."
+        echo ""
+        echo "These are non-critical but may require attention."
+        read -p "Continue with installation anyway? (y/N): " -n 1 -r
+        echo
+
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Installation cancelled."
+            echo ""
+            echo "Recommendation: Review conflicts and use ./update.sh if updating"
+            exit 0
+        fi
+        echo ""
+        return 0
+    else
+        print_success "No conflicts detected"
+        echo ""
+        return 0
+    fi
+}
+
 # Backup existing .claude directory
 backup_existing() {
     if [ -d ".claude" ]; then
@@ -421,6 +573,22 @@ main() {
 
     # Check project directory
     check_project_directory
+
+    # Detect conflicts before installation
+    if [ "$DRY_RUN" = true ]; then
+        if [ -d ".claude" ]; then
+            print_info "[DRY RUN] Would check for conflicts..."
+            echo "  ${BLUE}→${NC} Version conflicts"
+            echo "  ${BLUE}→${NC} Partial installations"
+            echo "  ${BLUE}→${NC} Custom agent conflicts"
+            echo "  ${BLUE}→${NC} RULEBOOK format issues"
+            echo "  ${BLUE}→${NC} Permission conflicts"
+            print_success "Would detect and report conflicts"
+            echo ""
+        fi
+    else
+        detect_conflicts
+    fi
 
     # Backup existing .claude directory (unless skipped)
     if [ "$SKIP_BACKUP" = false ]; then
