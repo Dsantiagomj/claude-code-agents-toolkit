@@ -351,6 +351,66 @@ your-project/
 
 ---
 
+## 🏥 Health Check
+
+### Verify Your Installation
+
+Run a comprehensive health check to verify installation integrity:
+
+```bash
+./healthcheck.sh
+```
+
+### What Gets Checked
+
+The health check validates:
+
+- ✅ **Installation Integrity** - Verifies .claude directory exists
+- ✅ **Directory Structure** - Checks all required directories
+- ✅ **Core Agents** - Validates 10 core agents present
+- ✅ **Specialized Agents** - Checks 68 specialized agents
+- ✅ **Maestro Mode** - Verifies Maestro installation
+- ✅ **RULEBOOK** - Validates RULEBOOK structure and customization
+- ✅ **Version Info** - Shows installed version
+- ✅ **Settings** - Validates settings.local.json syntax
+- ✅ **Common Issues** - Detects duplicate files, old backups
+- ✅ **Documentation** - Checks required docs present
+
+### Health Check Output
+
+```bash
+# Example output:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Health Check Summary
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Total Checks: 25
+  ✓ Passed: 23
+  ⚠ Warnings: 2
+  ✗ Failed: 0
+
+════════════════════════════════════════════════════════
+  ⚠ GOOD - Minor warnings found
+════════════════════════════════════════════════════════
+```
+
+### Exit Codes
+
+- **0** - All checks passed (healthy)
+- **1** - Warnings found (mostly healthy)
+- **2** - Critical failures (needs attention)
+
+### Options
+
+```bash
+./healthcheck.sh --help       # Show help
+./healthcheck.sh --verbose    # Show detailed info
+```
+
+Use health check to diagnose issues before reporting bugs or after updates.
+
+---
+
 ## 🔄 Updates
 
 ### Keeping Your Toolkit Up-to-Date
