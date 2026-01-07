@@ -24,7 +24,7 @@ A production-ready toolkit of **78 specialized AI agents** that work seamlessly 
 
 ### 📡 Remote Installation (Recommended)
 
-Install directly without cloning the repository:
+**Global installation is now the default!** Install once, use in all your projects:
 
 ```bash
 # Interactive mode (with prompts and RULEBOOK wizard)
@@ -33,13 +33,17 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agen
 # Auto-install mode (no prompts, auto-confirms)
 curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
 
-# With options (interactive)
+# With options
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --lang=es  # Spanish
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --global    # Global
-
-# With options (auto-install)
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --lang=es
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --local    # Local install (not recommended)
 ```
+
+**What gets installed:**
+
+- **Global** (`~/.claude-global/`): All 72 agents, commands, and scripts (installed once)
+- **Per-project** (`.claude/`): Symlinks to global + project-specific `RULEBOOK.md`
+
+This keeps your projects clean while sharing agents across all your work!
 
 **Note:** The installer auto-detects if you're piping (`curl | bash`) and enables non-interactive mode automatically. Use `bash <(curl ...)` for interactive prompts.
 
@@ -93,37 +97,30 @@ The wizard:
 **Installation time:** < 2 minutes
 **Manual configuration:** Zero (for common stacks)
 
-### 🌍 Global Installation (Multi-Project Support)
+### 🌍 Using in Multiple Projects
 
-For developers working on multiple projects with the same tech stack:
+Since global installation is the default, using the toolkit in other projects is simple:
 
 ```bash
-# Install globally once
-./install-global.sh
-
-# Use in another project
+# Navigate to another project
 cd ~/my-other-project
-cd /path/to/toolkit && ./install-global.sh --link-only
+
+# Run the installer again (it detects existing global installation)
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
 ```
 
-**How it works:**
-- Installs agents to `~/.claude-global/` (one copy for all projects)
-- Creates symlinks from each project's `.claude/` to global installation
-- Per-project RULEBOOK.md (customize for each project)
-- Update once, applies to all projects
-- Saves disk space (~500KB per project)
+The installer will:
+- ✅ Detect existing `~/.claude-global/` installation
+- ✅ Skip re-downloading agents (already installed)
+- ✅ Create symlinks in the new project
+- ✅ Run RULEBOOK wizard for project-specific config
 
 **Benefits:**
-- ✅ Share 78 agents across all your projects
-- ✅ Update agents once with `git pull && ./install-global.sh`
-- ✅ Per-project RULEBOOK customization
-- ✅ Centralized Maestro Mode configuration
-- ✅ Save disk space (one copy of agents)
-
-**When to use:**
-- You have 3+ projects using similar tech stacks
-- You want consistent agent behavior across projects
-- You want to update agents once and apply everywhere
+- ✅ Share 72 agents across all your projects
+- ✅ Each project has its own `RULEBOOK.md`
+- ✅ Each project can activate different agents
+- ✅ Saves disk space (one copy of agents)
+- ✅ Update agents once, applies everywhere
 
 ---
 

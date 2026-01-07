@@ -27,7 +27,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Installation options
-INSTALL_GLOBAL=false
+INSTALL_LOCAL=false  # Changed: Now global is default, --local is the flag
 MAESTRO_LANG="en"
 SELF_ENHANCEMENT=true
 DRY_RUN=false
@@ -70,7 +70,7 @@ USAGE:
     curl -fsSL URL/install-remote.sh | bash -s -- [OPTIONS]
 
 OPTIONS:
-    --global                Install globally to ~/.claude-global/
+    --local                 Install locally (copy files to project) [not recommended]
     --lang=LANG            Set Maestro language (en or es) [default: en]
     --skip-self-enhancement Disable self-enhancement mode
     --skip-wizard          Skip RULEBOOK wizard after installation
@@ -78,15 +78,19 @@ OPTIONS:
     --dry-run              Show what would be installed without making changes
     --help                 Show this help message
 
-EXAMPLES:
-    # Standard installation in current directory
-    curl -fsSL URL/install-remote.sh | bash
+NOTE: Global installation is now the default. The toolkit installs to
+~/.claude-global/ and creates symlinks in your project. This keeps your
+projects clean and allows sharing agents across multiple projects.
 
-    # Global installation
-    curl -fsSL URL/install-remote.sh | bash -s -- --global
+EXAMPLES:
+    # Standard global installation (recommended)
+    curl -fsSL URL/install-remote.sh | bash
 
     # Spanish Maestro mode
     curl -fsSL URL/install-remote.sh | bash -s -- --lang=es
+
+    # Local installation (all files in project)
+    curl -fsSL URL/install-remote.sh | bash -s -- --local
 
     # Skip RULEBOOK wizard
     curl -fsSL URL/install-remote.sh | bash -s -- --skip-wizard
@@ -103,8 +107,13 @@ EOF
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in
+            --local)
+                INSTALL_LOCAL=true
+                shift
+                ;;
             --global)
-                INSTALL_GLOBAL=true
+                # Keep for backward compatibility, but it's now the default
+                print_warning "--global is now the default, no need to specify it"
                 shift
                 ;;
             --lang=*)
@@ -188,9 +197,10 @@ create_directories() {
 
     print_info "Creating directory structure..."
 
-    mkdir -p "$base_dir/agents-global/core"
-    mkdir -p "$base_dir/agents-global/pool"
+    mkdir -p "$base_dir/agents/core"
+    mkdir -p "$base_dir/agents/pool"
     mkdir -p "$base_dir/commands"
+    mkdir -p "$base_dir/scripts"
 
     print_success "Directory structure created"
 }
@@ -200,7 +210,7 @@ download_agents() {
     local base_dir=$1
 
     if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would download 78 agents to: $base_dir/agents-global/"
+        print_info "[DRY RUN] Would download 72 agents to: $base_dir/agents/"
         return
     fi
 
@@ -222,7 +232,7 @@ download_agents() {
 
     # Download core agents
     for agent in "${core_agents[@]}"; do
-        if download_file "$REPO_RAW_URL/agents/core/$agent" "$base_dir/agents-global/core/$agent"; then
+        if download_file "$REPO_RAW_URL/agents/core/$agent" "$base_dir/agents/core/$agent"; then
             echo -e "  ${GREEN}✓${NC} Downloaded: core/$agent"
         else
             print_warning "Failed to download: core/$agent"
@@ -265,8 +275,8 @@ download_agents() {
     local downloaded=0
     for agent in "${pool_agents[@]}"; do
         local dir=$(dirname "$agent")
-        mkdir -p "$base_dir/agents-global/pool/$dir"
-        if download_file "$REPO_RAW_URL/agents/pool/$agent" "$base_dir/agents-global/pool/$agent"; then
+        mkdir -p "$base_dir/agents/pool/$dir"
+        if download_file "$REPO_RAW_URL/agents/pool/$agent" "$base_dir/agents/pool/$agent"; then
             ((downloaded++))
         fi
     done
@@ -330,18 +340,13 @@ download_scripts() {
 
     print_info "Downloading management scripts..."
 
-    # Create scripts directory relative to .claude
-    local scripts_dir
-    if [ "$INSTALL_GLOBAL" = true ]; then
-        scripts_dir="$HOME/.claude-global-scripts"
-    else
-        scripts_dir="scripts"
-    fi
-
+    # Scripts go to base_dir/scripts for global installs
+    local scripts_dir="$base_dir/scripts"
     mkdir -p "$scripts_dir"
 
     local scripts=(
         "rulebook-wizard.sh"
+        "questionnaire.sh"
         "select-agents.sh"
         "validate-rulebook.sh"
         "test-agent.sh"
@@ -459,15 +464,20 @@ install_global() {
     create_version_file "$base_dir"
 
     if [ "$DRY_RUN" = false ]; then
-        # Create symlinks in current directory
-        print_info "Creating symlinks in current directory..."
+        # Create minimal per-project setup
+        print_info "Setting up project directory..."
         mkdir -p .claude
-        ln -sf "$base_dir/agents-global" .claude/agents-global
+
+        # Create symlinks to global installation
+        ln -sf "$base_dir/agents" .claude/agents
         ln -sf "$base_dir/commands" .claude/commands
         ln -sf "$base_dir/.toolkit-version" .claude/.toolkit-version
 
+        # Create empty agents-active.txt (project-specific)
+        touch .claude/agents-active.txt
+
         print_success "Global installation complete!"
-        print_success "Symlinks created in current directory"
+        print_success "Project setup created (symlinks + local config)"
 
         # Run RULEBOOK wizard for current project
         if [ "$SKIP_WIZARD" = false ] && [ "$YES" = false ]; then
@@ -477,8 +487,8 @@ install_global() {
             read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
         echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-                if [ -f "$HOME/.claude-global-scripts/rulebook-wizard.sh" ]; then
-                    bash "$HOME/.claude-global-scripts/rulebook-wizard.sh"
+                if [ -f "$base_dir/scripts/rulebook-wizard.sh" ]; then
+                    bash "$base_dir/scripts/rulebook-wizard.sh"
                 else
                     print_warning "RULEBOOK wizard not found, skipping"
                 fi
@@ -501,22 +511,26 @@ show_post_install() {
     echo -e "${GREEN}═══════════════════════════════════════════════════════${NC}"
     echo ""
 
-    if [ "$INSTALL_GLOBAL" = true ]; then
-        echo "Global installation: ~/.claude-global/"
-        echo "Project symlinks: .claude/"
+    if [ "$INSTALL_LOCAL" = false ]; then
+        echo "Global installation: ${BLUE}~/.claude-global/${NC}"
+        echo "Project directory: ${BLUE}.claude/${NC} (symlinks)"
+        echo "Project config: ${BLUE}RULEBOOK.md${NC}"
         echo ""
         echo "To use in other projects:"
-        echo "  ${BLUE}curl -fsSL URL/install-remote.sh | bash -s -- --global --skip-wizard${NC}"
+        echo "  ${BLUE}bash <(curl -fsSL URL/install-remote.sh)${NC}"
     else
-        echo "Installation: .claude/"
+        echo "Local installation: ${BLUE}.claude/${NC}"
+        echo "Project config: ${BLUE}RULEBOOK.md${NC}"
     fi
 
     echo ""
     echo "Useful commands:"
-    echo "  ${BLUE}scripts/select-agents.sh${NC}      - Manage active agents"
-    echo "  ${BLUE}scripts/test-agent.sh${NC}         - Browse available agents"
-    echo "  ${BLUE}scripts/validate-rulebook.sh${NC}  - Validate your RULEBOOK"
-    echo "  ${BLUE}scripts/healthcheck.sh${NC}        - Check installation health"
+    echo "  ${BLUE}~/.claude-global/scripts/select-agents.sh${NC}      - Manage active agents"
+    echo "  ${BLUE}~/.claude-global/scripts/test-agent.sh${NC}         - Browse available agents"
+    echo "  ${BLUE}~/.claude-global/scripts/validate-rulebook.sh${NC}  - Validate your RULEBOOK"
+    echo "  ${BLUE}~/.claude-global/scripts/healthcheck.sh${NC}        - Check installation health"
+    echo ""
+    echo "Or add ~/.claude-global/scripts to your PATH for easier access!"
     echo ""
 }
 
@@ -544,7 +558,8 @@ main() {
     # Show configuration
     echo ""
     print_info "Installation Configuration:"
-    echo "  Mode: $([ "$INSTALL_GLOBAL" = true ] && echo "Global" || echo "Local")"
+    echo "  Mode: $([ "$INSTALL_LOCAL" = true ] && echo "Local (project-only)" || echo "Global (recommended)")"
+    echo "  Location: $([ "$INSTALL_LOCAL" = true ] && echo ".claude/" || echo "~/.claude-global/")"
     echo "  Maestro Language: $MAESTRO_LANG"
     echo "  Self-Enhancement: $([ "$SELF_ENHANCEMENT" = true ] && echo "Enabled" || echo "Disabled")"
     echo "  Dry Run: $([ "$DRY_RUN" = true ] && echo "Yes" || echo "No")"
@@ -560,11 +575,11 @@ main() {
         fi
     fi
 
-    # Install
-    if [ "$INSTALL_GLOBAL" = true ]; then
-        install_global
-    else
+    # Install (global is now the default)
+    if [ "$INSTALL_LOCAL" = true ]; then
         install_local
+    else
+        install_global
     fi
 
     # Show post-installation message
