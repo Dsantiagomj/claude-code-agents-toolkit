@@ -1325,6 +1325,155 @@ mv .claude/commands/self-enhancement.md.backup .claude/commands/self-enhancement
 
 ---
 
+## 🪝 Git Hooks Integration
+
+### Automated Code Quality Gates
+
+Automatically validate code and enforce standards on git events:
+
+```bash
+scripts/install-git-hooks.sh --all
+```
+
+### Available Hooks
+
+**pre-commit** - Runs before each commit
+- ✅ Validates RULEBOOK.md if modified
+- ✅ Checks for large files (>1MB)
+- ✅ Detects merge conflict markers
+- ✅ Warns about debugging statements
+- ⚠️ Blocks commit if validation fails
+
+**pre-push** - Runs before pushing to remote
+- ✅ Comprehensive RULEBOOK validation
+- ✅ Checks toolkit version
+- ✅ Ensures project is ready for remote
+- ⚠️ Blocks push if validation fails
+
+**commit-msg** - Validates commit message format
+- ✅ Enforces minimum message length (10 chars)
+- ✅ Suggests conventional commits format
+- ⚠️ Blocks commit if message too short
+- 💡 Warns but allows non-conventional format
+
+**post-merge** - Runs after git pull/merge (informational)
+- 📢 Notifies if RULEBOOK.md changed
+- 📢 Suggests running healthcheck
+- 📢 Detects dependency updates
+- ✅ Non-blocking (informational only)
+
+### Installation
+
+```bash
+# Install all hooks (recommended)
+scripts/install-git-hooks.sh --all
+
+# Install specific hooks
+scripts/install-git-hooks.sh --pre-commit
+scripts/install-git-hooks.sh --pre-push
+scripts/install-git-hooks.sh --commit-msg
+scripts/install-git-hooks.sh --post-merge
+
+# Uninstall all hooks
+scripts/install-git-hooks.sh --uninstall
+```
+
+### Example Output
+
+```bash
+$ scripts/install-git-hooks.sh --all
+
+╔══════════════════════════════════════════════════════╗
+║  🪝 Git Hooks Installation                        ║
+║     Automated code quality & validation           ║
+╚══════════════════════════════════════════════════════╝
+
+✓ Git repository detected
+
+ℹ Installing pre-commit hook...
+✓ pre-commit hook installed
+
+ℹ Installing pre-push hook...
+✓ pre-push hook installed
+
+ℹ Installing commit-msg hook...
+✓ commit-msg hook installed
+
+ℹ Installing post-merge hook...
+✓ post-merge hook installed
+
+Installed Hooks:
+
+  ✓ pre-commit
+  ✓ pre-push
+  ✓ commit-msg
+  ✓ post-merge
+
+All hooks installed successfully!
+
+Hooks can be skipped with:
+  git commit --no-verify
+  git push --no-verify
+```
+
+### Skipping Hooks
+
+Sometimes you need to bypass hooks (use sparingly):
+
+```bash
+# Skip pre-commit and commit-msg hooks
+git commit --no-verify -m "emergency fix"
+
+# Skip pre-push hook
+git push --no-verify
+
+# Skip all hooks for this commit
+git commit --no-verify && git push --no-verify
+```
+
+### Safety Features
+
+- ✅ **Automatic Backup** - Existing hooks are backed up before installation
+- ✅ **Timestamped Backups** - `.git/hooks/pre-commit.backup.YYYYMMDD-HHMMSS`
+- ✅ **Easy Rollback** - Restore from backup if needed
+- ✅ **Clean Uninstall** - Remove all toolkit hooks with `--uninstall`
+
+### When to Use
+
+**Install hooks for:**
+- 👍 Team projects (enforce quality standards)
+- 👍 Open source repositories (maintain consistency)
+- 👍 Long-term projects (prevent quality drift)
+- 👍 CI/CD pipelines (pre-validation before remote)
+
+**Skip hooks for:**
+- 👎 Quick experiments or prototypes
+- 👎 Solo projects where you prefer flexibility
+- 👎 Emergency hotfixes (use --no-verify)
+- 👎 Projects with custom git workflows
+
+### Benefits
+
+**Code Quality:**
+- Catch issues before they reach remote
+- Enforce RULEBOOK compliance
+- Prevent common mistakes
+- Maintain commit message standards
+
+**Team Collaboration:**
+- Consistent quality gates
+- Shared standards enforcement
+- Reduce PR review time
+- Prevent broken builds
+
+**Developer Experience:**
+- Immediate feedback (no waiting for CI)
+- Optional bypass with --no-verify
+- Informational post-merge notifications
+- Easy to install/uninstall
+
+---
+
 ## 🏥 Health Check
 
 ### Verify Your Installation
