@@ -589,6 +589,130 @@ Creates `.claude/RULEBOOK.md` with:
 
 ---
 
+## 🎯 Agent Management
+
+### Interactive Agent Selector
+
+Easily activate/deactivate specific agents with an interactive menu:
+
+```bash
+./select-agents.sh
+```
+
+### Features
+
+- **Browse by Category** - Organized by Frontend, Backend, Languages, etc.
+- **Visual Selection** - See which agents are active at a glance
+- **Bulk Actions** - Activate/deactivate entire categories
+- **Auto-save** - Changes saved directly to RULEBOOK.md
+- **Safe** - Creates backup before modifying RULEBOOK
+
+### Categories
+
+The agent selector organizes all 78 agents into 9 categories:
+
+1. **Core Agents (10)** - Always recommended for any project
+2. **Frontend Frameworks (8)** - React, Vue, Angular, Svelte, etc.
+3. **Backend Frameworks (8)** - Express, NestJS, Fastify, etc.
+4. **Full-Stack Frameworks (6)** - Next.js, Nuxt, Remix, etc.
+5. **Programming Languages (8)** - TypeScript, Python, Go, Rust, etc.
+6. **Databases & ORMs (8)** - PostgreSQL, MongoDB, Prisma, etc.
+7. **Infrastructure & DevOps (9)** - Docker, Kubernetes, AWS, etc.
+8. **Testing Frameworks (7)** - Jest, Playwright, Vitest, etc.
+9. **Specialized Domains (8)** - Mobile, Desktop, Web3, AI/ML, etc.
+
+### Usage Example
+
+```bash
+$ ./select-agents.sh
+
+╔══════════════════════════════════════════════════════╗
+║  🎯 Claude Code Agents Selector                  ║
+╚══════════════════════════════════════════════════════╝
+
+Select agent category to configure:
+
+  [1] Core Agents (10 agents)
+  [2] Frontend Frameworks (8 agents)
+  [3] Backend Frameworks (8 agents)
+  [4] Full-Stack Frameworks (6 agents)
+  [5] Languages (8 agents)
+  [6] Databases & ORMs (8 agents)
+  [7] Infrastructure & DevOps (9 agents)
+  [8] Testing Frameworks (7 agents)
+  [9] Specialized Domains (8 agents)
+
+  [A] Activate All Agents
+  [D] Deactivate All Agents (keep core)
+  [S] Show Current Selection
+  [Q] Save & Quit
+
+Select option: 2
+
+# After selecting Frontend Frameworks:
+
+Frontend Frameworks
+
+  [1] [✓] react-specialist
+  [2] [ ] vue-specialist
+  [3] [ ] angular-specialist
+  [4] [✓] svelte-specialist
+  [5] [✓] tailwind-expert
+  [6] [ ] css-architect
+  [7] [✓] ui-accessibility
+  [8] [ ] animation-specialist
+
+  [A] Activate All in Category
+  [D] Deactivate All in Category
+  [B] Back to Main Menu
+
+Select option: 2
+# Toggles vue-specialist activation
+
+# Press 'Q' when done to save changes
+```
+
+### Quick Actions
+
+- **Activate All Agents** - Press 'A' from main menu to enable all 78 agents
+- **Deactivate All** - Press 'D' to keep only core 10 agents
+- **Show Current** - Press 'S' to see list of active agents
+- **Save & Quit** - Press 'Q' to save to RULEBOOK and exit
+
+### What Gets Modified
+
+The agent selector updates the `## Active Agents` section in your RULEBOOK.md:
+
+**Before:**
+```markdown
+## Active Agents
+
+- code-reviewer
+- refactoring-specialist
+- nextjs-specialist
+- react-specialist
+```
+
+**After (added vue-specialist):**
+```markdown
+## Active Agents
+
+- code-reviewer
+- refactoring-specialist
+- nextjs-specialist
+- react-specialist
+- vue-specialist
+```
+
+### Safety
+
+- ✅ **Backup Created** - `.claude/RULEBOOK.md.backup` before saving
+- ✅ **No Data Loss** - Only updates Active Agents section
+- ✅ **Preserves Custom Content** - All other RULEBOOK sections untouched
+- ✅ **Easy Rollback** - Restore from backup if needed
+
+---
+
 ## 🌐 Language Switching
 
 ### Change Maestro Language Without Reinstalling
