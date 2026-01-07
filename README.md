@@ -351,6 +351,54 @@ your-project/
 
 ---
 
+## 🗑️ Uninstallation
+
+### Uninstall Options
+
+**Option 1: Standard Uninstall (Keep RULEBOOK)**
+```bash
+./uninstall.sh
+# Removes: Agents + Maestro Mode
+# Keeps: RULEBOOK.md
+# Creates automatic backup
+```
+
+**Option 2: Full Uninstall (Remove Everything)**
+```bash
+./uninstall.sh --full
+# Removes: Agents + Maestro Mode + RULEBOOK
+# Creates automatic backup
+```
+
+**Option 3: Partial Uninstall**
+```bash
+./uninstall.sh --agents-only      # Remove only agents
+./uninstall.sh --maestro-only     # Remove only Maestro Mode
+```
+
+### Safety Features
+
+- ✅ **Automatic Backup**: Creates `.claude.backup.YYYY-MM-DD-HHMMSS/` before uninstalling
+- ✅ **Interactive Prompts**: Asks for confirmation before destructive actions
+- ✅ **RULEBOOK Protected**: Preserved by default (unless --full flag used)
+- ✅ **Reversible**: Easy to restore from backup
+
+### Restore from Backup
+
+If you change your mind:
+```bash
+# Remove current .claude directory
+rm -rf .claude
+
+# Restore from backup
+mv .claude.backup.YYYY-MM-DD-HHMMSS .claude
+
+# Or reinstall fresh
+./install.sh
+```
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
