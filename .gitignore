@@ -49,3 +49,7 @@ build/
 
 # Internal roadmap (local only)
 .tmp-improvements-roadmap.md
+
+# Claude Code local settings (project-specific, not for toolkit repo)
+.claude/
+RULEBOOK.md
