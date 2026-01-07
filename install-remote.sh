@@ -20,7 +20,8 @@ if [ -t 0 ]; then
     :
 else
     # stdin is not a terminal (piped), redirect to /dev/tty
-    exec fi
+    exec < /dev/tty
+fi
 
 # Configuration
 REPO_URL="${TOOLKIT_REPO_URL:-https://github.com/Dsantiagomj/claude-code-agents-toolkit}"
@@ -356,7 +357,8 @@ install_local() {
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning ".claude directory already exists"
         if [ "$YES" = false ]; then
-            read -p "Overwrite? (y/N): " -n 1 -r             echo
+            read -p "Overwrite? (y/N): " -n 1 -r
+        echo
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 print_info "Installation cancelled"
                 exit 0
@@ -386,7 +388,8 @@ install_local() {
             echo ""
             print_info "Now let's set up your RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r             echo
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
+        echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "scripts/rulebook-wizard.sh" ]; then
                     bash scripts/rulebook-wizard.sh
@@ -408,7 +411,8 @@ install_global() {
     if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
         print_warning "Global installation already exists"
         if [ "$YES" = false ]; then
-            read -p "Overwrite? (y/N): " -n 1 -r             echo
+            read -p "Overwrite? (y/N): " -n 1 -r
+        echo
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 print_info "Installation cancelled"
                 exit 0
@@ -445,7 +449,8 @@ install_global() {
             echo ""
             print_info "Now let's set up your project's RULEBOOK..."
             echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r             echo
+            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
+        echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 if [ -f "$HOME/.claude-global-scripts/rulebook-wizard.sh" ]; then
                     bash "$HOME/.claude-global-scripts/rulebook-wizard.sh"
@@ -511,7 +516,8 @@ main() {
 
     # Confirm installation
     if [ "$DRY_RUN" = false ] && [ "$YES" = false ]; then
-        read -p "Continue with installation? (Y/n): " -n 1 -r         echo
+        read -p "Continue with installation? (Y/n): " -n 1 -r
+        echo
         if [[ $REPLY =~ ^[Nn]$ ]]; then
             print_info "Installation cancelled"
             exit 0
