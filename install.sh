@@ -99,8 +99,9 @@ install_maestro_mode() {
     cp commands/agent-intelligence.md .claude/commands/
     cp commands/agent-router.md .claude/commands/
     cp commands/workflow-modes.md .claude/commands/
+    cp commands/self-enhancement.md .claude/commands/
 
-    print_success "Maestro Mode installed"
+    print_success "Maestro Mode installed (with self-enhancement)"
     print_info "  Activate with: /maestro in Claude Code"
 }
 
