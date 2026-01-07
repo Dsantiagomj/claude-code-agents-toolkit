@@ -340,10 +340,34 @@ Built for real projects, not demos:
 # Installs: 78 agents (skip Maestro Mode)
 ```
 
-**Option 3: Custom Selection**
+**Option 3: Custom Selection (Interactive)**
 ```bash
 ./install.sh --custom
-# Interactive: Choose which agent categories to install
+# Interactive prompts for:
+#   - Install Maestro Mode? (Y/n)
+#   - Choose language: English or Spanish (1-2)
+#   - Enable self-enhancement? (Y/n)
+# Perfect for first-time users who want guided setup
+```
+
+**Example Custom Mode Flow:**
+```bash
+$ ./install.sh --custom
+
+Custom Installation Mode
+
+Install Maestro Mode? (Y/n): y
+
+Choose Maestro communication language:
+  [1] English (default)
+  [2] Spanish (Colombian)
+
+Select option (1-2) [1]: 1
+✓ Selected: English
+
+Enable self-enhancement? (Maestro learns and adapts with your approval)
+Enable self-enhancement? (Y/n): y
+✓ Self-enhancement: Enabled
 ```
 
 **Option 4: Preview Installation**

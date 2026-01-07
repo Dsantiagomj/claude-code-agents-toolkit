@@ -648,9 +648,47 @@ main() {
                 print_success "Would copy: self-enhancement.md"
             fi
         elif [ "$CUSTOM" = true ]; then
+            echo ""
+            print_info "Custom Installation Mode"
+            echo ""
+
+            # Ask about Maestro Mode installation
             read -p "Install Maestro Mode? (Y/n): " -n 1 -r
             echo
+
             if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+                # Ask about language preference
+                echo ""
+                echo "Choose Maestro communication language:"
+                echo "  [1] English (default)"
+                echo "  [2] Spanish (Colombian)"
+                echo ""
+                read -p "Select option (1-2) [1]: " -n 1 -r LANG_CHOICE
+                echo
+
+                if [ "$LANG_CHOICE" = "2" ]; then
+                    LANGUAGE="es"
+                    print_success "Selected: Spanish (Colombian)"
+                else
+                    LANGUAGE="en"
+                    print_success "Selected: English"
+                fi
+
+                # Ask about self-enhancement
+                echo ""
+                echo "Enable self-enhancement? (Maestro learns and adapts with your approval)"
+                read -p "Enable self-enhancement? (Y/n): " -n 1 -r
+                echo
+
+                if [[ $REPLY =~ ^[Nn]$ ]]; then
+                    SKIP_SELF_ENHANCEMENT=true
+                    print_success "Self-enhancement: Disabled"
+                else
+                    SKIP_SELF_ENHANCEMENT=false
+                    print_success "Self-enhancement: Enabled"
+                fi
+
+                echo ""
                 install_maestro_mode "$LANGUAGE" "$SKIP_SELF_ENHANCEMENT"
             else
                 print_info "Skipping Maestro Mode installation"
