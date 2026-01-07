@@ -788,6 +788,73 @@ The agent selector updates the `## Active Agents` section in your RULEBOOK.md:
 - ✅ **Preserves Custom Content** - All other RULEBOOK sections untouched
 - ✅ **Easy Rollback** - Restore from backup if needed
 
+### Agent Testing & Inspection
+
+Inspect individual agents and see example use cases:
+
+```bash
+scripts/test-agent.sh
+```
+
+**Features:**
+- **List All Agents** - See all 78 agents organized by category
+- **Search Agents** - Find agents by keyword
+- **Agent Details** - View description, examples, and activation status
+- **Filter by Category** - Browse agents by type (core, frontend, backend, etc.)
+- **Active Agents** - See which agents are currently enabled in RULEBOOK
+
+**Usage Examples:**
+
+```bash
+# List all available agents
+scripts/test-agent.sh --list
+
+# Search for React-related agents
+scripts/test-agent.sh --search react
+
+# Get detailed info about an agent
+scripts/test-agent.sh --info nextjs-specialist
+
+# See example use cases
+scripts/test-agent.sh --examples code-reviewer
+
+# List agents by category
+scripts/test-agent.sh --category frontend
+
+# Show currently active agents
+scripts/test-agent.sh --active
+```
+
+**Example Output:**
+
+```bash
+$ scripts/test-agent.sh --info nextjs-specialist
+
+Agent: nextjs-specialist
+
+Status: ACTIVE
+Category: frontend
+
+Description:
+Next.js expert: App Router, RSC, Server Actions, ISR, SSR, SSG, routing
+
+Example Use Cases:
+  • Implement server actions for this form
+  • Optimize this page with ISR
+  • Convert this to use App Router
+
+To activate this agent:
+  1. Run: scripts/select-agents.sh
+  2. Navigate to frontend category
+  3. Toggle nextjs-specialist
+```
+
+**When to Use:**
+- 🔍 Explore available agents before activating
+- 📚 Learn what each agent specializes in
+- 💡 Find the right agent for your task
+- ✅ Verify which agents are currently active
+
 ---
 
 ## ✓ RULEBOOK Validation
