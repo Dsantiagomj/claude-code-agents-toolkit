@@ -44,8 +44,10 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agen
 - **Per-project** (`.claude/`): Created when you run `init-project.sh`
 
 **Two-step process:**
-1. **Install globally** (once): Downloads toolkit to `~/.claude-global/`
-2. **Initialize projects** (per-project): Creates symlinks + `RULEBOOK.md`
+1. **Install globally** (once): Downloads toolkit to `~/.claude-global/` + adds `claude-init` alias
+2. **Initialize projects** (per-project): Run `claude-init` to create symlinks + `RULEBOOK.md`
+
+After installation, simply run **`claude-init`** in any project directory!
 
 This keeps your projects clean while sharing agents across all your work!
 
@@ -105,9 +107,16 @@ The wizard:
 
 Since global installation is the default, setting up new projects is fast and easy:
 
-#### Option 1: Quick Init (Recommended)
+#### Option 1: Quick Init with Alias (Recommended)
 
-If you already have the global installation:
+If you already have the global installation with shell integration:
+
+```bash
+cd ~/my-new-project
+claude-init
+```
+
+Or use the full path:
 
 ```bash
 cd ~/my-new-project

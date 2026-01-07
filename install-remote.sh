@@ -385,6 +385,90 @@ create_version_file() {
     echo "$VERSION" > "$base_dir/.toolkit-version"
 }
 
+# Setup shell integration (aliases and PATH)
+setup_shell_integration() {
+    local shell_config=""
+
+    # Detect shell configuration file
+    if [ -n "$BASH_VERSION" ]; then
+        if [ -f "$HOME/.bashrc" ]; then
+            shell_config="$HOME/.bashrc"
+        elif [ -f "$HOME/.bash_profile" ]; then
+            shell_config="$HOME/.bash_profile"
+        fi
+    elif [ -n "$ZSH_VERSION" ]; then
+        shell_config="$HOME/.zshrc"
+    fi
+
+    # If we couldn't detect, try common ones
+    if [ -z "$shell_config" ]; then
+        if [ -f "$HOME/.zshrc" ]; then
+            shell_config="$HOME/.zshrc"
+        elif [ -f "$HOME/.bashrc" ]; then
+            shell_config="$HOME/.bashrc"
+        fi
+    fi
+
+    if [ -n "$shell_config" ]; then
+        # Check if already added
+        if grep -q "claude-code-agents-toolkit" "$shell_config" 2>/dev/null; then
+            print_info "Shell integration already configured in $shell_config"
+            return
+        fi
+
+        # Auto-add if --yes flag, otherwise ask
+        if [ "$YES" = true ]; then
+            cat >> "$shell_config" << 'SHELL_CONFIG'
+
+# Claude Code Agents Toolkit
+export PATH="$HOME/.claude-global/scripts:$PATH"
+alias claude-init='~/.claude-global/scripts/init-project.sh'
+SHELL_CONFIG
+
+            print_success "Shell integration added to $shell_config"
+        else
+            echo ""
+            echo "Add claude-init alias to your shell? This makes initialization easier."
+            echo "Alias: ${CYAN}claude-init${NC} → ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+            echo ""
+            read -p "Add to $shell_config? (Y/n): " -n 1 -r
+            echo
+
+            if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+                cat >> "$shell_config" << 'SHELL_CONFIG'
+
+# Claude Code Agents Toolkit
+export PATH="$HOME/.claude-global/scripts:$PATH"
+alias claude-init='~/.claude-global/scripts/init-project.sh'
+SHELL_CONFIG
+
+                print_success "Shell integration added to $shell_config"
+                echo ""
+                echo "Reload your shell or run:"
+                echo -e "  ${CYAN}source $shell_config${NC}"
+                echo ""
+                echo "Then use:"
+                echo -e "  ${CYAN}claude-init${NC}     - Initialize project"
+                echo -e "  ${CYAN}select-agents.sh${NC}  - Available from PATH"
+            else
+                print_info "Skipped shell integration"
+                echo ""
+                echo "To add manually, run:"
+                echo -e "  ${CYAN}echo 'export PATH=\"\$HOME/.claude-global/scripts:\$PATH\"' >> $shell_config${NC}"
+                echo -e "  ${CYAN}echo 'alias claude-init=\"~/.claude-global/scripts/init-project.sh\"' >> $shell_config${NC}"
+            fi
+        fi
+    else
+        print_info "Could not detect shell config file"
+        echo ""
+        echo "To add alias manually, add to your shell config:"
+        echo -e "  ${CYAN}export PATH=\"\$HOME/.claude-global/scripts:\$PATH\"${NC}"
+        echo -e "  ${CYAN}alias claude-init='~/.claude-global/scripts/init-project.sh'${NC}"
+    fi
+
+    echo ""
+}
+
 # Install to current directory
 install_local() {
     print_info "Installing to current directory: $(pwd)"
@@ -475,6 +559,9 @@ install_global() {
         print_success "Global installation complete!"
         print_success "Toolkit installed at ~/.claude-global/"
 
+        # Setup shell aliases and PATH
+        setup_shell_integration
+
         echo ""
         echo -e "${CYAN}═══════════════════════════════════════════════════════${NC}"
         echo -e "${CYAN}  Next: Initialize your first project${NC}"
@@ -526,24 +613,32 @@ show_post_install() {
         echo "  ├── commands/      ${BLUE}Maestro Mode + Self-enhancement${NC}"
         echo "  └── scripts/       ${BLUE}8 management tools${NC}"
         echo ""
-        echo "To use in projects:"
-        echo -e "  ${CYAN}cd ~/my-project && ~/.claude-global/scripts/init-project.sh${NC}"
-        echo ""
-        echo "Or download remotely:"
-        echo -e "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash${NC}"
+
+        # Check if shell integration was added
+        local shell_config=""
+        if [ -f "$HOME/.zshrc" ]; then
+            shell_config="$HOME/.zshrc"
+        elif [ -f "$HOME/.bashrc" ]; then
+            shell_config="$HOME/.bashrc"
+        fi
+
+        if [ -n "$shell_config" ] && grep -q "claude-code-agents-toolkit" "$shell_config" 2>/dev/null; then
+            echo "Quick commands (reload shell first):"
+            echo -e "  ${CYAN}claude-init${NC}           - Initialize a project"
+            echo -e "  ${CYAN}select-agents.sh${NC}      - Manage active agents"
+            echo -e "  ${CYAN}test-agent.sh${NC}         - Browse available agents"
+        else
+            echo "To use in projects:"
+            echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+            echo ""
+            echo "Or download remotely:"
+            echo -e "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash${NC}"
+        fi
     else
         echo "Local installation: ${BLUE}.claude/${NC}"
         echo "Project config: ${BLUE}RULEBOOK.md${NC}"
     fi
 
-    echo ""
-    echo "Useful commands:"
-    echo "  ${BLUE}~/.claude-global/scripts/select-agents.sh${NC}      - Manage active agents"
-    echo "  ${BLUE}~/.claude-global/scripts/test-agent.sh${NC}         - Browse available agents"
-    echo "  ${BLUE}~/.claude-global/scripts/validate-rulebook.sh${NC}  - Validate your RULEBOOK"
-    echo "  ${BLUE}~/.claude-global/scripts/healthcheck.sh${NC}        - Check installation health"
-    echo ""
-    echo "Or add ~/.claude-global/scripts to your PATH for easier access!"
     echo ""
 }
 
