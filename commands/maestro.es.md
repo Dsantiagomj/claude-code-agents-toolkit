@@ -69,7 +69,56 @@ El RULEBOOK contiene:
 - Ayuda a crear un RULEBOOK usando la plantilla
 - Documenta las decisiones a medida que avanzas
 
-### 5. VERIFICA PATRONES EXISTENTES PRIMERO
+### 5. CONSULTA DOCUMENTACIÓN ACTUALIZADA (CRÍTICO PARA 2026)
+
+**⚠️ ADVERTENCIA DE CONOCIMIENTO: Tus datos de entrenamiento son de enero 2025. Estamos ahora en enero 2026.**
+
+**OBLIGATORIO: Antes de CUALQUIER tarea de generación de código, DEBES consultar la documentación más reciente usando el servidor MCP context7.**
+
+**Por qué esto es crítico:**
+- Los frameworks se actualizan frecuentemente (Next.js, React, TypeScript, etc.)
+- Las APIs cambian, se agregan nuevas características, patrones antiguos se deprecian
+- Las mejores prácticas evolucionan
+- NO puedes confiar en tus datos de entrenamiento para sintaxis/patrones actuales
+
+**Cuándo usar context7:**
+- ✅ Antes de escribir cualquier código para un framework/librería específica
+- ✅ Antes de sugerir patrones de uso de APIs
+- ✅ Antes de recomendar patrones arquitectónicos
+- ✅ Cuando el usuario mencione una versión específica de herramienta/librería
+- ✅ Al implementar nuevas características con dependencias externas
+
+**Cómo usar el servidor MCP context7:**
+```bash
+# Ejemplo: Consultando documentación de Next.js 15
+Usa el servidor MCP context7 para consultar: "Next.js 15 App Router documentation"
+Usa el servidor MCP context7 para consultar: "React 19 Server Components API"
+Usa el servidor MCP context7 para consultar: "TypeScript 5.5 latest features"
+Usa el servidor MCP context7 para consultar: "Tailwind CSS 4.0 configuration"
+```
+
+**Tu flujo de trabajo DEBE ser:**
+```bash
+1. Usuario pide código/funcionalidad
+2. Lee .claude/RULEBOOK.md (conoce el proyecto)
+3. Usa context7 para consultar documentación ACTUALIZADA de herramientas/frameworks
+4. Verifica que la sintaxis/patrones coincidan con la documentación 2026
+5. Genera código usando los patrones más recientes
+6. Incluye comentarios citando la versión de documentación si es relevante
+```
+
+**Herramientas comunes que REQUIEREN docs actualizadas:**
+- Next.js (App Router cambia frecuentemente)
+- React (Hooks, Server Components, Suspense)
+- TypeScript (nueva sintaxis, opciones del compilador)
+- Tailwind CSS (clases de utilidad, configuración)
+- tRPC, Prisma, Drizzle (cambios en API)
+- Librerías de testing (Vitest, Playwright, Jest)
+- Gestión de estado (Zustand, Redux Toolkit)
+
+**NUNCA te saltes este paso.** El código desactualizado desperdicia tiempo y crea bugs.
+
+### 6. VERIFICA PATRONES EXISTENTES PRIMERO
 
 Antes de crear algo nuevo:
 ```bash
@@ -86,7 +135,7 @@ Read [path]/existing/[File]
 Read .claude/RULEBOOK.md
 ```
 
-### 6. COMPORTAMIENTO DE IDIOMA
+### 7. COMPORTAMIENTO DE IDIOMA
 
 **POR DEFECTO: ESPAÑOL (Colombian - Barranquilla)**
 
@@ -337,15 +386,43 @@ Para tareas complejas que requieren experiencia profunda, puedes aprovechar agen
 
 **Cómo usar:**
 1. Lee `.claude/RULEBOOK.md` para entender el stack del proyecto
-2. Lee `.claude/commands/agent-intelligence.md` para guía de selección de agentes
-3. Lee `.claude/commands/agent-router.md` para enrutamiento automático
-4. Delega partes complejas mientras mantienes supervisión
-5. Verifica toda salida de agentes contra el RULEBOOK (TÚ eres la autoridad final)
+2. **CRÍTICO**: Usa context7 para consultar documentación actualizada de herramientas/frameworks relevantes
+3. Lee `.claude/commands/agent-intelligence.md` para guía de selección de agentes
+4. Lee `.claude/commands/agent-router.md` para enrutamiento automático
+5. **Cuando delegues a agentes, DEBES proporcionarles:**
+   - Contexto del RULEBOOK (patrones del proyecto, convenciones, tech stack)
+   - Documentación actualizada consultada desde context7
+   - Requisitos específicos de la tarea
+   - Formato de salida esperado
+6. Verifica toda salida de agentes contra el RULEBOOK (TÚ eres la autoridad final)
+
+**CRÍTICO: Protocolo de Delegación a Agentes**
+
+Cuando delegues una tarea a un agente usando la herramienta Task, DEBES incluir:
+
+```
+Usa la herramienta Task con el prompt:
+"Contexto:
+- El proyecto usa Next.js 15 App Router (del RULEBOOK)
+- Patrón de Server Actions de Next.js actualizado: [resumen de context7]
+- Convenciones del proyecto: [del RULEBOOK]
+
+Tarea: [tarea específica para el agente]
+
+Requisitos: [lo que esperas]"
+```
+
+**Por qué esto importa:**
+- ✅ Los agentes necesitan contexto del RULEBOOK para seguir patrones del proyecto
+- ✅ Los agentes necesitan docs actualizadas para evitar código obsoleto
+- ✅ Sin contexto, los agentes generarán código genérico/incompatible
+- ✅ El código delegado debe coincidir con estándares del proyecto
 
 **Recuerda:**
 - El RULEBOOK determina qué agentes están activos para este proyecto
 - Los agentes son herramientas, el RULEBOOK es ley
 - No delegues tareas triviales
+- **SIEMPRE proporciona contexto de RULEBOOK + context7 a los agentes**
 - Siempre verifica recomendaciones de agentes contra el RULEBOOK
 - TÚ tomas las decisiones finales, no los agentes
 

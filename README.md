@@ -148,6 +148,83 @@ For new features or significant changes:
 
 ---
 
+## ⚠️ CRITICAL: context7 MCP Server (2026 Requirement)
+
+### Why You MUST Use context7
+
+**Claude's knowledge cutoff is January 2025. We're now in January 2026.**
+
+For accurate code generation, you MUST install the context7 MCP server. This allows Maestro to fetch the **latest documentation** for frameworks and libraries before generating code.
+
+### Quick Setup
+
+Add context7 to your `.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "context7-mcp"]
+    }
+  }
+}
+```
+
+### Why This Matters
+
+Without context7, Maestro will use **outdated patterns** from January 2025:
+- ❌ Old Next.js App Router patterns
+- ❌ Deprecated React hooks/APIs
+- ❌ Outdated TypeScript syntax
+- ❌ Old Tailwind CSS utilities
+- ❌ Changed Prisma/tRPC/Drizzle APIs
+
+**With context7:**
+- ✅ Latest framework documentation (2026)
+- ✅ Current API syntax and patterns
+- ✅ Up-to-date best practices
+- ✅ Accurate code generation
+- ✅ No deprecated warnings
+
+### How Maestro Uses context7
+
+Maestro **automatically fetches latest docs** before generating code:
+
+```bash
+# Example workflow when you ask for Next.js code:
+1. User: "Create a server action for form submission"
+2. Maestro: [Fetches latest Next.js 15 Server Actions docs via context7]
+3. Maestro: [Generates code using 2026 patterns]
+4. Result: Code works perfectly with current Next.js version
+```
+
+### Tools That REQUIRE context7
+
+- **Next.js** - App Router changes frequently
+- **React** - Server Components, new hooks, Suspense
+- **TypeScript** - New syntax, compiler options
+- **Tailwind CSS** - Utility classes, configuration
+- **tRPC, Prisma, Drizzle** - API changes
+- **Testing libraries** - Vitest, Playwright, Jest
+- **State management** - Zustand, Redux Toolkit
+
+### Verification
+
+After installing context7, test it:
+
+```bash
+# In Claude Code with Maestro:
+/maestro
+> "Fetch the latest Next.js App Router documentation"
+```
+
+If context7 is working, Maestro will successfully fetch and summarize the latest Next.js docs.
+
+**💡 Pro Tip:** context7 is automatically configured in generated RULEBOOKs. If you used `./install.sh`, you're already set up!
+
+---
+
 ## 🧠 How It Works
 
 ### 1. Auto-Detection
@@ -515,7 +592,7 @@ Continue with installation anyway? (y/N):
 Don't want to manually create your RULEBOOK? Use the interactive questionnaire:
 
 ```bash
-./questionnaire.sh
+scripts/questionnaire.sh
 ```
 
 ### What It Does
@@ -549,7 +626,7 @@ The questionnaire asks about your project and generates a comprehensive, customi
 ### Example Flow
 
 ```bash
-$ ./questionnaire.sh
+$ scripts/questionnaire.sh
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Framework & Language
@@ -596,7 +673,7 @@ Creates `.claude/RULEBOOK.md` with:
 Easily activate/deactivate specific agents with an interactive menu:
 
 ```bash
-./select-agents.sh
+scripts/select-agents.sh
 ```
 
 ### Features
@@ -624,7 +701,7 @@ The agent selector organizes all 78 agents into 9 categories:
 ### Usage Example
 
 ```bash
-$ ./select-agents.sh
+$ scripts/select-agents.sh
 
 ╔══════════════════════════════════════════════════════╗
 ║  🎯 Claude Code Agents Selector                  ║
@@ -720,7 +797,7 @@ The agent selector updates the `## Active Agents` section in your RULEBOOK.md:
 Ensure your RULEBOOK.md is properly formatted and configured:
 
 ```bash
-./validate-rulebook.sh
+scripts/validate-rulebook.sh
 ```
 
 ### Validation Checks
@@ -739,7 +816,7 @@ The validator performs 8 comprehensive checks:
 ### Example Output
 
 ```bash
-$ ./validate-rulebook.sh
+$ scripts/validate-rulebook.sh
 
 ╔══════════════════════════════════════════════════════╗
 ║  ✓ RULEBOOK Validator                            ║
@@ -798,10 +875,10 @@ Use exit codes in scripts or CI/CD pipelines:
 
 ```bash
 # Use in CI/CD
-./validate-rulebook.sh && echo "RULEBOOK is valid!" || echo "RULEBOOK needs attention"
+scripts/validate-rulebook.sh && echo "RULEBOOK is valid!" || echo "RULEBOOK needs attention"
 
 # Check exit code
-./validate-rulebook.sh
+scripts/validate-rulebook.sh
 if [ $? -eq 0 ]; then
     echo "✓ RULEBOOK validated successfully"
 fi
@@ -837,10 +914,10 @@ Your project description here
 
 - ✅ After manual RULEBOOK edits
 - ✅ Before committing RULEBOOK changes
-- ✅ After running `./questionnaire.sh`
-- ✅ After using `./select-agents.sh`
+- ✅ After running `scripts/questionnaire.sh`
+- ✅ After using `scripts/select-agents.sh`
 - ✅ In CI/CD pipelines for quality checks
-- ✅ After migrating from old toolkit versions
+- ✅ After migrating from old toolkit versions with `scripts/migrate.sh`
 
 ---
 
@@ -852,14 +929,14 @@ Switch between English and Spanish Maestro Mode instantly:
 
 **Toggle Language (Auto-detect current)**
 ```bash
-./switch-language.sh
+scripts/switch-language.sh
 # Automatically switches to the other language
 ```
 
 **Switch to Specific Language**
 ```bash
-./switch-language.sh es        # Switch to Spanish
-./switch-language.sh english   # Switch to English
+scripts/switch-language.sh es        # Switch to Spanish
+scripts/switch-language.sh english   # Switch to English
 ```
 
 ### What Gets Changed
@@ -879,13 +956,13 @@ Switch between English and Spanish Maestro Mode instantly:
 
 ```bash
 # Currently English → Switch to Spanish
-./switch-language.sh es
+scripts/switch-language.sh es
 
 # Currently Spanish → Switch to English
-./switch-language.sh en
+scripts/switch-language.sh en
 
 # Don't know current language? Toggle it
-./switch-language.sh
+scripts/switch-language.sh
 
 # Restore previous language
 mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
@@ -902,7 +979,7 @@ mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
 Control Maestro's learning capability with a simple toggle:
 
 ```bash
-./toggle-enhancement.sh
+scripts/toggle-enhancement.sh
 ```
 
 ### What is Self-Enhancement?
@@ -922,33 +999,33 @@ When disabled:
 
 **Toggle Current State**
 ```bash
-./toggle-enhancement.sh
+scripts/toggle-enhancement.sh
 # Auto-detects and switches: enabled → disabled or disabled → enabled
 ```
 
 **Enable Self-Enhancement**
 ```bash
-./toggle-enhancement.sh on
+scripts/toggle-enhancement.sh on
 # or
-./toggle-enhancement.sh enable
+scripts/toggle-enhancement.sh enable
 ```
 
 **Disable Self-Enhancement**
 ```bash
-./toggle-enhancement.sh off
+scripts/toggle-enhancement.sh off
 # or
-./toggle-enhancement.sh disable
+scripts/toggle-enhancement.sh disable
 ```
 
 **Check Current Status**
 ```bash
-./toggle-enhancement.sh status
+scripts/toggle-enhancement.sh status
 ```
 
 ### Example Output
 
 ```bash
-$ ./toggle-enhancement.sh
+$ scripts/toggle-enhancement.sh
 
 ╔══════════════════════════════════════════════════════╗
 ║  🔧 Self-Enhancement Toggle                      ║
@@ -1032,7 +1109,7 @@ mv .claude/commands/self-enhancement.md.backup .claude/commands/self-enhancement
 Run a comprehensive health check to verify installation integrity:
 
 ```bash
-./healthcheck.sh
+scripts/healthcheck.sh
 ```
 
 ### What Gets Checked
@@ -1077,8 +1154,8 @@ Health Check Summary
 ### Options
 
 ```bash
-./healthcheck.sh --help       # Show help
-./healthcheck.sh --verbose    # Show detailed info
+scripts/healthcheck.sh --help       # Show help
+scripts/healthcheck.sh --verbose    # Show detailed info
 ```
 
 Use health check to diagnose issues before reporting bugs or after updates.
@@ -1091,13 +1168,13 @@ Use health check to diagnose issues before reporting bugs or after updates.
 
 **Check for Updates**
 ```bash
-./update.sh --check
+scripts/update.sh --check
 # Shows current and latest versions without installing
 ```
 
 **Update Everything (Recommended)**
 ```bash
-./update.sh
+scripts/update.sh
 # Updates: Agents + Maestro Mode
 # Preserves: RULEBOOK, settings, language preference
 # Creates automatic backup
@@ -1105,8 +1182,8 @@ Use health check to diagnose issues before reporting bugs or after updates.
 
 **Partial Updates**
 ```bash
-./update.sh --agents-only      # Update only agents
-./update.sh --maestro-only     # Update only Maestro Mode
+scripts/update.sh --agents-only      # Update only agents
+scripts/update.sh --maestro-only     # Update only Maestro Mode
 ```
 
 ### What Gets Preserved
@@ -1127,7 +1204,7 @@ The toolkit tracks versions in `.claude/.toolkit-version`:
 cat .claude/.toolkit-version
 
 # Compare with latest
-./update.sh --check
+scripts/update.sh --check
 ```
 
 ### Update Safety
@@ -1146,7 +1223,7 @@ cat .claude/.toolkit-version
 For major version changes (e.g., v1.0.0 → v2.0.0), use the migration script:
 
 ```bash
-./migrate.sh
+scripts/migrate.sh
 ```
 
 ### What migrate.sh Does
@@ -1176,10 +1253,10 @@ The migration script handles version-specific updates while preserving all your 
 
 ```bash
 # Regular updates (same major version)
-./update.sh               # v1.0.0 → v1.1.0
+scripts/update.sh               # v1.0.0 → v1.1.0
 
 # Major version migrations
-./migrate.sh              # v1.0.0 → v2.0.0
+scripts/migrate.sh              # v1.0.0 → v2.0.0
 
 # Fresh installation
 ./install.sh              # New installation or complete reinstall
@@ -1188,7 +1265,7 @@ The migration script handles version-specific updates while preserving all your 
 ### Migration Example
 
 ```bash
-$ ./migrate.sh
+$ scripts/migrate.sh
 
 🔄 Claude Code Agents Toolkit Migration Tool
 
@@ -1254,7 +1331,7 @@ cat .claude/.toolkit-version
 
 **Option 1: Standard Uninstall (Keep RULEBOOK)**
 ```bash
-./uninstall.sh
+scripts/uninstall.sh
 # Removes: Agents + Maestro Mode
 # Keeps: RULEBOOK.md
 # Creates automatic backup
@@ -1262,15 +1339,15 @@ cat .claude/.toolkit-version
 
 **Option 2: Full Uninstall (Remove Everything)**
 ```bash
-./uninstall.sh --full
+scripts/uninstall.sh --full
 # Removes: Agents + Maestro Mode + RULEBOOK
 # Creates automatic backup
 ```
 
 **Option 3: Partial Uninstall**
 ```bash
-./uninstall.sh --agents-only      # Remove only agents
-./uninstall.sh --maestro-only     # Remove only Maestro Mode
+scripts/uninstall.sh --agents-only      # Remove only agents
+scripts/uninstall.sh --maestro-only     # Remove only Maestro Mode
 ```
 
 ### Safety Features

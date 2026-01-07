@@ -730,11 +730,52 @@ All 10 core agents from the Global Agents Toolkit:
 
 ## MCP Servers
 
-### Installed MCP Servers
+### Mandatory: context7 (Latest Documentation)
+
+**⚠️ CRITICAL:** The context7 MCP server is MANDATORY for all projects. Claude's training data is from January 2025, and we're now in January 2026. context7 fetches the latest documentation to ensure code uses current syntax and patterns.
 
 ```json
 {
   "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "context7-mcp"]
+    }
+  }
+}
+```
+
+**Why context7 is mandatory:**
+- ✅ Frameworks update frequently (Next.js, React, TypeScript)
+- ✅ APIs change, features added, patterns deprecated
+- ✅ Best practices evolve
+- ✅ Prevents using outdated/deprecated code
+- ✅ Ensures compatibility with latest versions
+
+**When Maestro uses context7:**
+- Before ANY code generation for frameworks/libraries
+- When suggesting API usage patterns
+- When implementing features with external dependencies
+- When user mentions specific tool versions
+
+**Common tools requiring latest docs:**
+- Next.js (App Router changes frequently)
+- React (Server Components, Suspense, new hooks)
+- TypeScript (new syntax, compiler options)
+- Tailwind CSS (utility classes, configuration)
+- tRPC, Prisma, Drizzle (API changes)
+- Testing libraries (Vitest, Playwright, Jest)
+- State management (Zustand, Redux Toolkit)
+
+### Project-Specific MCP Servers
+
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "context7-mcp"]
+    },
     "[server-name]": {
       "command": "[command]",
       "args": ["[args]"]
@@ -743,10 +784,14 @@ All 10 core agents from the Global Agents Toolkit:
 }
 ```
 
-**Example:**
+**Example with multiple servers:**
 ```json
 {
   "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "context7-mcp"]
+    },
     "postgres": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/mydb"]

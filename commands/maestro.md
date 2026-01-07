@@ -69,7 +69,56 @@ The RULEBOOK contains:
 - Help create a RULEBOOK using the template
 - Document decisions as you go
 
-### 5. CHECK EXISTING PATTERNS FIRST
+### 5. FETCH LATEST DOCUMENTATION (CRITICAL FOR 2026)
+
+**⚠️ KNOWLEDGE CUTOFF WARNING: Your training data is from January 2025. We are now in January 2026.**
+
+**MANDATORY: Before ANY code generation task, you MUST fetch the latest documentation using context7 MCP server.**
+
+**Why this is critical:**
+- Frameworks update frequently (Next.js, React, TypeScript, etc.)
+- APIs change, new features added, old patterns deprecated
+- Best practices evolve
+- You CANNOT rely on your training data for current syntax/patterns
+
+**When to use context7:**
+- ✅ Before writing any code for a specific framework/library
+- ✅ Before suggesting API usage patterns
+- ✅ Before recommending architectural patterns
+- ✅ When user mentions a specific tool/library version
+- ✅ When implementing new features with external dependencies
+
+**How to use context7 MCP server:**
+```bash
+# Example: Fetching latest Next.js 15 documentation
+Use context7 MCP server to fetch: "Next.js 15 App Router documentation"
+Use context7 MCP server to fetch: "React 19 Server Components API"
+Use context7 MCP server to fetch: "TypeScript 5.5 latest features"
+Use context7 MCP server to fetch: "Tailwind CSS 4.0 configuration"
+```
+
+**Your workflow MUST be:**
+```bash
+1. User asks for code/feature
+2. Read .claude/RULEBOOK.md (know the project)
+3. Use context7 to fetch LATEST docs for tools/frameworks involved
+4. Verify syntax/patterns match 2026 documentation
+5. Generate code using latest patterns
+6. Include comments citing documentation version if relevant
+```
+
+**Common tools that REQUIRE latest docs:**
+- Next.js (App Router changes frequently)
+- React (Hooks, Server Components, Suspense)
+- TypeScript (new syntax, compiler options)
+- Tailwind CSS (utility classes, configuration)
+- tRPC, Prisma, Drizzle (API changes)
+- Testing libraries (Vitest, Playwright, Jest)
+- State management (Zustand, Redux Toolkit)
+
+**NEVER skip this step.** Outdated code wastes time and creates bugs.
+
+### 6. CHECK EXISTING PATTERNS FIRST
 
 Before creating anything new:
 ```bash
@@ -86,7 +135,7 @@ Read [path]/existing/[File]
 Read .claude/RULEBOOK.md
 ```
 
-### 6. LANGUAGE BEHAVIOR
+### 7. LANGUAGE BEHAVIOR
 
 **DEFAULT: ENGLISH**
 
@@ -327,15 +376,43 @@ For complex tasks that require deep expertise, you can leverage specialized agen
 
 **How to use:**
 1. Read `.claude/RULEBOOK.md` to understand project stack
-2. Read `.claude/commands/agent-intelligence.md` for agent selection guide
-3. Read `.claude/commands/agent-router.md` for automatic routing
-4. Delegate complex parts while maintaining oversight
-5. Verify all agent output against RULEBOOK (YOU are the final authority)
+2. **CRITICAL**: Use context7 to fetch latest documentation for relevant tools/frameworks
+3. Read `.claude/commands/agent-intelligence.md` for agent selection guide
+4. Read `.claude/commands/agent-router.md` for automatic routing
+5. **When delegating to agents, you MUST provide them with:**
+   - RULEBOOK context (project patterns, conventions, tech stack)
+   - Latest documentation fetched from context7
+   - Specific task requirements
+   - Expected output format
+6. Verify all agent output against RULEBOOK (YOU are the final authority)
+
+**CRITICAL: Agent Delegation Protocol**
+
+When you delegate a task to an agent using the Task tool, you MUST include:
+
+```
+Use Task tool with prompt:
+"Context:
+- Project uses Next.js 15 App Router (from RULEBOOK)
+- Latest Next.js Server Actions pattern: [summary from context7]
+- Project conventions: [from RULEBOOK]
+
+Task: [specific task for the agent]
+
+Requirements: [what you expect]"
+```
+
+**Why this matters:**
+- ✅ Agents need RULEBOOK context to follow project patterns
+- ✅ Agents need latest docs to avoid outdated code
+- ✅ Without context, agents will generate generic/incompatible code
+- ✅ Delegated code must match project standards
 
 **Remember:**
 - RULEBOOK determines which agents are active for this project
 - Agents are tools, RULEBOOK is law
 - Don't delegate trivial tasks
+- **ALWAYS provide RULEBOOK + context7 context to agents**
 - Always verify agent recommendations against RULEBOOK
 - YOU make final decisions, not agents
 
