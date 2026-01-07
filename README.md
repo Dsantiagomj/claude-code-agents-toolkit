@@ -713,6 +713,137 @@ The agent selector updates the `## Active Agents` section in your RULEBOOK.md:
 
 ---
 
+## ✓ RULEBOOK Validation
+
+### Validate Your RULEBOOK
+
+Ensure your RULEBOOK.md is properly formatted and configured:
+
+```bash
+./validate-rulebook.sh
+```
+
+### Validation Checks
+
+The validator performs 8 comprehensive checks:
+
+1. **File Existence** - Verifies RULEBOOK.md exists
+2. **Required Sections** - Ensures Project Overview, Tech Stack, Active Agents sections present
+3. **No Duplicates** - Detects duplicate section headers
+4. **Active Agents Validity** - Validates agent names against available agents
+5. **Tech Stack Documentation** - Checks for framework and language documentation
+6. **Markdown Formatting** - Validates heading hierarchy and structure
+7. **Outdated Content** - Detects old naming (GENTLEMAN MODE, WRAPUP MODE)
+8. **File Permissions** - Checks read/write permissions
+
+### Example Output
+
+```bash
+$ ./validate-rulebook.sh
+
+╔══════════════════════════════════════════════════════╗
+║  ✓ RULEBOOK Validator                            ║
+╚══════════════════════════════════════════════════════╝
+
+ℹ Checking RULEBOOK.md existence...
+✓ RULEBOOK.md exists
+
+ℹ Checking required sections...
+✓ Section found: Project Overview
+✓ Section found: Tech Stack
+✓ Section found: Active Agents
+
+ℹ Checking for duplicate sections...
+✓ No duplicate sections found
+
+ℹ Validating Active Agents section...
+✓ Active Agents section has 15 agents
+ℹ Validating agent names...
+✓ All agent names are valid
+
+ℹ Checking Tech Stack section...
+✓ Tech Stack section exists
+✓ Framework documented
+✓ Language documented
+
+ℹ Checking markdown formatting...
+✓ Markdown heading hierarchy is correct
+✓ Basic markdown formatting validated
+
+ℹ Checking for outdated content...
+✓ No outdated content detected
+
+ℹ Checking file permissions...
+✓ RULEBOOK is readable
+✓ RULEBOOK is writable
+
+═══════════════════════════════════════════════════════
+  Validation Summary
+═══════════════════════════════════════════════════════
+
+Passed:   16 checks
+Warnings: 0 issues
+Errors:   0 critical issues
+
+✓ RULEBOOK is valid!
+```
+
+### Exit Codes
+
+Use exit codes in scripts or CI/CD pipelines:
+
+- **0** - RULEBOOK is valid (no warnings or errors)
+- **1** - RULEBOOK has warnings (usable but could be improved)
+- **2** - RULEBOOK has critical errors (needs fixes)
+
+```bash
+# Use in CI/CD
+./validate-rulebook.sh && echo "RULEBOOK is valid!" || echo "RULEBOOK needs attention"
+
+# Check exit code
+./validate-rulebook.sh
+if [ $? -eq 0 ]; then
+    echo "✓ RULEBOOK validated successfully"
+fi
+```
+
+### Common Issues & Fixes
+
+**Missing Required Sections:**
+```markdown
+## Project Overview
+Your project description here
+
+## Tech Stack
+- Framework: Next.js
+- Language: TypeScript
+
+## Active Agents
+- code-reviewer
+- nextjs-specialist
+```
+
+**Invalid Agent Names:**
+- Check agent name spelling
+- Verify agent exists in `.claude/agents-global/`
+- Use `./select-agents.sh` to manage agents
+
+**Outdated Content:**
+- Replace "GENTLEMAN MODE" with "MAESTRO MODE"
+- Replace "WRAPUP MODE" with "COMMIT MODE"
+- Run `./migrate.sh` if upgrading from old versions
+
+### When to Validate
+
+- ✅ After manual RULEBOOK edits
+- ✅ Before committing RULEBOOK changes
+- ✅ After running `./questionnaire.sh`
+- ✅ After using `./select-agents.sh`
+- ✅ In CI/CD pipelines for quality checks
+- ✅ After migrating from old toolkit versions
+
+---
+
 ## 🌐 Language Switching
 
 ### Change Maestro Language Without Reinstalling
