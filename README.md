@@ -351,6 +351,60 @@ your-project/
 
 ---
 
+## 🔄 Updates
+
+### Keeping Your Toolkit Up-to-Date
+
+**Check for Updates**
+```bash
+./update.sh --check
+# Shows current and latest versions without installing
+```
+
+**Update Everything (Recommended)**
+```bash
+./update.sh
+# Updates: Agents + Maestro Mode
+# Preserves: RULEBOOK, settings, language preference
+# Creates automatic backup
+```
+
+**Partial Updates**
+```bash
+./update.sh --agents-only      # Update only agents
+./update.sh --maestro-only     # Update only Maestro Mode
+```
+
+### What Gets Preserved
+
+All your customizations are automatically preserved during updates:
+
+- ✅ **RULEBOOK.md** - Your project patterns and conventions
+- ✅ **settings.local.json** - Your Claude Code settings
+- ✅ **Maestro Language** - English or Spanish preference
+- ✅ **Self-Enhancement** - Enabled/disabled state
+
+### Version Management
+
+The toolkit tracks versions in `.claude/.toolkit-version`:
+
+```bash
+# Check current version
+cat .claude/.toolkit-version
+
+# Compare with latest
+./update.sh --check
+```
+
+### Update Safety
+
+- ✅ **Automatic Backup**: Creates `.claude.backup.YYYY-MM-DD-HHMMSS/` before updating
+- ✅ **Preserves Customizations**: RULEBOOK and settings remain intact
+- ✅ **Language Preserved**: Maestro keeps your language preference
+- ✅ **Reversible**: Easy rollback from backup if needed
+
+---
+
 ## 🗑️ Uninstallation
 
 ### Uninstall Options
