@@ -895,6 +895,136 @@ mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
 
 ---
 
+## 🔧 Self-Enhancement Toggle
+
+### Enable/Disable Self-Enhancement Without Reinstalling
+
+Control Maestro's learning capability with a simple toggle:
+
+```bash
+./toggle-enhancement.sh
+```
+
+### What is Self-Enhancement?
+
+Self-enhancement allows Maestro to:
+- ✅ **Learn from interactions** - Adapts to your feedback
+- ✅ **Remember patterns** - Learns your coding style preferences
+- ✅ **Improve over time** - Gets better at helping you
+- ✅ **Requires approval** - All changes need your explicit approval
+
+When disabled:
+- ⚡ **Static behavior** - Consistent, predictable responses
+- ⚡ **No learning** - Same behavior every session
+- ⚡ **Faster** - No learning overhead
+
+### Usage
+
+**Toggle Current State**
+```bash
+./toggle-enhancement.sh
+# Auto-detects and switches: enabled → disabled or disabled → enabled
+```
+
+**Enable Self-Enhancement**
+```bash
+./toggle-enhancement.sh on
+# or
+./toggle-enhancement.sh enable
+```
+
+**Disable Self-Enhancement**
+```bash
+./toggle-enhancement.sh off
+# or
+./toggle-enhancement.sh disable
+```
+
+**Check Current Status**
+```bash
+./toggle-enhancement.sh status
+```
+
+### Example Output
+
+```bash
+$ ./toggle-enhancement.sh
+
+╔══════════════════════════════════════════════════════╗
+║  🔧 Self-Enhancement Toggle                      ║
+╚══════════════════════════════════════════════════════╝
+
+ℹ Running from project directory
+ℹ Detecting current self-enhancement state...
+✓ Self-enhancement is currently: DISABLED
+
+ℹ Toggle mode: DISABLED → ENABLED
+
+ℹ Enabling self-enhancement...
+✓ Self-enhancement enabled
+
+What this means:
+  • Maestro can now learn from interactions
+  • Improvements require your approval
+  • Learning is stored in .claude/commands/self-enhancement.md
+
+════════════════════════════════════════════════════════
+  Self-Enhancement Enabled!
+════════════════════════════════════════════════════════
+
+Next time you use Maestro Mode:
+  • Maestro will be able to learn
+  • All changes require your approval
+  • Learning stored in: .claude/commands/self-enhancement.md
+
+Activate Maestro: /maestro in Claude Code
+```
+
+### How It Works
+
+**When Enabled:**
+- File exists: `.claude/commands/self-enhancement.md`
+- Maestro reads and updates this file as it learns
+- All updates require your approval
+- Learning persists across sessions
+
+**When Disabled:**
+- File removed (backed up to `.backup`)
+- Maestro uses static behavior
+- No learning or adaptation
+- Previous learning preserved in backup
+
+### Safety Features
+
+- ✅ **Automatic Backup** - Creates `.claude/commands/self-enhancement.md.backup` before disabling
+- ✅ **No Reinstallation** - Changes take effect immediately
+- ✅ **Easy Rollback** - Restore from backup anytime
+- ✅ **No Data Loss** - Previous learning always preserved
+
+### Restore Previous Learning
+
+If you disabled self-enhancement and want to restore previous learning:
+
+```bash
+mv .claude/commands/self-enhancement.md.backup .claude/commands/self-enhancement.md
+```
+
+### When to Use Each Mode
+
+**Enable Self-Enhancement:**
+- 👍 Working on a long-term project
+- 👍 Want Maestro to learn your patterns
+- 👍 Willing to approve improvements
+- 👍 Value adaptive assistance
+
+**Disable Self-Enhancement:**
+- 👍 Quick tasks or experiments
+- 👍 Want consistent behavior
+- 👍 Prefer faster responses
+- 👍 Don't want to manage approvals
+
+---
+
 ## 🏥 Health Check
 
 ### Verify Your Installation
