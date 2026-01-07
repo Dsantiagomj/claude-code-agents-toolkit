@@ -754,6 +754,115 @@ cat .claude/.toolkit-version
 
 ---
 
+## 🔄 Version Migration
+
+### Migrating Between Major Versions
+
+For major version changes (e.g., v1.0.0 → v2.0.0), use the migration script:
+
+```bash
+./migrate.sh
+```
+
+### What migrate.sh Does
+
+The migration script handles version-specific updates while preserving all your customizations:
+
+**What Gets Migrated:**
+- ✅ **Agents** → Updated to latest version (78 agents)
+- ✅ **Documentation** → Latest guides and templates
+- ✅ **Agent Formats** → Updated to new format if changed
+- ✅ **Maestro Mode** → Updated to latest version
+- ✅ **Version File** → Tracks current version
+
+**What Gets Preserved:**
+- ✅ **RULEBOOK.md** → Your custom configuration (100% preserved)
+- ✅ **settings.json** → Your Claude Code settings
+- ✅ **settings.local.json** → Your local overrides
+- ✅ **Custom modifications** → All changes preserved
+
+**Safety Features:**
+- ✅ **Automatic Backup** → `.claude.migration-backup.YYYY-MM-DD-HHMMSS/`
+- ✅ **RULEBOOK Backup** → `.claude/RULEBOOK.md.pre-migration`
+- ✅ **Version Detection** → Automatically detects current version
+- ✅ **Easy Rollback** → Restore from backup if needed
+
+### When to Use Each Tool
+
+```bash
+# Regular updates (same major version)
+./update.sh               # v1.0.0 → v1.1.0
+
+# Major version migrations
+./migrate.sh              # v1.0.0 → v2.0.0
+
+# Fresh installation
+./install.sh              # New installation or complete reinstall
+```
+
+### Migration Example
+
+```bash
+$ ./migrate.sh
+
+🔄 Claude Code Agents Toolkit Migration Tool
+
+✓ Current version detected: 1.0.0
+ℹ Target version: 2.0.0
+
+Migration Plan:
+  • Backup current installation
+  • Preserve RULEBOOK customizations
+  • Preserve settings files
+  • Update agents to 2.0.0
+  • Update documentation
+  • Update version file
+
+Proceed with migration? (y/N): y
+
+ℹ Creating migration backup...
+✓ Backup created: .claude.migration-backup.2026-01-07-104530
+
+ℹ Preserving RULEBOOK customizations...
+⚠ RULEBOOK has custom changes
+  → Custom RULEBOOK will be preserved
+✓ RULEBOOK backed up: .claude/RULEBOOK.md.pre-migration
+
+...
+
+✓ Migration Complete!
+
+What was updated:
+  → Agents: Updated to 2.0.0 (78 agents)
+  → Documentation: Latest version
+  → Version file: 2.0.0
+
+What was preserved:
+  → RULEBOOK.md (your custom version)
+  → settings.json / settings.local.json
+  → All your customizations
+
+Backup location:
+  → .claude.migration-backup.2026-01-07-104530
+```
+
+### Rollback from Migration
+
+If you need to rollback after migration:
+
+```bash
+# Remove new version
+rm -rf .claude
+
+# Restore backup
+mv .claude.migration-backup.2026-01-07-104530 .claude
+
+# Verify
+cat .claude/.toolkit-version
+```
+
+---
+
 ## 🗑️ Uninstallation
 
 ### Uninstall Options
