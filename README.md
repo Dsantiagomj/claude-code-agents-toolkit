@@ -27,17 +27,21 @@ A production-ready toolkit of **78 specialized AI agents** that work seamlessly 
 Install directly without cloning the repository:
 
 ```bash
-# Quick install (interactive)
+# Interactive mode (with prompts and RULEBOOK wizard)
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
 
-# Or with the bootstrap script
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh | bash
+# Auto-install mode (no prompts, auto-confirms)
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
 
-# With options
+# With options (interactive)
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --lang=es  # Spanish
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --global    # Global
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --yes      # Non-interactive
+
+# With options (auto-install)
+curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash -s -- --lang=es
 ```
+
+**Note:** The installer auto-detects if you're piping (`curl | bash`) and enables non-interactive mode automatically. Use `bash <(curl ...)` for interactive prompts.
 
 ### 📦 Repository-Based Installation
 
