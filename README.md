@@ -367,6 +367,49 @@ your-project/
     └── RULEBOOK.md            # Generated from template (if missing)
 ```
 
+### 🔒 Safety & Automatic Backups
+
+**The installer automatically protects your existing configuration:**
+
+```bash
+# If .claude/ directory exists, a backup is created automatically
+./install.sh
+# ⚠ Existing .claude directory found!
+# A backup will be created at: .claude.backup.2026-01-07-143022
+# Continue with backup and installation? (y/N):
+```
+
+**Backup Features:**
+- ✅ **Automatic Detection** - Installer detects existing `.claude/` directories
+- ✅ **Timestamped Backups** - Format: `.claude.backup.YYYY-MM-DD-HHMMSS/`
+- ✅ **Full Copy** - All agents, RULEBOOK, settings, and customizations preserved
+- ✅ **No Data Loss** - Installation won't proceed without backup confirmation
+- ✅ **Dry-Run Preview** - See backup plan before making changes
+
+**Skip Backup (Not Recommended)**
+```bash
+./install.sh --skip-backup
+# Skips automatic backup creation
+# Only use if you've manually backed up your configuration
+```
+
+**Restore From Backup**
+```bash
+# If something goes wrong, restore from backup:
+rm -rf .claude
+mv .claude.backup.2026-01-07-143022 .claude
+```
+
+**Dry-Run Preview**
+```bash
+./install.sh --dry-run
+# Shows:
+# - Whether backup would be created
+# - Backup location
+# - What files would be installed
+# - No actual changes made
+```
+
 ---
 
 ## 📋 RULEBOOK Questionnaire

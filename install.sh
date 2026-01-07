@@ -52,6 +52,39 @@ check_project_directory() {
     fi
 }
 
+# Backup existing .claude directory
+backup_existing() {
+    if [ -d ".claude" ]; then
+        local backup_dir=".claude.backup.$(date +%Y-%m-%d-%H%M%S)"
+
+        print_warning "Existing .claude directory found!"
+        echo ""
+        echo "This installation will overwrite existing files."
+        echo "A backup will be created at: $backup_dir"
+        echo ""
+        read -p "Continue with backup and installation? (y/N): " -n 1 -r
+        echo
+
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Installation cancelled."
+            echo ""
+            echo "To proceed without backup, remove .claude directory first:"
+            echo "  rm -rf .claude"
+            exit 0
+        fi
+
+        echo ""
+        print_info "Creating backup of existing .claude directory..."
+        cp -r .claude "$backup_dir"
+        print_success "Backup created: $backup_dir"
+        echo ""
+
+        return 0
+    fi
+
+    return 1
+}
+
 # Create .claude directory if it doesn't exist
 create_claude_directory() {
     print_info "Checking for .claude directory..."
@@ -301,6 +334,7 @@ main() {
     CUSTOM=false
     SKIP_MAESTRO=false
     SKIP_SELF_ENHANCEMENT=false
+    SKIP_BACKUP=false
     LANGUAGE="en"
     DRY_RUN=false
 
@@ -320,6 +354,10 @@ main() {
                 ;;
             --skip-self-enhancement)
                 SKIP_SELF_ENHANCEMENT=true
+                shift
+                ;;
+            --skip-backup)
+                SKIP_BACKUP=true
                 shift
                 ;;
             --dry-run)
@@ -342,6 +380,7 @@ main() {
                 echo "  --agents-only              Install only agents (skip Maestro Mode)"
                 echo "  --skip-maestro             Skip Maestro Mode installation"
                 echo "  --skip-self-enhancement    Skip self-enhancement system (Maestro won't learn/adapt)"
+                echo "  --skip-backup              Skip automatic backup (not recommended)"
                 echo "  --custom                   Interactive installation (choose components)"
                 echo "  --lang=LANG                Set Maestro language (en or es, default: en)"
                 echo "                             en: English communication, English code"
@@ -355,6 +394,11 @@ main() {
                 echo "  ./install.sh --skip-self-enhancement      # Maestro without learning capability"
                 echo "  ./install.sh --agents-only                # Only agents, no Maestro"
                 echo "  ./install.sh --dry-run                    # Preview what will be installed"
+                echo ""
+                echo "Safety:"
+                echo "  • Existing .claude/ directories are backed up automatically"
+                echo "  • Backups are timestamped: .claude.backup.YYYY-MM-DD-HHMMSS/"
+                echo "  • Use --skip-backup to disable (not recommended)"
                 echo ""
                 exit 0
                 ;;
@@ -377,6 +421,25 @@ main() {
 
     # Check project directory
     check_project_directory
+
+    # Backup existing .claude directory (unless skipped)
+    if [ "$SKIP_BACKUP" = false ]; then
+        if [ "$DRY_RUN" = true ]; then
+            if [ -d ".claude" ]; then
+                echo ""
+                print_info "[DRY RUN] Would backup existing .claude directory..."
+                echo "  ${BLUE}→${NC} Backup location: .claude.backup.$(date +%Y-%m-%d-%H%M%S)"
+                print_success "Would create backup before installation"
+            fi
+        else
+            backup_existing
+        fi
+    else
+        if [ -d ".claude" ]; then
+            print_warning "Skipping backup (--skip-backup flag used)"
+            echo ""
+        fi
+    fi
 
     # Create .claude directory
     if [ "$DRY_RUN" = true ]; then
