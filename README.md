@@ -1,6 +1,6 @@
 # Claude Code Agents Global Toolkit
 
-> A comprehensive collection of 78 specialized AI agents for [Claude Code](https://claude.com/claude-code), designed to enhance your development workflow with intelligent task delegation and smart agent selection.
+> A comprehensive collection of 72 specialized AI agents for [Claude Code](https://claude.com/claude-code), designed to enhance your development workflow with intelligent task delegation and smart agent selection.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -9,7 +9,7 @@
 
 ## 🎯 What Is This?
 
-A production-ready toolkit of **78 specialized AI agents** that work seamlessly with Claude Code to:
+A production-ready toolkit of **72 specialized AI agents** that work seamlessly with Claude Code to:
 
 - ✅ Auto-detect your project's tech stack from RULEBOOK.md
 - ✅ Automatically select the right specialists for each task
@@ -488,13 +488,13 @@ Built for real projects, not demos:
 **Option 1: Full Installation (Recommended)**
 ```bash
 ./install.sh
-# Installs: 78 agents + Maestro Mode + RULEBOOK generator
+# Installs: 72 agents + Maestro Mode + RULEBOOK generator
 ```
 
 **Option 2: Agents Only**
 ```bash
 ./install.sh --agents-only
-# Installs: 78 agents (skip Maestro Mode)
+# Installs: 72 agents (skip Maestro Mode)
 ```
 
 **Option 3: Custom Selection (Interactive)**
@@ -538,7 +538,7 @@ Enable self-enhancement? (Y/n): y
 ```
 your-project/
 └── .claude/
-    ├── agents-global/          # 78 agents
+    ├── agents-global/          # 72 agents
     │   ├── core/              # 10 core agents
     │   └── pool/              # 68 specialized agents
     ├── commands/              # Optional: Maestro Mode
@@ -766,7 +766,7 @@ scripts/select-agents.sh
 
 ### Categories
 
-The agent selector organizes all 78 agents into 9 categories:
+The agent selector organizes all 72 agents into 9 categories:
 
 1. **Core Agents (10)** - Always recommended for any project
 2. **Frontend Frameworks (8)** - React, Vue, Angular, Svelte, etc.
@@ -831,7 +831,7 @@ Select option: 2
 
 ### Quick Actions
 
-- **Activate All Agents** - Press 'A' from main menu to enable all 78 agents
+- **Activate All Agents** - Press 'A' from main menu to enable all 72 agents
 - **Deactivate All** - Press 'D' to keep only core 10 agents
 - **Show Current** - Press 'S' to see list of active agents
 - **Save & Quit** - Press 'Q' to save to RULEBOOK and exit
@@ -877,7 +877,7 @@ scripts/test-agent.sh
 ```
 
 **Features:**
-- **List All Agents** - See all 78 agents organized by category
+- **List All Agents** - See all 72 agents organized by category
 - **Search Agents** - Find agents by keyword
 - **Agent Details** - View description, examples, and activation status
 - **Filter by Category** - Browse agents by type (core, frontend, backend, etc.)
@@ -976,7 +976,7 @@ $ scripts/agent-stats.sh
 Overall:
   Total Agents Available: 78
   Total Agents Active:    15
-  Activation Rate:        ████████████░░░░░░░░░░░░░░░░  19% (15/78)
+  Activation Rate:        ████████████░░░░░░░░░░░░░░░░  19% (15/72)
 
 By Category:
   Core             ██████████████████████████████████████████  100% (10/10)
@@ -1217,7 +1217,7 @@ scripts/switch-language.sh english   # Switch to English
 
 ### What Stays the Same
 
-- ✅ **All Agents** - 78 agents remain unchanged
+- ✅ **All Agents** - 72 agents remain unchanged
 - ✅ **RULEBOOK** - Your project patterns preserved
 - ✅ **Settings** - All configurations intact
 - ✅ **Self-Enhancement** - Enabled/disabled state preserved
@@ -1651,7 +1651,7 @@ scripts/migrate.sh
 The migration script handles version-specific updates while preserving all your customizations:
 
 **What Gets Migrated:**
-- ✅ **Agents** → Updated to latest version (78 agents)
+- ✅ **Agents** → Updated to latest version (72 agents)
 - ✅ **Documentation** → Latest guides and templates
 - ✅ **Agent Formats** → Updated to new format if changed
 - ✅ **Maestro Mode** → Updated to latest version
@@ -1715,7 +1715,7 @@ Proceed with migration? (y/N): y
 ✓ Migration Complete!
 
 What was updated:
-  → Agents: Updated to 2.0.0 (78 agents)
+  → Agents: Updated to 2.0.0 (72 agents)
   → Documentation: Latest version
   → Version file: 2.0.0
 
@@ -1829,7 +1829,7 @@ Free for personal and commercial use. Attribution appreciated but not required.
 
 ## 📊 Project Stats
 
-- **Total Agents:** 78 (10 core + 68 specialized)
+- **Total Agents:** 78 (10 core + 62 specialized)
 - **Framework Coverage:** 20+ frameworks
 - **Language Coverage:** 8 languages
 - **Database Coverage:** 8 databases

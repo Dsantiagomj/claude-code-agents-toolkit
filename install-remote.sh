@@ -297,7 +297,14 @@ download_maestro() {
     print_info "Downloading Maestro Mode ($lang)..."
 
     local maestro_file="maestro.md"
-    local source_file="maestro.${lang}.md"
+    local source_file
+
+    # English uses maestro.md, others use maestro.{lang}.md
+    if [ "$lang" = "en" ]; then
+        source_file="maestro.md"
+    else
+        source_file="maestro.${lang}.md"
+    fi
 
     if download_file "$REPO_RAW_URL/commands/$source_file" "$base_dir/commands/$maestro_file"; then
         print_success "Maestro Mode downloaded"
