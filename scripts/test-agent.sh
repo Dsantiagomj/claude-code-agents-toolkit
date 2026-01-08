@@ -5,67 +5,18 @@
 
 set -e
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-GRAY='\033[0;90m'
-BOLD='\033[1m'
-NC='\033[0m' # No Color
+# Source common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/common.sh"
 
-# Paths
-AGENTS_DIR="${HOME}/.claude/agents-global"
-RULEBOOK="${HOME}/.claude/RULEBOOK.md"
+# Paths (override from common.sh for backward compatibility)
+AGENTS_DIR="${HOME}/.claude-global/agents"
+RULEBOOK="${RULEBOOK_LOCAL}"
 
-# Get agent category
-get_agent_category() {
-  local agent="$1"
-  case "$agent" in
-    # Core Agents (10)
-    code-reviewer|refactoring-specialist|documentation-engineer|test-strategist|architecture-advisor|security-auditor|performance-optimizer|git-workflow-specialist|dependency-manager|project-analyzer)
-      echo "core"
-      ;;
-    # Frontend Frameworks (8)
-    nextjs-specialist|react-specialist|vue-specialist|angular-specialist|svelte-specialist|solid-specialist|qwik-specialist|astro-specialist)
-      echo "frontend"
-      ;;
-    # Backend Frameworks (8)
-    express-specialist|nestjs-specialist|fastify-specialist|hono-specialist|koa-specialist|adonis-specialist|feathers-specialist|sails-specialist)
-      echo "backend"
-      ;;
-    # Full-Stack Frameworks (6)
-    remix-specialist|nuxt-specialist|sveltekit-specialist|solidstart-specialist|analog-specialist|fresh-specialist)
-      echo "fullstack"
-      ;;
-    # Programming Languages (8)
-    typescript-pro|javascript-modernizer|python-specialist|go-specialist|rust-specialist|java-specialist|csharp-specialist|php-specialist)
-      echo "language"
-      ;;
-    # Databases & ORMs (8)
-    postgres-expert|mongodb-expert|mysql-expert|redis-specialist|prisma-orm-specialist|drizzle-orm-specialist|typeorm-specialist|sequelize-specialist)
-      echo "database"
-      ;;
-    # Infrastructure & DevOps (9)
-    docker-specialist|kubernetes-expert|aws-cloud-specialist|gcp-specialist|azure-specialist|terraform-specialist|ci-cd-specialist|nginx-specialist|monitoring-specialist)
-      echo "infrastructure"
-      ;;
-    # Testing Frameworks (7)
-    jest-testing-specialist|vitest-specialist|playwright-specialist|cypress-specialist|testing-library-specialist|storybook-specialist|msw-specialist)
-      echo "testing"
-      ;;
-    # Specialized Domains (8)
-    graphql-specialist|rest-api-architect|websocket-specialist|data-pipeline-specialist|ml-specialist|blockchain-specialist|mobile-specialist|desktop-specialist)
-      echo "specialized"
-      ;;
-    *)
-      echo "unknown"
-      ;;
-  esac
-}
+# ============================================================================
+# AGENT DESCRIPTIONS
+# ============================================================================
 
-# Get agent description
 get_agent_description() {
   local agent="$1"
   case "$agent" in
@@ -110,12 +61,64 @@ get_agent_description() {
     vue-specialist)
       echo "Vue.js expert: Composition API, Pinia, Vue Router, reactivity system"
       ;;
+    angular-specialist)
+      echo "Angular expert: Components, services, RxJS, dependency injection"
+      ;;
+    svelte-specialist)
+      echo "Svelte expert: Reactive programming, stores, SvelteKit"
+      ;;
+    solid-specialist)
+      echo "Solid.js expert: Fine-grained reactivity, JSX, SolidStart"
+      ;;
+    qwik-specialist)
+      echo "Qwik expert: Resumability, lazy loading, QwikCity"
+      ;;
+    astro-specialist)
+      echo "Astro expert: Islands architecture, static sites, integrations"
+      ;;
     # Backend
     express-specialist)
       echo "Express.js expert: Middleware, routing, error handling, REST APIs"
       ;;
     nestjs-specialist)
       echo "NestJS expert: Modules, dependency injection, decorators, guards, interceptors"
+      ;;
+    fastify-specialist)
+      echo "Fastify expert: High-performance APIs, plugins, validation"
+      ;;
+    hono-specialist)
+      echo "Hono expert: Edge computing, ultralight framework, middleware"
+      ;;
+    koa-specialist)
+      echo "Koa.js expert: Async middleware, context, error handling"
+      ;;
+    adonis-specialist)
+      echo "AdonisJS expert: MVC framework, ORM, authentication"
+      ;;
+    feathers-specialist)
+      echo "FeathersJS expert: Real-time APIs, services, hooks"
+      ;;
+    sails-specialist)
+      echo "Sails.js expert: MVC framework, WebSockets, Waterline ORM"
+      ;;
+    # Full-Stack
+    remix-specialist)
+      echo "Remix expert: Loader/action pattern, progressive enhancement, nested routes"
+      ;;
+    nuxt-specialist)
+      echo "Nuxt.js expert: Vue SSR, auto-imports, file-based routing"
+      ;;
+    sveltekit-specialist)
+      echo "SvelteKit expert: Full-stack Svelte, load functions, endpoints"
+      ;;
+    solidstart-specialist)
+      echo "SolidStart expert: Solid SSR, routing, data loading"
+      ;;
+    analog-specialist)
+      echo "Analog expert: Angular SSR, file-based routing, Vite"
+      ;;
+    fresh-specialist)
+      echo "Fresh expert: Deno, islands architecture, no build step"
       ;;
     # Databases
     postgres-expert)
@@ -124,15 +127,48 @@ get_agent_description() {
     mongodb-expert)
       echo "MongoDB expert: Document modeling, aggregation pipelines, indexes, sharding"
       ;;
+    mysql-expert)
+      echo "MySQL expert: Relational design, queries, optimization, replication"
+      ;;
+    redis-specialist)
+      echo "Redis expert: Caching, pub/sub, data structures, sessions"
+      ;;
     prisma-orm-specialist)
       echo "Prisma expert: Schema modeling, migrations, queries, relations, type safety"
+      ;;
+    drizzle-orm-specialist)
+      echo "Drizzle ORM expert: Type-safe queries, schema-first design"
+      ;;
+    typeorm-specialist)
+      echo "TypeORM expert: Entity modeling, migrations, relations"
+      ;;
+    sequelize-specialist)
+      echo "Sequelize expert: ORM patterns, migrations, associations"
       ;;
     # Languages
     typescript-pro)
       echo "TypeScript expert: Advanced types, generics, type guards, utility types"
       ;;
+    javascript-modernizer)
+      echo "JavaScript expert: ES2024+, functional programming, async patterns"
+      ;;
     python-specialist)
       echo "Python expert: Type hints, async/await, dataclasses, decorators, best practices"
+      ;;
+    go-specialist)
+      echo "Go expert: Concurrency, goroutines, channels, interfaces"
+      ;;
+    rust-specialist)
+      echo "Rust expert: Ownership, lifetimes, traits, async Rust"
+      ;;
+    java-specialist)
+      echo "Java expert: Spring Boot, JVM, concurrency, design patterns"
+      ;;
+    csharp-specialist)
+      echo "C# expert: .NET, LINQ, async/await, Entity Framework"
+      ;;
+    php-specialist)
+      echo "PHP expert: Laravel, Symfony, modern PHP, PSR standards"
       ;;
     # Infrastructure
     docker-specialist)
@@ -144,12 +180,45 @@ get_agent_description() {
     aws-cloud-specialist)
       echo "AWS expert: EC2, S3, Lambda, RDS, CloudFormation, best practices"
       ;;
+    gcp-specialist)
+      echo "GCP expert: Compute Engine, Cloud Run, GKE, Cloud Functions"
+      ;;
+    azure-specialist)
+      echo "Azure expert: App Service, Functions, AKS, Cosmos DB"
+      ;;
+    terraform-specialist)
+      echo "Terraform expert: IaC, modules, state management, providers"
+      ;;
+    ci-cd-specialist)
+      echo "CI/CD expert: GitHub Actions, GitLab CI, Jenkins, deployment pipelines"
+      ;;
+    nginx-specialist)
+      echo "Nginx expert: Reverse proxy, load balancing, caching, SSL"
+      ;;
+    monitoring-specialist)
+      echo "Monitoring expert: Prometheus, Grafana, logging, alerting"
+      ;;
     # Testing
     jest-testing-specialist)
       echo "Jest expert: Unit tests, mocks, snapshots, coverage, best practices"
       ;;
+    vitest-specialist)
+      echo "Vitest expert: Fast unit testing, Vite integration, UI mode"
+      ;;
     playwright-specialist)
       echo "Playwright expert: E2E tests, browser automation, parallel execution"
+      ;;
+    cypress-specialist)
+      echo "Cypress expert: E2E testing, component testing, visual testing"
+      ;;
+    testing-library-specialist)
+      echo "Testing Library expert: User-centric tests, accessibility, best practices"
+      ;;
+    storybook-specialist)
+      echo "Storybook expert: Component documentation, visual testing, addons"
+      ;;
+    msw-specialist)
+      echo "MSW expert: API mocking, service workers, testing patterns"
       ;;
     # Specialized
     graphql-specialist)
@@ -158,8 +227,23 @@ get_agent_description() {
     rest-api-architect)
       echo "REST API expert: Design, versioning, authentication, rate limiting, best practices"
       ;;
+    websocket-specialist)
+      echo "WebSocket expert: Real-time communication, Socket.io, scaling"
+      ;;
     data-pipeline-specialist)
       echo "Data pipeline expert: ETL, streaming, batch processing, orchestration"
+      ;;
+    ml-specialist)
+      echo "ML expert: Model training, deployment, MLOps, TensorFlow, PyTorch"
+      ;;
+    blockchain-specialist)
+      echo "Blockchain expert: Smart contracts, Web3, Ethereum, Solidity"
+      ;;
+    mobile-specialist)
+      echo "Mobile expert: React Native, Flutter, iOS, Android"
+      ;;
+    desktop-specialist)
+      echo "Desktop expert: Electron, Tauri, cross-platform applications"
       ;;
     *)
       echo "Specialized AI agent"
@@ -167,7 +251,10 @@ get_agent_description() {
   esac
 }
 
-# Get agent examples
+# ============================================================================
+# AGENT EXAMPLES
+# ============================================================================
+
 get_agent_examples() {
   local agent="$1"
   case "$agent" in
@@ -217,83 +304,9 @@ get_agent_examples() {
   esac
 }
 
-# Get all agents (returns newline-separated list)
-get_all_agents() {
-  cat << 'EOF'
-code-reviewer
-refactoring-specialist
-documentation-engineer
-test-strategist
-architecture-advisor
-security-auditor
-performance-optimizer
-git-workflow-specialist
-dependency-manager
-project-analyzer
-nextjs-specialist
-react-specialist
-vue-specialist
-angular-specialist
-svelte-specialist
-solid-specialist
-qwik-specialist
-astro-specialist
-express-specialist
-nestjs-specialist
-fastify-specialist
-hono-specialist
-koa-specialist
-adonis-specialist
-feathers-specialist
-sails-specialist
-remix-specialist
-nuxt-specialist
-sveltekit-specialist
-solidstart-specialist
-analog-specialist
-fresh-specialist
-typescript-pro
-javascript-modernizer
-python-specialist
-go-specialist
-rust-specialist
-java-specialist
-csharp-specialist
-php-specialist
-postgres-expert
-mongodb-expert
-mysql-expert
-redis-specialist
-prisma-orm-specialist
-drizzle-orm-specialist
-typeorm-specialist
-sequelize-specialist
-docker-specialist
-kubernetes-expert
-aws-cloud-specialist
-gcp-specialist
-azure-specialist
-terraform-specialist
-ci-cd-specialist
-nginx-specialist
-monitoring-specialist
-jest-testing-specialist
-vitest-specialist
-playwright-specialist
-cypress-specialist
-testing-library-specialist
-storybook-specialist
-msw-specialist
-graphql-specialist
-rest-api-architect
-websocket-specialist
-data-pipeline-specialist
-ml-specialist
-blockchain-specialist
-mobile-specialist
-desktop-specialist
-EOF
-}
+# ============================================================================
+# DISPLAY FUNCTIONS
+# ============================================================================
 
 show_help() {
   echo -e "${BOLD}Agent Testing Mode - Test and inspect individual agents${NC}"
@@ -330,7 +343,7 @@ show_help() {
 }
 
 list_all_agents() {
-  echo -e "${BOLD}All Available Agents (78 Total)${NC}"
+  echo -e "${BOLD}All Available Agents ($TOTAL_AGENTS Total)${NC}"
   echo ""
 
   local current_category=""
@@ -377,7 +390,7 @@ list_all_agents() {
 
     # Check if agent is active
     local is_active=""
-    if [ -f "$RULEBOOK" ] && grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+    if is_agent_active "$agent"; then
       is_active=" ${GREEN}[ACTIVE]${NC}"
     fi
 
@@ -407,7 +420,7 @@ list_by_category() {
 
       # Check if agent is active
       local is_active=""
-      if [ -f "$RULEBOOK" ] && grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+      if is_agent_active "$agent"; then
         is_active=" ${GREEN}[ACTIVE]${NC}"
       fi
 
@@ -441,7 +454,7 @@ search_agents() {
 
       # Check if agent is active
       local is_active=""
-      if [ -f "$RULEBOOK" ] && grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+      if is_agent_active "$agent"; then
         is_active=" ${GREEN}[ACTIVE]${NC}"
       fi
 
@@ -484,7 +497,7 @@ show_agent_info() {
   echo ""
 
   # Active status
-  if [ -f "$RULEBOOK" ] && grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+  if is_agent_active "$agent"; then
     echo -e "Status: ${GREEN}ACTIVE${NC}"
   else
     echo -e "Status: ${GRAY}Inactive${NC}"
@@ -510,7 +523,7 @@ show_agent_info() {
   echo ""
 
   # Activation instructions
-  if ! grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+  if ! is_agent_active "$agent"; then
     echo -e "${BOLD}To activate this agent:${NC}"
     echo -e "  1. Run: ${CYAN}scripts/select-agents.sh${NC}"
     echo -e "  2. Navigate to ${category} category"
@@ -557,10 +570,9 @@ show_agent_examples() {
 }
 
 list_active_agents() {
-  if [ ! -f "$RULEBOOK" ]; then
-    echo -e "${RED}RULEBOOK.md not found at: $RULEBOOK${NC}"
+  if ! check_rulebook_exists; then
     echo ""
-    echo "Run './install.sh' first to set up the toolkit"
+    echo "Run the installation script first to set up the toolkit"
     exit 1
   fi
 
@@ -635,7 +647,10 @@ list_active_agents() {
   echo -e "${GRAY}To modify active agents, run: ${CYAN}scripts/select-agents.sh${NC}"
 }
 
-# Main
+# ============================================================================
+# MAIN
+# ============================================================================
+
 main() {
   # Parse arguments
   case "${1:-}" in

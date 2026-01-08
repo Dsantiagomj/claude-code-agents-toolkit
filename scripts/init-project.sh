@@ -5,44 +5,9 @@
 
 set -e
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m'
-
-print_header() {
-    echo ""
-    echo -e "${BLUE}╔══════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║${NC}  🚀 Claude Code Agents Toolkit - Project Init   ${BLUE}║${NC}"
-    echo -e "${BLUE}╚══════════════════════════════════════════════════════╝${NC}"
-    echo ""
-}
-
-print_success() {
-    echo -e "${GREEN}✓${NC} $1"
-}
-
-print_info() {
-    echo -e "${BLUE}ℹ${NC} $1"
-}
-
-print_error() {
-    echo -e "${RED}✗${NC} $1"
-}
-
-print_warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
-}
-
-print_section() {
-    echo ""
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${BLUE}$1${NC}"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-}
+# Source common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/common.sh"
 
 # Persona selection variables
 SELECTED_PERSONA=""
@@ -113,19 +78,7 @@ select_maestro_language() {
     esac
 }
 
-# Check if global installation exists
-check_global_installation() {
-    if [ ! -d "$HOME/.claude-global" ]; then
-        print_error "Global installation not found at ~/.claude-global/"
-        echo ""
-        echo "Please install the toolkit first:"
-        echo -e "${CYAN}bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh)${NC}"
-        echo ""
-        exit 1
-    fi
-    
-    print_success "Global installation found at ~/.claude-global/"
-}
+# Check if global installation exists (uses common.sh function)
 
 # Check if project already initialized
 check_existing() {
@@ -262,12 +215,12 @@ show_completion() {
 
 # Main flow
 main() {
-    print_header
+    print_box_header "🚀 Claude Code Agents Toolkit - Project Init"
 
     print_info "Initializing project in: $(pwd)"
     echo ""
 
-    check_global_installation
+    check_global_installation || exit 1
     check_existing
 
     # NEW: Persona selection

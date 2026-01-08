@@ -5,93 +5,17 @@
 
 set -e
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-GRAY='\033[0;90m'
-BOLD='\033[1m'
-NC='\033[0m' # No Color
+# Source common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/common.sh"
 
-# Paths
-RULEBOOK="${HOME}/.claude/RULEBOOK.md"
-AGENTS_DIR="${HOME}/.claude/agents-global"
+# Paths (override from common.sh for backward compatibility)
+RULEBOOK="${RULEBOOK_LOCAL}"
+AGENTS_DIR="${AGENTS_DIR_GLOBAL}"
 
-# Agent counts by category
-CORE_TOTAL=10
-FRONTEND_TOTAL=8
-BACKEND_TOTAL=8
-FULLSTACK_TOTAL=6
-LANGUAGE_TOTAL=8
-DATABASE_TOTAL=8
-INFRASTRUCTURE_TOTAL=9
-TESTING_TOTAL=7
-SPECIALIZED_TOTAL=8
-
-TOTAL_AGENTS=78
-
-# Category lists
-CORE_AGENTS="code-reviewer refactoring-specialist documentation-engineer test-strategist architecture-advisor security-auditor performance-optimizer git-workflow-specialist dependency-manager project-analyzer"
-
-FRONTEND_AGENTS="nextjs-specialist react-specialist vue-specialist angular-specialist svelte-specialist solid-specialist qwik-specialist astro-specialist"
-
-BACKEND_AGENTS="express-specialist nestjs-specialist fastify-specialist hono-specialist koa-specialist adonis-specialist feathers-specialist sails-specialist"
-
-FULLSTACK_AGENTS="remix-specialist nuxt-specialist sveltekit-specialist solidstart-specialist analog-specialist fresh-specialist"
-
-LANGUAGE_AGENTS="typescript-pro javascript-modernizer python-specialist go-specialist rust-specialist java-specialist csharp-specialist php-specialist"
-
-DATABASE_AGENTS="postgres-expert mongodb-expert mysql-expert redis-specialist prisma-orm-specialist drizzle-orm-specialist typeorm-specialist sequelize-specialist"
-
-INFRASTRUCTURE_AGENTS="docker-specialist kubernetes-expert aws-cloud-specialist gcp-specialist azure-specialist terraform-specialist ci-cd-specialist nginx-specialist monitoring-specialist"
-
-TESTING_AGENTS="jest-testing-specialist vitest-specialist playwright-specialist cypress-specialist testing-library-specialist storybook-specialist msw-specialist"
-
-SPECIALIZED_AGENTS="graphql-specialist rest-api-architect websocket-specialist data-pipeline-specialist ml-specialist blockchain-specialist mobile-specialist desktop-specialist"
-
-# Helper functions
-count_active_in_category() {
-  local category_agents="$1"
-  local count=0
-
-  for agent in $category_agents; do
-    if grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
-      ((count++))
-    fi
-  done
-
-  echo $count
-}
-
-draw_progress_bar() {
-  local current=$1
-  local total=$2
-  local width=40
-
-  local percentage=$((current * 100 / total))
-  local filled=$((current * width / total))
-  local empty=$((width - filled))
-
-  # Choose color based on percentage
-  local color=$GREEN
-  if [ $percentage -lt 30 ]; then
-    color=$RED
-  elif [ $percentage -lt 60 ]; then
-    color=$YELLOW
-  fi
-
-  # Draw bar
-  echo -ne "${color}"
-  printf '█%.0s' $(seq 1 $filled)
-  echo -ne "${GRAY}"
-  printf '░%.0s' $(seq 1 $empty)
-  echo -ne "${NC}"
-
-  # Show percentage
-  printf " %3d%% (%d/%d)" $percentage $current $total
-}
+# ============================================================================
+# RECOMMENDATION FUNCTIONS
+# ============================================================================
 
 get_recommendation() {
   local active=$1
@@ -119,6 +43,10 @@ get_recommendation() {
   fi
 }
 
+# ============================================================================
+# DISPLAY FUNCTIONS
+# ============================================================================
+
 show_help() {
   echo -e "${BOLD}Agent Statistics - Analytics for active agents${NC}"
   echo ""
@@ -139,10 +67,9 @@ show_help() {
 }
 
 show_summary() {
-  if [ ! -f "$RULEBOOK" ]; then
-    echo -e "${RED}RULEBOOK.md not found at: $RULEBOOK${NC}"
+  if ! check_rulebook_exists; then
     echo ""
-    echo "Run './install.sh' first to set up the toolkit"
+    echo "Run the installation script first to set up the toolkit"
     exit 1
   fi
 
@@ -160,15 +87,15 @@ show_summary() {
   echo ""
 
   # Count by category
-  local core_active=$(count_active_in_category "$CORE_AGENTS")
-  local frontend_active=$(count_active_in_category "$FRONTEND_AGENTS")
-  local backend_active=$(count_active_in_category "$BACKEND_AGENTS")
-  local fullstack_active=$(count_active_in_category "$FULLSTACK_AGENTS")
-  local language_active=$(count_active_in_category "$LANGUAGE_AGENTS")
-  local database_active=$(count_active_in_category "$DATABASE_AGENTS")
-  local infrastructure_active=$(count_active_in_category "$INFRASTRUCTURE_AGENTS")
-  local testing_active=$(count_active_in_category "$TESTING_AGENTS")
-  local specialized_active=$(count_active_in_category "$SPECIALIZED_AGENTS")
+  local core_active=$(count_active_in_category "core" "$RULEBOOK")
+  local frontend_active=$(count_active_in_category "frontend" "$RULEBOOK")
+  local backend_active=$(count_active_in_category "backend" "$RULEBOOK")
+  local fullstack_active=$(count_active_in_category "fullstack" "$RULEBOOK")
+  local language_active=$(count_active_in_category "language" "$RULEBOOK")
+  local database_active=$(count_active_in_category "database" "$RULEBOOK")
+  local infrastructure_active=$(count_active_in_category "infrastructure" "$RULEBOOK")
+  local testing_active=$(count_active_in_category "testing" "$RULEBOOK")
+  local specialized_active=$(count_active_in_category "specialized" "$RULEBOOK")
 
   # Category breakdown
   echo -e "${BOLD}By Category:${NC}"
@@ -209,8 +136,7 @@ show_summary() {
 }
 
 show_detailed() {
-  if [ ! -f "$RULEBOOK" ]; then
-    echo -e "${RED}RULEBOOK.md not found${NC}"
+  if ! check_rulebook_exists; then
     exit 1
   fi
 
@@ -220,9 +146,7 @@ show_detailed() {
   # Count total active
   local total_active=$(grep -c "^- " "$RULEBOOK" 2>/dev/null || echo 0)
 
-  echo -e "${BOLD}═══════════════════════════════════════════════════════${NC}"
-  echo -e "${BOLD}Overall Statistics${NC}"
-  echo -e "${BOLD}═══════════════════════════════════════════════════════${NC}"
+  print_section "Overall Statistics"
   echo ""
   echo -e "  Total Agents:    ${CYAN}$TOTAL_AGENTS${NC}"
   echo -e "  Active:          ${GREEN}$total_active${NC}"
@@ -231,69 +155,67 @@ show_detailed() {
   echo ""
 
   # Detailed category breakdown
-  echo -e "${BOLD}═══════════════════════════════════════════════════════${NC}"
-  echo -e "${BOLD}Category Breakdown${NC}"
-  echo -e "${BOLD}═══════════════════════════════════════════════════════${NC}"
+  print_section "Category Breakdown"
   echo ""
 
   # Core Agents
-  local core_active=$(count_active_in_category "$CORE_AGENTS")
+  local core_active=$(count_active_in_category "core" "$RULEBOOK")
   echo -e "${GREEN}${BOLD}Core Agents (Essential)${NC}"
   echo -e "  Active: $(draw_progress_bar $core_active $CORE_TOTAL)"
   echo -e "  $(get_recommendation $core_active $CORE_TOTAL "Core")"
   echo ""
 
   # Frontend
-  local frontend_active=$(count_active_in_category "$FRONTEND_AGENTS")
+  local frontend_active=$(count_active_in_category "frontend" "$RULEBOOK")
   echo -e "${BLUE}${BOLD}Frontend Frameworks${NC}"
   echo -e "  Active: $(draw_progress_bar $frontend_active $FRONTEND_TOTAL)"
   echo -e "  $(get_recommendation $frontend_active $FRONTEND_TOTAL "Frontend")"
   echo ""
 
   # Backend
-  local backend_active=$(count_active_in_category "$BACKEND_AGENTS")
+  local backend_active=$(count_active_in_category "backend" "$RULEBOOK")
   echo -e "${YELLOW}${BOLD}Backend Frameworks${NC}"
   echo -e "  Active: $(draw_progress_bar $backend_active $BACKEND_TOTAL)"
   echo -e "  $(get_recommendation $backend_active $BACKEND_TOTAL "Backend")"
   echo ""
 
   # Full-Stack
-  local fullstack_active=$(count_active_in_category "$FULLSTACK_AGENTS")
+  local fullstack_active=$(count_active_in_category "fullstack" "$RULEBOOK")
   echo -e "${CYAN}${BOLD}Full-Stack Frameworks${NC}"
   echo -e "  Active: $(draw_progress_bar $fullstack_active $FULLSTACK_TOTAL)"
   echo -e "  $(get_recommendation $fullstack_active $FULLSTACK_TOTAL "Full-Stack")"
   echo ""
 
   # Languages
-  local language_active=$(count_active_in_category "$LANGUAGE_AGENTS")
+  local language_active=$(count_active_in_category "language" "$RULEBOOK")
   echo -e "${GRAY}${BOLD}Programming Languages${NC}"
   echo -e "  Active: $(draw_progress_bar $language_active $LANGUAGE_TOTAL)"
   echo -e "  $(get_recommendation $language_active $LANGUAGE_TOTAL "Language")"
   echo ""
 
   # Databases
-  local database_active=$(count_active_in_category "$DATABASE_AGENTS")
+  local database_active=$(count_active_in_category "database" "$RULEBOOK")
   echo -e "${CYAN}${BOLD}Databases & ORMs${NC}"
   echo -e "  Active: $(draw_progress_bar $database_active $DATABASE_TOTAL)"
   echo -e "  $(get_recommendation $database_active $DATABASE_TOTAL "Database")"
   echo ""
 
   # Infrastructure
-  local infrastructure_active=$(count_active_in_category "$INFRASTRUCTURE_AGENTS")
+  local infrastructure_active=$(count_active_in_category "infrastructure" "$RULEBOOK")
   echo -e "${YELLOW}${BOLD}Infrastructure & DevOps${NC}"
   echo -e "  Active: $(draw_progress_bar $infrastructure_active $INFRASTRUCTURE_TOTAL)"
   echo -e "  $(get_recommendation $infrastructure_active $INFRASTRUCTURE_TOTAL "Infrastructure")"
   echo ""
 
   # Testing
-  local testing_active=$(count_active_in_category "$TESTING_AGENTS")
+  local testing_active=$(count_active_in_category "testing" "$RULEBOOK")
   echo -e "${GREEN}${BOLD}Testing Frameworks${NC}"
   echo -e "  Active: $(draw_progress_bar $testing_active $TESTING_TOTAL)"
   echo -e "  $(get_recommendation $testing_active $TESTING_TOTAL "Testing")"
   echo ""
 
   # Specialized
-  local specialized_active=$(count_active_in_category "$SPECIALIZED_AGENTS")
+  local specialized_active=$(count_active_in_category "specialized" "$RULEBOOK")
   echo -e "${BLUE}${BOLD}Specialized Domains${NC}"
   echo -e "  Active: $(draw_progress_bar $specialized_active $SPECIALIZED_TOTAL)"
   echo -e "  $(get_recommendation $specialized_active $SPECIALIZED_TOTAL "Specialized")"
@@ -301,8 +223,7 @@ show_detailed() {
 }
 
 show_recommendations() {
-  if [ ! -f "$RULEBOOK" ]; then
-    echo -e "${RED}RULEBOOK.md not found${NC}"
+  if ! check_rulebook_exists; then
     exit 1
   fi
 
@@ -310,7 +231,7 @@ show_recommendations() {
   echo ""
 
   local total_active=$(grep -c "^- " "$RULEBOOK" 2>/dev/null || echo 0)
-  local core_active=$(count_active_in_category "$CORE_AGENTS")
+  local core_active=$(count_active_in_category "core" "$RULEBOOK")
   local percentage=$((total_active * 100 / TOTAL_AGENTS))
 
   echo -e "${BOLD}Current Configuration:${NC}"
@@ -323,8 +244,8 @@ show_recommendations() {
     echo -e "   ${RED}⚠ Missing ${BOLD}$((10 - core_active))${NC}${RED} core agents${NC}"
     echo ""
     echo -e "   ${BOLD}Missing agents:${NC}"
-    for agent in $CORE_AGENTS; do
-      if ! grep -q "^- $agent$" "$RULEBOOK" 2>/dev/null; then
+    for agent in "${CORE_AGENTS[@]}"; do
+      if ! is_agent_active "$agent" "$RULEBOOK"; then
         echo -e "     • ${GRAY}$agent${NC}"
       fi
     done
@@ -360,32 +281,32 @@ show_recommendations() {
 
   # Give recommendations based on detected stack
   if [ $has_nextjs -eq 1 ]; then
-    if ! grep -q "^- nextjs-specialist$" "$RULEBOOK" 2>/dev/null; then
+    if ! is_agent_active "nextjs-specialist" "$RULEBOOK"; then
       echo -e "   ${YELLOW}💡 Detected Next.js - consider activating:${NC}"
       echo -e "      • nextjs-specialist"
-      if ! grep -q "^- react-specialist$" "$RULEBOOK" 2>/dev/null; then
+      if ! is_agent_active "react-specialist" "$RULEBOOK"; then
         echo -e "      • react-specialist"
       fi
       echo ""
     fi
   fi
 
-  if [ $has_react -eq 1 ] && ! grep -q "^- react-specialist$" "$RULEBOOK" 2>/dev/null; then
+  if [ $has_react -eq 1 ] && ! is_agent_active "react-specialist" "$RULEBOOK"; then
     echo -e "   ${YELLOW}💡 Detected React - consider activating:${NC}"
     echo -e "      • react-specialist"
     echo ""
   fi
 
-  if [ $has_express -eq 1 ] && ! grep -q "^- express-specialist$" "$RULEBOOK" 2>/dev/null; then
+  if [ $has_express -eq 1 ] && ! is_agent_active "express-specialist" "$RULEBOOK"; then
     echo -e "   ${YELLOW}💡 Detected Express - consider activating:${NC}"
     echo -e "      • express-specialist"
     echo ""
   fi
 
-  if [ $has_postgres -eq 1 ] && ! grep -q "^- postgres-expert$" "$RULEBOOK" 2>/dev/null; then
+  if [ $has_postgres -eq 1 ] && ! is_agent_active "postgres-expert" "$RULEBOOK"; then
     echo -e "   ${YELLOW}💡 Detected PostgreSQL - consider activating:${NC}"
     echo -e "      • postgres-expert"
-    if grep -qi "prisma" "$RULEBOOK" 2>/dev/null && ! grep -q "^- prisma-orm-specialist$" "$RULEBOOK" 2>/dev/null; then
+    if grep -qi "prisma" "$RULEBOOK" 2>/dev/null && ! is_agent_active "prisma-orm-specialist" "$RULEBOOK"; then
         echo -e "      • prisma-orm-specialist"
       fi
       echo ""
@@ -421,8 +342,7 @@ show_recommendations() {
 }
 
 show_performance() {
-  if [ ! -f "$RULEBOOK" ]; then
-    echo -e "${RED}RULEBOOK.md not found${NC}"
+  if ! check_rulebook_exists; then
     exit 1
   fi
 
@@ -506,7 +426,10 @@ show_performance() {
   echo -e "  Modify agents: ${CYAN}scripts/select-agents.sh${NC}"
 }
 
-# Main
+# ============================================================================
+# MAIN
+# ============================================================================
+
 main() {
   case "${1:-}" in
     --help|-h)
