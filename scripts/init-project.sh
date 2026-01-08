@@ -148,11 +148,10 @@ create_project_structure() {
 
     mkdir -p .claude/commands
 
-    # Symlink agents (same for both personas)
-    ln -sf "$HOME/.claude-global/agents" .claude/agents
+    # Symlink toolkit version (for health checks)
     ln -sf "$HOME/.claude-global/.toolkit-version" .claude/.toolkit-version
 
-    # Persona-specific symlinks
+    # Persona-specific symlinks (only main command)
     if [ "$SELECTED_PERSONA" = "maestro" ]; then
         print_info "Setting up Maestro mode..."
 
@@ -163,24 +162,16 @@ create_project_structure() {
             ln -sf "$HOME/.claude-global/commands/maestro.es.md" .claude/commands/maestro.md
         fi
 
-        # Symlink Maestro supporting files
-        ln -sf "$HOME/.claude-global/commands/workflow-modes.md" .claude/commands/workflow-modes.md
-        ln -sf "$HOME/.claude-global/commands/agent-intelligence.md" .claude/commands/agent-intelligence.md
-        ln -sf "$HOME/.claude-global/commands/agent-router.md" .claude/commands/agent-router.md
-        ln -sf "$HOME/.claude-global/commands/self-enhancement.md" .claude/commands/self-enhancement.md
-
         print_success "Maestro mode configured ($MAESTRO_LANG)"
+        print_info "Supporting files will be read from ~/.claude-global/commands/"
     else
         print_info "Setting up Coordinator mode..."
 
         # Symlink Coordinator command
         ln -sf "$HOME/.claude-global/commands/coordinator.md" .claude/commands/coordinator.md
 
-        # Symlink minimal supporting files
-        ln -sf "$HOME/.claude-global/commands/agent-intelligence.md" .claude/commands/agent-intelligence.md
-        ln -sf "$HOME/.claude-global/commands/agent-router.md" .claude/commands/agent-router.md
-
         print_success "Coordinator mode configured"
+        print_info "Supporting files will be read from ~/.claude-global/commands/"
     fi
 
     # Create empty agents-active.txt (project-specific file)

@@ -1,6 +1,6 @@
 # Claude Code Agents Global Toolkit
 
-> A comprehensive collection of 72 specialized AI agents for [Claude Code](https://claude.com/claude-code), designed to enhance your development workflow with intelligent task delegation and smart agent selection.
+> A comprehensive collection of **72 specialized AI agents** for [Claude Code](https://claude.com/claude-code), designed to enhance your development workflow with intelligent task delegation and smart agent selection.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -11,16 +11,16 @@
 
 A production-ready toolkit of **72 specialized AI agents** that work with Claude Code through **two AI personas**:
 
-**Choose Your Persona:**
 - **Maestro**: Full-featured with RULEBOOK enforcement, 4-mode workflow, bilingual support
-- **Coordinator**: Lightweight task router with generic best practices, simplified workflow
+- **Coordinator**: Lightweight task router with generic best practices
 
-Both personas provide:
-- ✅ Access to all 72 specialized agents
+**Key Features:**
+- ✅ 72 specialized agents (10 core + 62 specialized)
 - ✅ Automatic task routing and delegation
-- ✅ Code quality enforcement
-- ✅ Production-grade workflows
+- ✅ Production-grade code quality enforcement
+- ✅ Global installation (one setup, use everywhere)
 - ✅ Context7 integration for latest docs
+- ✅ Stack-aware agent activation
 
 ---
 
@@ -28,300 +28,108 @@ Both personas provide:
 
 ### Step 1: Global Installation (Once)
 
-Install the toolkit globally to `~/.claude-global/`:
-
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh)
 ```
 
-This installs:
-- ✅ All 72 agents
-- ✅ Both personas (Maestro + Coordinator)
-- ✅ All utility scripts
-- ✅ Shell aliases (`claude-*` commands)
-
-**Installation time:** < 2 minutes
+This installs **all 72 agents + both personas** to `~/.claude-global/` in **< 2 minutes**.
 
 ### Step 2: Initialize Your Project
 
-In any project directory, run:
-
 ```bash
+cd your-project
 claude-init
 ```
 
-You'll choose your AI persona:
-
-```
-🎭 Choose Your AI Persona
-
-[1] Maestro - Full-featured with RULEBOOK enforcement
-    → Recommended for production projects
-    • Learns your project patterns (RULEBOOK)
-    • 4-mode workflow (Planning → Dev → Review → Commit)
-    • Smart agent selection based on your stack
-    • Context7 integration for latest docs
-    • Bilingual support (English/Spanish)
-
-[2] Coordinator - Lightweight task router
-    → Good for quick prototypes or generic projects
-    • Generic best practices (no RULEBOOK)
-    • Simplified 3-step workflow
-    • Keyword-based agent routing
-    • English only
-
-Enter your choice [1-2]:
-```
-
-**What it does:**
-- ✅ Creates `.claude/` with persona-specific symlinks
-- ✅ Adds `.claude/` to `.gitignore`
-- ✅ **Maestro**: Prompts RULEBOOK creation on first interaction
-- ✅ **Coordinator**: Ready to use immediately (no RULEBOOK needed)
-
-**Time:** < 10 seconds
+Choose your persona:
+- **[1] Maestro** → Production projects, RULEBOOK enforcement, bilingual
+- **[2] Coordinator** → Quick prototypes, generic best practices
 
 ### Step 3: Start Coding
 
 ```bash
-# Open Claude Code in your project
-claude
-
-# Activate your chosen persona
-/maestro      # If you chose Maestro
-/coordinator  # If you chose Coordinator
+claude              # Open Claude Code
+/maestro            # Or /coordinator
 ```
 
-**First time with Maestro?** It will auto-generate your RULEBOOK by scanning your project files.
+**First time with Maestro?** It will auto-generate your RULEBOOK by scanning your project (2-3 min).
 
-**Using Coordinator?** Start delegating tasks immediately - no setup needed.
-
-### 🌍 Using in Multiple Projects
-
-The global installation makes setup instant:
-
-```bash
-cd ~/my-new-project
-claude-init              # Choose persona
-# Done! Ready to use
-```
-
-**Benefits:**
-- ✅ Share 72 agents across all projects
-- ✅ Each project chooses its own persona
-- ✅ Maestro projects have unique RULEBOOKs
-- ✅ Update once, affects all projects
-- ✅ Minimal disk space (symlinks, not copies)
+**Using Coordinator?** Start delegating tasks immediately (no setup).
 
 ---
 
 ## 🎭 Maestro vs Coordinator
 
-Choose the persona that matches your project needs:
-
 | Feature | Maestro | Coordinator |
 |---------|---------|-------------|
-| **Best For** | Production projects, long-term development | Quick prototypes, experiments, generic projects |
-| **RULEBOOK** | ✅ Required - auto-generated on first use | ❌ Not used - generic best practices |
-| **Workflow** | 4-mode (Planning → Dev → Review → Commit) | 3-step (Receive → Delegate → Report) |
-| **Agent Selection** | Smart - based on your tech stack (RULEBOOK) | Keyword-based - generic routing |
-| **Personality** | Direct, confrontational, educational | Professional, neutral, task-focused |
-| **Learning** | ✅ Learns your patterns via RULEBOOK | ❌ No learning - consistent behavior |
+| **Best For** | Production, long-term projects | Prototypes, experiments |
+| **RULEBOOK** | ✅ Auto-generated & enforced | ❌ Generic best practices |
+| **Workflow** | 4-mode (Plan → Dev → Review → Commit) | 3-step (Receive → Delegate → Report) |
+| **Agent Selection** | Smart (based on tech stack) | Keyword-based |
 | **Languages** | English + Spanish | English only |
-| **Context7 Integration** | ✅ Fetches latest docs automatically | ✅ Available but not automatic |
-| **Code Quality Gates** | ✅ Enforces RULEBOOK patterns strictly | ✅ Enforces SOLID, DRY, KISS, OWASP |
-| **Test Coverage** | From RULEBOOK (customizable) | 80% default |
-| **Commit Messages** | Matches your project style | Generic conventional commits |
+| **Learning** | ✅ Adapts to your patterns | ❌ Static behavior |
 | **Setup Time** | ~2 min (RULEBOOK generation) | Instant |
-| **Best Practices** | Your project's RULEBOOK | Hardcoded industry standards |
 
 ### When to Use Maestro
 
-✅ **Production-grade projects**
-- Long-term development
-- Team collaboration
-- Strict quality requirements
-- Custom coding patterns
-- Bilingual teams (English/Spanish)
-
-✅ **Learning & Growth**
-- Want feedback on code quality
-- Value educational explanations
-- Prefer direct communication
-- Building professional portfolio
-
-✅ **Complex Tech Stacks**
-- Multiple frameworks/tools
-- Custom architecture
-- Specific performance targets
-- Unique security requirements
+✅ Production-grade projects
+✅ Team collaboration with strict patterns
+✅ Complex tech stacks
+✅ Bilingual teams (English/Spanish)
+✅ Want educational feedback
 
 ### When to Use Coordinator
 
-✅ **Quick Projects**
-- Prototypes and MVPs
-- Proof of concepts
-- Hackathons
-- Learning new tech
+✅ Quick prototypes and MVPs
+✅ Learning new tech
+✅ Prefer faster, simpler setup
+✅ Don't need custom patterns
 
-✅ **Generic Stacks**
-- Standard frameworks (Express, React)
-- No custom patterns
-- Don't need RULEBOOK overhead
-- Prefer faster setup
-
-✅ **Consistency Over Customization**
-- Want predictable behavior
-- Prefer industry standards
-- Don't want to maintain RULEBOOK
-- English-only teams
-
-### Switching Personas
-
-You can change personas anytime:
-
-```bash
-# Reinitialize project with different persona
-claude-init
-# Choose different option [1-2]
-
-# Or manually update symlinks
-ln -sf ~/.claude-global/commands/maestro.md .claude/commands/maestro.md      # Switch to Maestro
-ln -sf ~/.claude-global/commands/coordinator.md .claude/commands/coordinator.md  # Switch to Coordinator
-```
+**Switch anytime:** Run `claude-init` and choose a different persona.
 
 ---
 
 ## 📦 What's Included
 
-### Core Agents (Always Active - 10 agents)
+### Core Agents (Always Active - 10)
 
-These agents work on **any** project, regardless of tech stack:
+Work on **any** project, regardless of tech stack:
 
-- **code-reviewer** - Comprehensive code quality review
-- **refactoring-specialist** - Code improvement and restructuring
-- **documentation-engineer** - Documentation generation and maintenance
-- **test-strategist** - Test planning and coverage analysis
-- **architecture-advisor** - System design and architecture decisions
-- **security-auditor** - Security vulnerability scanning
-- **performance-optimizer** - Performance analysis and optimization
-- **git-workflow-specialist** - Git best practices and workflow
-- **dependency-manager** - Dependency updates and security
-- **project-analyzer** - Codebase analysis and insights
+- **code-reviewer** - Code quality review
+- **refactoring-specialist** - Code improvement
+- **documentation-engineer** - Documentation generation
+- **test-strategist** - Test planning & coverage
+- **architecture-advisor** - System design
+- **security-auditor** - Security scanning
+- **performance-optimizer** - Performance analysis
+- **git-workflow-specialist** - Git best practices
+- **dependency-manager** - Dependency updates
+- **project-analyzer** - Codebase analysis
 
-### Specialized Agents (Auto-Activated - 68 agents)
+### Specialized Agents (62 agents - Auto-activated)
 
-Agents automatically activate based on your project's tech stack (detected from RULEBOOK.md):
+Automatically activate based on your tech stack:
 
-#### Frontend (8 agents)
-- react-specialist, vue-specialist, angular-specialist, svelte-specialist
-- tailwind-expert, css-architect, ui-accessibility, animation-specialist
-
-#### Backend (8 agents)
-- express-specialist, fastify-expert, nest-specialist, koa-expert
-- rest-api-architect, graphql-specialist, websocket-expert, microservices-architect
-
-#### Full-Stack Frameworks (6 agents)
-- nextjs-specialist, nuxt-specialist, remix-specialist
-- astro-specialist, sveltekit-specialist, solidstart-specialist
-
-#### Languages (8 agents)
-- typescript-pro, javascript-modernizer, python-specialist, go-specialist
-- rust-expert, java-specialist, csharp-specialist, php-modernizer
-
-#### Databases (8 agents)
-- postgres-expert, mysql-specialist, mongodb-expert, redis-specialist
-- prisma-specialist, typeorm-expert, drizzle-specialist, sequelize-expert
-
-#### Infrastructure (9 agents)
-- docker-specialist, kubernetes-expert, cicd-automation-specialist
-- aws-cloud-specialist, vercel-deployment-specialist, terraform-iac-specialist
-- cloudflare-edge-specialist, monitoring-observability-specialist, nginx-load-balancer-specialist
-
-#### Testing (7 agents)
-- jest-testing-specialist, playwright-e2e-specialist, vitest-specialist
-- cypress-specialist, testing-library-specialist, storybook-testing-specialist
-- test-automation-strategist
-
-#### Specialized Domains (8 agents)
-- react-native-mobile-specialist, electron-desktop-specialist
-- cli-tools-specialist, browser-extension-specialist
-- ai-ml-integration-specialist, blockchain-web3-specialist
-- game-development-specialist, data-pipeline-specialist
+**Frontend (8):** React, Vue, Angular, Svelte, Tailwind, CSS, UI/UX, Animations
+**Backend (8):** Express, NestJS, Fastify, Koa, GraphQL, REST, WebSocket, Microservices
+**Full-Stack (6):** Next.js, Nuxt, Remix, Astro, SvelteKit, SolidStart
+**Languages (8):** TypeScript, JavaScript, Python, Go, Rust, Java, C#, PHP
+**Databases (8):** PostgreSQL, MySQL, MongoDB, Redis, Prisma, Drizzle, TypeORM, Sequelize
+**Infrastructure (9):** Docker, Kubernetes, AWS, Vercel, Cloudflare, Terraform, CI/CD, Nginx, Monitoring
+**Testing (7):** Jest, Vitest, Playwright, Cypress, React Testing Library, Storybook, Test Automation
+**Specialized (8):** React Native, Electron, CLI Tools, Browser Extensions, AI/ML, Web3, Gaming, Data Pipelines
 
 ---
 
-## 🎭 Maestro Persona
+## ⚠️ CRITICAL: context7 MCP Server
 
-One of two available AI personas for production-grade development:
+**Claude's knowledge cutoff is January 2025. We're in January 2026.**
 
-**Core Capabilities:**
-- ✅ Enforces your RULEBOOK patterns strictly
-- ✅ Auto-generates RULEBOOK on first interaction (hybrid approach)
-- ✅ Bilingual support (English or Spanish)
-- ✅ Orchestrates agents intelligently based on tech stack
-- ✅ Educates you on WHY patterns matter
-- ✅ Structured 4-mode workflow for quality gates
-
-**Activation:** Type `/maestro` in Claude Code (after choosing Maestro during `claude-init`)
-
-**Personality:**
-- Direct, confrontational, no filter
-- Senior Architect with 15+ years experience
-- Genuine educational intent
-- Tony Stark/Jarvis dynamic with you
-
-### RULEBOOK Auto-Generation
-
-On first interaction, Maestro uses a **hybrid approach** to create your RULEBOOK:
-
-**Phase 1: Scan** - Detects project files (package.json, tsconfig.json, etc.)
-**Phase 2: Detect** - Identifies framework, language, database, ORM, styling
-**Phase 3: Show** - Displays what it found
-**Phase 4: Ask** - Requests missing details (coverage target, state management, etc.)
-**Phase 5: Generate** - Creates comprehensive RULEBOOK.md in .claude/ directory
-**Phase 6: Load** - Reads RULEBOOK and starts enforcing
-
-**Time:** ~2 minutes for full generation
-
-### 4-Mode Workflow
-
-For new features or significant changes:
-
-```
-📋 PLANNING MODE
-  → Analyze task, create plan, get approval
-
-💻 DEVELOPMENT MODE
-  → Execute plan step-by-step
-
-🔍 REVIEW MODE
-  → Show changes, get feedback, iterate
-
-📦 COMMIT MODE
-  → Generate commit message, get approval, commit
-```
-
-**Benefits:**
-- Clear communication at each step
-- User stays in control
-- No surprises or auto-commits
-- Proper commit messages matching your project's style
-- Quality gates before code, review, and commit
-
----
-
-## ⚠️ CRITICAL: context7 MCP Server (2026 Requirement)
-
-### Why You MUST Use context7
-
-**Claude's knowledge cutoff is January 2025. We're now in January 2026.**
-
-For accurate code generation, you MUST install the context7 MCP server. This allows Maestro to fetch the **latest documentation** for frameworks and libraries before generating code.
+Maestro **requires** context7 to fetch latest framework documentation before generating code.
 
 ### Quick Setup
 
-Add context7 to your `.claude/settings.json`:
+Add to your `.claude/settings.json`:
 
 ```json
 {
@@ -334,57 +142,94 @@ Add context7 to your `.claude/settings.json`:
 }
 ```
 
-### Why This Matters
-
-Without context7, Maestro will use **outdated patterns** from January 2025:
-- ❌ Old Next.js App Router patterns
-- ❌ Deprecated React hooks/APIs
-- ❌ Outdated TypeScript syntax
-- ❌ Old Tailwind CSS utilities
-- ❌ Changed Prisma/tRPC/Drizzle APIs
+**Without context7:**
+❌ Outdated Next.js/React patterns
+❌ Deprecated TypeScript syntax
+❌ Old Tailwind CSS utilities
 
 **With context7:**
-- ✅ Latest framework documentation (2026)
-- ✅ Current API syntax and patterns
-- ✅ Up-to-date best practices
-- ✅ Accurate code generation
-- ✅ No deprecated warnings
+✅ Latest framework docs (2026)
+✅ Current API syntax
+✅ Accurate code generation
 
-### How Maestro Uses context7
+**Tools that REQUIRE context7:** Next.js, React, TypeScript, Tailwind, tRPC, Prisma, Testing libraries
 
-Maestro **automatically fetches latest docs** before generating code:
+---
 
+## 🛠️ Available Commands
+
+After global installation, these commands work everywhere:
+
+### Project Management
 ```bash
-# Example workflow when you ask for Next.js code:
-1. User: "Create a server action for form submission"
-2. Maestro: [Fetches latest Next.js 15 Server Actions docs via context7]
-3. Maestro: [Generates code using 2026 patterns]
-4. Result: Code works perfectly with current Next.js version
+claude-init         # Initialize project with persona selection
 ```
 
-### Tools That REQUIRE context7
-
-- **Next.js** - App Router changes frequently
-- **React** - Server Components, new hooks, Suspense
-- **TypeScript** - New syntax, compiler options
-- **Tailwind CSS** - Utility classes, configuration
-- **tRPC, Prisma, Drizzle** - API changes
-- **Testing libraries** - Vitest, Playwright, Jest
-- **State management** - Zustand, Redux Toolkit
-
-### Verification
-
-After installing context7, test it:
-
+### Agent Management
 ```bash
-# In Claude Code with Maestro:
-/maestro
-> "Fetch the latest Next.js App Router documentation"
+claude-agents       # Interactive agent selector
+claude-test-agent   # Browse/search agents
+claude-stats        # Agent statistics
 ```
 
-If context7 is working, Maestro will successfully fetch and summarize the latest Next.js docs.
+### Maintenance
+```bash
+claude-health       # Health check
+claude-update       # Update toolkit
+claude-validate     # Validate RULEBOOK
+claude-uninstall    # Uninstall toolkit
+```
 
-**💡 Pro Tip:** context7 is automatically configured in generated RULEBOOKs. If you used `./install.sh`, you're already set up!
+### Customization
+```bash
+claude-switch-lang  # Switch Maestro language (en/es)
+claude-enhancement  # Toggle self-enhancement
+```
+
+**Full command list:** [All Commands](#-all-commands)
+
+---
+
+## 📁 Project Structure
+
+**After running `claude-init`:**
+
+```
+your-project/
+├── .claude/                     # ← Ignored by git
+│   ├── commands/
+│   │   └── maestro.md          # → Symlink (or coordinator.md)
+│   ├── .toolkit-version         # → Symlink
+│   ├── RULEBOOK.md             # 📝 Local (Maestro only, auto-generated)
+│   ├── agents-active.txt       # 📝 Local (active agents list)
+│   └── settings.local.json     # 📝 Local (Claude Code settings)
+└── .gitignore                   # .claude/ added automatically
+```
+
+**Global installation:**
+
+```
+~/.claude-global/
+├── agents/                      # 72 agents (single copy for all projects)
+│   ├── core/ (10 agents)
+│   └── pool/ (62 agents)
+└── commands/                    # Shared commands & supporting files
+    ├── maestro.md
+    ├── maestro.es.md
+    ├── coordinator.md
+    ├── rulebook-generator.md    # RULEBOOK generation logic
+    ├── agent-router.md          # Agent selection logic
+    ├── agent-intelligence.md    # Agent coordination
+    ├── workflow-modes.md        # 4-mode workflow (Maestro)
+    └── self-enhancement.md      # Learning system (Maestro)
+```
+
+**Key Points:**
+- ✅ `.claude/` is ignored by git (`.gitignore`)
+- ✅ RULEBOOK.md stays **local** (not committed)
+- ✅ Each developer generates their own RULEBOOK
+- ✅ Agents are global (shared via `~/.claude-global/`)
+- ✅ Minimal per-project footprint (only 1 symlink + local files)
 
 ---
 
@@ -392,365 +237,157 @@ If context7 is working, Maestro will successfully fetch and summarize the latest
 
 ### 1. Auto-Detection
 
-The toolkit reads your `.claude/RULEBOOK.md` to understand your stack:
+Maestro reads `.claude/RULEBOOK.md` (auto-generated on first use) to understand your stack:
 
 ```markdown
 ## Tech Stack
-
-### Frontend
-- Framework: Next.js 16
-- Language: TypeScript
-- Styling: Tailwind CSS
-
-### Backend
-- API: tRPC
-- Database: PostgreSQL
-- ORM: Prisma
+Frontend: Next.js 16, TypeScript, Tailwind CSS
+Backend: tRPC, Prisma, PostgreSQL
 ```
 
-**Auto-activated agents:**
-→ nextjs-specialist, react-specialist, typescript-pro
-→ tailwind-expert, prisma-specialist, postgres-expert
-→ rest-api-architect (tRPC uses REST-like patterns)
-
-**Total: 10 core + 7 specialized = 17 active agents**
+**Auto-activated:** nextjs-specialist, react-specialist, typescript-pro, tailwind-expert, prisma-specialist, postgres-expert
 
 ### 2. Smart Routing
 
-Tasks are automatically routed based on complexity:
+Tasks are routed based on complexity:
 
 ```
-Trivial (<10 lines)     → 0 agents  (Maestro handles directly)
-Simple (<50 lines)      → 1 agent   (Quick verification)
-Moderate (50-200 lines) → 2-4 agents (Orchestrated workflow)
-Complex (>200 lines)    → 5-10 agents (Full pipeline)
-Critical (security/auth)→ 6-12 agents (Maximum oversight)
+Simple (<50 lines)      → 1-2 agents
+Moderate (50-200 lines) → 2-4 agents
+Complex (>200 lines)    → 5-10 agents
+Critical (security)     → 6-12 agents
 ```
 
 ### 3. Multi-Agent Pipelines
 
 For complex tasks, agents work in coordinated pipelines:
 
-**Example: "Add analytics dashboard"**
 ```yaml
-Phase 1 - Architecture:
-  - architecture-advisor: Design feature
+Example: "Add analytics dashboard"
 
-Phase 2 - Implementation:
-  - [framework-specialist]: Components
-  - [database-specialist]: Queries
-  - [styling-specialist]: Layout
-
-Phase 3 - Quality:
-  - test-strategist: Test plan
-  - [testing-specialist]: Tests
-  - code-reviewer: Final review
+Phase 1: architecture-advisor designs feature
+Phase 2: nextjs-specialist, postgres-expert implement
+Phase 3: test-strategist, playwright-e2e-specialist test
+Phase 4: code-reviewer final review
 ```
 
 ---
 
-## 📚 Documentation
+## 💡 Usage Example
 
-- [Installation Guide](docs/INSTALLATION.md)
-- [Agent Selection Guide](templates/AGENT_SELECTION_GUIDE.md)
-- [MCP Integration Guide](templates/MCP_INTEGRATION_GUIDE.md)
-- [RULEBOOK Template](templates/RULEBOOK_TEMPLATE.md)
-- [Maestro Mode Guide](docs/MAESTRO_MODE.md)
+**Your Project:** Next.js 16 + TypeScript + Prisma + PostgreSQL
 
----
-
-## 💡 Usage Examples
-
-### Example 1: Next.js + TypeScript + Prisma
-
-**Your RULEBOOK.md:**
+**RULEBOOK auto-generated:**
 ```markdown
 ## Tech Stack
-Frontend: Next.js 16, React 19, TypeScript
-Backend: tRPC, Prisma
+Framework: Next.js 16
+Language: TypeScript
 Database: PostgreSQL
+ORM: Prisma
 Testing: Vitest, Playwright
 ```
 
-**Auto-activated agents:** 19 agents
+**Auto-activated agents:** 19 agents (10 core + 9 specialized)
+
 **Task:** "Add user authentication"
-**Pipeline:** 8 agents (architecture → database → backend → frontend → tests → review)
+
+**Pipeline:** 8 agents coordinate
+1. architecture-advisor → Design auth system
+2. security-auditor → Security requirements
+3. nextjs-specialist → Server actions implementation
+4. prisma-specialist → Database schema
+5. typescript-pro → Type safety
+6. test-strategist → Test plan
+7. vitest-specialist + playwright-e2e-specialist → Tests
+8. code-reviewer → Final review
+
 **Time:** ~3 hours with agent assistance
-
-### Example 2: Express + MongoDB + JavaScript
-
-**Your RULEBOOK.md:**
-```markdown
-## Tech Stack
-Backend: Express.js, JavaScript
-Database: MongoDB
-Testing: Jest
-```
-
-**Auto-activated agents:** 14 agents
-**Task:** "Fix API rate limiting bug"
-**Pipeline:** 3 agents (analyzer → fix → tests)
-**Time:** ~30 minutes
-
-### Example 3: React Native + Expo
-
-**Your RULEBOOK.md:**
-```markdown
-## Tech Stack
-Mobile: React Native, Expo SDK 52
-Language: TypeScript
-Testing: Jest, Maestro
-```
-
-**Auto-activated agents:** 16 agents
-**Task:** "Security audit of auth flow"
-**Pipeline:** 6 agents (full security audit)
-**Time:** ~6 hours (comprehensive)
 
 ---
 
 ## 🎯 Key Features
 
-### 1. Zero Configuration
+### Zero Configuration
+For common stacks (Next.js, React, Express), works out-of-the-box in < 2 minutes.
 
-For common stacks (Next.js, React, Express, etc.), the toolkit works out-of-the-box:
-- Detects your stack automatically
-- Activates relevant agents
-- Generates RULEBOOK from template
-- Ready to use in < 2 minutes
+### RULEBOOK-Driven (Maestro Mode)
+Everything adapts to **YOUR** project's patterns, conventions, and standards.
 
-### 2. RULEBOOK-Driven
+### Scalable Complexity
+Handles trivial fixes to critical security audits. Simple? No agents. Complex? Full team.
 
-Everything adapts to **YOUR** project's RULEBOOK:
-- Agents read your patterns
-- Follow your conventions
-- Enforce your standards
-- Respect your tech choices
-
-### 3. Scalable Complexity
-
-Handles tasks from trivial to critical:
-- Simple fix? No agents needed
-- Complex feature? 10 agents coordinate
-- Security audit? Full team deploys
-
-### 4. Production-Grade
-
-Built for real projects, not demos:
-- All agents updated with 2026 features
-- Modern framework patterns (React 19, Next.js 16, etc.)
+### Production-Grade
+- Updated with 2026 framework features
 - Security best practices (OWASP Top 10)
 - Performance optimization patterns
 - Accessibility compliance (WCAG 2.1 AA)
 
 ---
 
-## 🛠️ Installation Details
-
-### System Requirements
-
-- **Claude Code**: Latest version
-- **Operating System**: macOS, Linux, Windows (WSL)
-- **Node.js**: 18+ (for detection scripts)
-- **Git**: For cloning the repository
-
-### Preview Before Installing (Recommended)
-
-**Dry Run Mode - See what will be installed:**
-```bash
-./install.sh --dry-run
-# Shows:
-# - What directories will be created
-# - What files will be copied
-# - What agents will be activated
-# - No actual changes made
-```
-
-### Installation Options
-
-**Option 1: Full Installation (Recommended)**
-```bash
-./install.sh
-# Installs: 72 agents + Maestro Mode + RULEBOOK generator
-```
-
-**Option 2: Agents Only**
-```bash
-./install.sh --agents-only
-# Installs: 72 agents (skip Maestro Mode)
-```
-
-**Option 3: Custom Selection (Interactive)**
-```bash
-./install.sh --custom
-# Interactive prompts for:
-#   - Install Maestro Mode? (Y/n)
-#   - Choose language: English or Spanish (1-2)
-#   - Enable self-enhancement? (Y/n)
-# Perfect for first-time users who want guided setup
-```
-
-**Example Custom Mode Flow:**
-```bash
-$ ./install.sh --custom
-
-Custom Installation Mode
-
-Install Maestro Mode? (Y/n): y
-
-Choose Maestro communication language:
-  [1] English (default)
-  [2] Spanish (Colombian)
-
-Select option (1-2) [1]: 1
-✓ Selected: English
-
-Enable self-enhancement? (Maestro learns and adapts with your approval)
-Enable self-enhancement? (Y/n): y
-✓ Self-enhancement: Enabled
-```
-
-**Option 4: Preview Installation**
-```bash
-./install.sh --dry-run
-# Preview what will be installed without making changes
-```
-
-### What Gets Installed
-
-```
-your-project/
-└── .claude/
-    ├── agents-global/          # 72 agents
-    │   ├── core/              # 10 core agents
-    │   └── pool/              # 68 specialized agents
-    ├── commands/              # Optional: Maestro Mode
-    │   ├── maestro.md
-    │   ├── agent-intelligence.md
-    │   └── agent-router.md
-    └── RULEBOOK.md            # Generated from template (if missing)
-```
-
-### 🔒 Safety & Automatic Backups
-
-**The installer automatically protects your existing configuration:**
+## 🏥 Health Check & Validation
 
 ```bash
-# If .claude/ directory exists, a backup is created automatically
-./install.sh
-# ⚠ Existing .claude directory found!
-# A backup will be created at: .claude.backup.2026-01-07-143022
-# Continue with backup and installation? (y/N):
+# Verify installation integrity
+claude-health
+
+# Validate RULEBOOK after manual edits
+claude-validate
 ```
 
-**Backup Features:**
-- ✅ **Automatic Detection** - Installer detects existing `.claude/` directories
-- ✅ **Timestamped Backups** - Format: `.claude.backup.YYYY-MM-DD-HHMMSS/`
-- ✅ **Full Copy** - All agents, RULEBOOK, settings, and customizations preserved
-- ✅ **No Data Loss** - Installation won't proceed without backup confirmation
-- ✅ **Dry-Run Preview** - See backup plan before making changes
+**Health check validates:**
+- ✅ Installation integrity (72 agents present)
+- ✅ RULEBOOK structure and customization
+- ✅ Settings syntax
+- ✅ Version consistency
+- ✅ Common issues
 
-**Skip Backup (Not Recommended)**
-```bash
-./install.sh --skip-backup
-# Skips automatic backup creation
-# Only use if you've manually backed up your configuration
-```
-
-**Restore From Backup**
-```bash
-# If something goes wrong, restore from backup:
-rm -rf .claude
-mv .claude.backup.2026-01-07-143022 .claude
-```
-
-**Dry-Run Preview**
-```bash
-./install.sh --dry-run
-# Shows:
-# - Whether backup would be created
-# - Backup location
-# - What files would be installed
-# - No actual changes made
-```
-
-### 🔍 Conflict Detection
-
-**The installer automatically detects potential conflicts before making changes:**
-
-**Types of Conflicts Detected:**
-
-1. **Version Conflicts**
-   - Detects existing toolkit version
-   - Recommends using `./update.sh` instead of reinstalling
-   - Prevents version mismatches
-
-2. **Partial Installations**
-   - Identifies missing critical directories (agents-global/)
-   - Detects missing critical files (RULEBOOK.md)
-   - Warns about potentially corrupted installations
-
-3. **Custom Agent Conflicts**
-   - Counts agents in pool directory
-   - Warns if custom agents might be overwritten
-   - Preserves your custom work
-
-4. **RULEBOOK Format Issues**
-   - Validates required sections exist
-   - Detects outdated format (GENTLEMAN MODE → MAESTRO MODE)
-   - Ensures compatibility
-
-5. **Multiple Maestro Files**
-   - Detects duplicate maestro configurations
-   - Ensures clean installation
-
-6. **Permission Conflicts** (Critical)
-   - Checks write permissions on .claude directory
-   - Provides fix command if needed
-   - Prevents installation failure
-
-7. **Symbolic Link Detection**
-   - Warns if .claude is a symlink
-   - Alerts about potential impact on linked locations
-
-8. **Settings Validation**
-   - Validates settings.json syntax
-   - Detects invalid JSON
-   - Prevents configuration issues
-
-**Example Output:**
-
-```bash
-./install.sh
-
-ℹ Checking for potential conflicts...
-
-⚠ Partial installation detected:
-  → Missing: .claude/agents-global/
-  → Missing: .claude/RULEBOOK.md
-  → This may indicate a corrupted installation
-
-⚠ Warnings detected. Review the issues above.
-
-These are non-critical but may require attention.
-Continue with installation anyway? (y/N):
-```
-
-**Conflict Types:**
-- **Critical Conflicts** - Installation cannot proceed (e.g., permission errors)
-- **Warnings** - Installation can continue but may need attention
-
-**Resolution:**
-- Follow the recommendations provided in warnings
-- Use `./update.sh` for version updates
-- Fix permissions with suggested commands
-- Review and backup custom work before proceeding
+**Exit codes:**
+- **0** - All checks passed
+- **1** - Warnings (mostly healthy)
+- **2** - Critical failures (needs attention)
 
 ---
 
-## 🛠️ Available Commands
+## 🔄 Updates & Migration
 
-After global installation, these `claude-*` commands are available everywhere:
+```bash
+# Check for updates
+claude-update --check
+
+# Update everything (preserves RULEBOOK, settings, language)
+claude-update
+
+# Migrate between major versions (v1 → v2)
+claude-migrate
+```
+
+**Automatic backups** are created before all updates and migrations.
+
+**What's preserved:**
+- ✅ RULEBOOK.md
+- ✅ settings.local.json
+- ✅ Maestro language preference
+- ✅ Self-enhancement state
+
+---
+
+## 📚 Documentation
+
+Detailed guides for specific topics:
+
+- **[Installation Guide](docs/INSTALLATION.md)** - Installation options, dry-run mode, conflict detection
+- **[Agent Selection Guide](templates/AGENT_SELECTION_GUIDE.md)** - How to choose the right agents
+- **[MCP Integration Guide](templates/MCP_INTEGRATION_GUIDE.md)** - context7 setup and troubleshooting
+- **[RULEBOOK Template](templates/RULEBOOK_TEMPLATE.md)** - Customize your RULEBOOK
+- **[Maestro Mode Guide](docs/MAESTRO_MODE.md)** - Deep dive into Maestro features
+- **[All Commands](#-all-commands)** - Complete command reference (below)
+
+---
+
+## 🛠️ All Commands
+
+<details>
+<summary><strong>Click to expand full command reference</strong></summary>
 
 ### Project Setup
 
@@ -795,1087 +432,21 @@ After global installation, these `claude-*` commands are available everywhere:
 | `claude-export` | Export configuration to portable format | Sharing setup with team |
 | `claude-import` | Import configuration from export file | Applying team config |
 
-### Quick Examples
-
-```bash
-# Setup new project
-cd ~/my-project
-claude-init                    # Choose Maestro or Coordinator
-
-# Manage agents
-claude-agents                  # Interactive agent selector
-claude-test-agent --search react  # Find React-related agents
-claude-stats                   # See agent activation stats
-
-# Validate configuration
-claude-validate                # Check RULEBOOK validity
-
-# Maintenance
-claude-health                  # Check installation health
-claude-update                  # Update to latest version
-
-# Customization
-claude-switch-lang es          # Switch Maestro to Spanish
-claude-enhancement on          # Enable self-enhancement
-```
-
-**Note:** All commands work from any directory once globally installed. For project-specific commands (like `claude-agents`), run them from within a project initialized with `claude-init`.
-
----
-
-## 🎯 Agent Management
-
-### Interactive Agent Selector
-
-Easily activate/deactivate specific agents with an interactive menu:
-
-```bash
-claude-agents
-# Or use the full path:
-# ~/.claude-global/scripts/select-agents.sh
-```
-
-### Features
-
-- **Browse by Category** - Organized by Frontend, Backend, Languages, etc.
-- **Visual Selection** - See which agents are active at a glance
-- **Bulk Actions** - Activate/deactivate entire categories
-- **Auto-save** - Changes saved directly to RULEBOOK.md
-- **Safe** - Creates backup before modifying RULEBOOK
-
-### Categories
-
-The agent selector organizes all 72 agents into 9 categories:
-
-1. **Core Agents (10)** - Always recommended for any project
-2. **Frontend Frameworks (8)** - React, Vue, Angular, Svelte, etc.
-3. **Backend Frameworks (8)** - Express, NestJS, Fastify, etc.
-4. **Full-Stack Frameworks (6)** - Next.js, Nuxt, Remix, etc.
-5. **Programming Languages (8)** - TypeScript, Python, Go, Rust, etc.
-6. **Databases & ORMs (8)** - PostgreSQL, MongoDB, Prisma, etc.
-7. **Infrastructure & DevOps (9)** - Docker, Kubernetes, AWS, etc.
-8. **Testing Frameworks (7)** - Jest, Playwright, Vitest, etc.
-9. **Specialized Domains (8)** - Mobile, Desktop, Web3, AI/ML, etc.
-
-### Usage Example
-
-```bash
-$ scripts/select-agents.sh
-
-╔══════════════════════════════════════════════════════╗
-║  🎯 Claude Code Agents Selector                  ║
-╚══════════════════════════════════════════════════════╝
-
-Select agent category to configure:
-
-  [1] Core Agents (10 agents)
-  [2] Frontend Frameworks (8 agents)
-  [3] Backend Frameworks (8 agents)
-  [4] Full-Stack Frameworks (6 agents)
-  [5] Languages (8 agents)
-  [6] Databases & ORMs (8 agents)
-  [7] Infrastructure & DevOps (9 agents)
-  [8] Testing Frameworks (7 agents)
-  [9] Specialized Domains (8 agents)
-
-  [A] Activate All Agents
-  [D] Deactivate All Agents (keep core)
-  [S] Show Current Selection
-  [Q] Save & Quit
-
-Select option: 2
-
-# After selecting Frontend Frameworks:
-
-Frontend Frameworks
-
-  [1] [✓] react-specialist
-  [2] [ ] vue-specialist
-  [3] [ ] angular-specialist
-  [4] [✓] svelte-specialist
-  [5] [✓] tailwind-expert
-  [6] [ ] css-architect
-  [7] [✓] ui-accessibility
-  [8] [ ] animation-specialist
-
-  [A] Activate All in Category
-  [D] Deactivate All in Category
-  [B] Back to Main Menu
-
-Select option: 2
-# Toggles vue-specialist activation
-
-# Press 'Q' when done to save changes
-```
-
-### Quick Actions
-
-- **Activate All Agents** - Press 'A' from main menu to enable all 72 agents
-- **Deactivate All** - Press 'D' to keep only core 10 agents
-- **Show Current** - Press 'S' to see list of active agents
-- **Save & Quit** - Press 'Q' to save to RULEBOOK and exit
-
-### What Gets Modified
-
-The agent selector updates the `## Active Agents` section in your RULEBOOK.md:
-
-**Before:**
-```markdown
-## Active Agents
-
-- code-reviewer
-- refactoring-specialist
-- nextjs-specialist
-- react-specialist
-```
-
-**After (added vue-specialist):**
-```markdown
-## Active Agents
-
-- code-reviewer
-- refactoring-specialist
-- nextjs-specialist
-- react-specialist
-- vue-specialist
-```
-
-### Safety
-
-- ✅ **Backup Created** - `.claude/RULEBOOK.md.backup` before saving
-- ✅ **No Data Loss** - Only updates Active Agents section
-- ✅ **Preserves Custom Content** - All other RULEBOOK sections untouched
-- ✅ **Easy Rollback** - Restore from backup if needed
-
-### Agent Testing & Inspection
-
-Inspect individual agents and see example use cases:
-
-```bash
-scripts/test-agent.sh
-```
-
-**Features:**
-- **List All Agents** - See all 72 agents organized by category
-- **Search Agents** - Find agents by keyword
-- **Agent Details** - View description, examples, and activation status
-- **Filter by Category** - Browse agents by type (core, frontend, backend, etc.)
-- **Active Agents** - See which agents are currently enabled in RULEBOOK
-
-**Usage Examples:**
-
-```bash
-# List all available agents
-scripts/test-agent.sh --list
-
-# Search for React-related agents
-scripts/test-agent.sh --search react
-
-# Get detailed info about an agent
-scripts/test-agent.sh --info nextjs-specialist
-
-# See example use cases
-scripts/test-agent.sh --examples code-reviewer
-
-# List agents by category
-scripts/test-agent.sh --category frontend
-
-# Show currently active agents
-scripts/test-agent.sh --active
-```
-
-**Example Output:**
-
-```bash
-$ scripts/test-agent.sh --info nextjs-specialist
-
-Agent: nextjs-specialist
-
-Status: ACTIVE
-Category: frontend
-
-Description:
-Next.js expert: App Router, RSC, Server Actions, ISR, SSR, SSG, routing
-
-Example Use Cases:
-  • Implement server actions for this form
-  • Optimize this page with ISR
-  • Convert this to use App Router
-
-To activate this agent:
-  1. Run: scripts/select-agents.sh
-  2. Navigate to frontend category
-  3. Toggle nextjs-specialist
-```
-
-**When to Use:**
-- 🔍 Explore available agents before activating
-- 📚 Learn what each agent specializes in
-- 💡 Find the right agent for your task
-- ✅ Verify which agents are currently active
-
-### Agent Statistics & Analytics
-
-Get insights about your agent configuration and optimization recommendations:
-
-```bash
-scripts/agent-stats.sh
-```
-
-**Features:**
-- **Activation Overview** - Total active vs available agents
-- **Category Breakdown** - Visual progress bars for each category
-- **Performance Analysis** - Context usage and impact estimates
-- **Smart Recommendations** - Suggestions based on your stack
-- **Project Size Guidance** - Optimal agent counts for small/medium/large projects
-
-**Usage Examples:**
-
-```bash
-# Quick summary (default)
-scripts/agent-stats.sh
-
-# Detailed breakdown by category
-scripts/agent-stats.sh --detailed
-
-# Get optimization recommendations
-scripts/agent-stats.sh --recommendations
-
-# Performance impact analysis
-scripts/agent-stats.sh --performance
-```
-
-**Example Output:**
-
-```bash
-$ scripts/agent-stats.sh
-
-📊 Agent Statistics Summary
-
-Overall:
-  Total Agents Available: 78
-  Total Agents Active:    15
-  Activation Rate:        ████████████░░░░░░░░░░░░░░░░  19% (15/72)
-
-By Category:
-  Core             ██████████████████████████████████████████  100% (10/10)
-  Frontend         ████████████░░░░░░░░░░░░░░░░  38% (3/8)
-  Backend          ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
-  Full-Stack       ████████████████░░░░░░░░░░░░  33% (2/6)
-  Languages        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
-  Databases        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
-  Infrastructure   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/9)
-  Testing          ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/7)
-  Specialized      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0% (0/8)
-
-Quick Check:
-  ✓  All core agents active
-  ✓  Balanced activation (19%)
-```
-
-**Performance Analysis:**
-
-```bash
-$ scripts/agent-stats.sh --performance
-
-⚡ Performance Impact Analysis
-
-Context Usage:
-  Base System:        ~5000 tokens
-  Agents (15 active): ~3000 tokens (200 per agent)
-  Total Estimated:    ~8000 tokens
-
-Performance Impact:
-  ✓ Minimal - Optimal for all project sizes
-
-Recommendations by Project Size:
-
-  Small Projects (< 1000 lines):
-    Suggested: 10-15 agents (Core + main stack)
-    Your setup: ✓ Optimal (15 agents)
-
-  Medium Projects (1K-10K lines):
-    Suggested: 15-25 agents (Core + stack + domain)
-    Your setup: ✓ Optimal (15 agents)
-
-  Large Projects (10K+ lines):
-    Suggested: 25-40 agents (Core + full stack + specialized)
-    Your setup: Room for 15 more specialized agents
-```
-
-**Smart Recommendations:**
-
-The recommendations mode analyzes your RULEBOOK to detect your tech stack and suggests relevant agents:
-
-```bash
-$ scripts/agent-stats.sh --recommendations
-
-💡 Agent Optimization Recommendations
-
-Current Configuration:
-  Active Agents: 15 / 78 (19%)
-
-1. Core Agents (Essential)
-   ✓ All core agents active
-
-2. Stack-Specific Agents
-   💡 Detected Next.js - consider activating:
-      • nextjs-specialist
-      • react-specialist
-
-   💡 Detected PostgreSQL - consider activating:
-      • postgres-expert
-      • prisma-orm-specialist
-
-3. Activation Density
-   ✓ Good balance (19%)
-```
-
-**When to Use:**
-- 📊 Understand your current agent configuration
-- 🎯 Optimize agent activation for your project size
-- 💡 Get suggestions based on detected tech stack
-- ⚡ Analyze performance impact
-- 🔧 Fine-tune agent selection
-
----
-
-## ✓ RULEBOOK Validation
-
-### Validate Your RULEBOOK
-
-Ensure your RULEBOOK.md is properly formatted and configured:
-
-```bash
-claude-validate
-# Or use the full path:
-# ~/.claude-global/scripts/validate-rulebook.sh
-```
-
-### Validation Checks
-
-The validator performs 8 comprehensive checks:
-
-1. **File Existence** - Verifies RULEBOOK.md exists
-2. **Required Sections** - Ensures Project Overview, Tech Stack, Active Agents sections present
-3. **No Duplicates** - Detects duplicate section headers
-4. **Active Agents Validity** - Validates agent names against available agents
-5. **Tech Stack Documentation** - Checks for framework and language documentation
-6. **Markdown Formatting** - Validates heading hierarchy and structure
-7. **Outdated Content** - Detects old naming (GENTLEMAN MODE, WRAPUP MODE)
-8. **File Permissions** - Checks read/write permissions
-
-### Example Output
-
-```bash
-$ scripts/validate-rulebook.sh
-
-╔══════════════════════════════════════════════════════╗
-║  ✓ RULEBOOK Validator                            ║
-╚══════════════════════════════════════════════════════╝
-
-ℹ Checking RULEBOOK.md existence...
-✓ RULEBOOK.md exists
-
-ℹ Checking required sections...
-✓ Section found: Project Overview
-✓ Section found: Tech Stack
-✓ Section found: Active Agents
-
-ℹ Checking for duplicate sections...
-✓ No duplicate sections found
-
-ℹ Validating Active Agents section...
-✓ Active Agents section has 15 agents
-ℹ Validating agent names...
-✓ All agent names are valid
-
-ℹ Checking Tech Stack section...
-✓ Tech Stack section exists
-✓ Framework documented
-✓ Language documented
-
-ℹ Checking markdown formatting...
-✓ Markdown heading hierarchy is correct
-✓ Basic markdown formatting validated
-
-ℹ Checking for outdated content...
-✓ No outdated content detected
-
-ℹ Checking file permissions...
-✓ RULEBOOK is readable
-✓ RULEBOOK is writable
-
-═══════════════════════════════════════════════════════
-  Validation Summary
-═══════════════════════════════════════════════════════
-
-Passed:   16 checks
-Warnings: 0 issues
-Errors:   0 critical issues
-
-✓ RULEBOOK is valid!
-```
-
-### Exit Codes
-
-Use exit codes in scripts or CI/CD pipelines:
-
-- **0** - RULEBOOK is valid (no warnings or errors)
-- **1** - RULEBOOK has warnings (usable but could be improved)
-- **2** - RULEBOOK has critical errors (needs fixes)
-
-```bash
-# Use in CI/CD
-scripts/validate-rulebook.sh && echo "RULEBOOK is valid!" || echo "RULEBOOK needs attention"
-
-# Check exit code
-scripts/validate-rulebook.sh
-if [ $? -eq 0 ]; then
-    echo "✓ RULEBOOK validated successfully"
-fi
-```
-
-### Common Issues & Fixes
-
-**Missing Required Sections:**
-```markdown
-## Project Overview
-Your project description here
-
-## Tech Stack
-- Framework: Next.js
-- Language: TypeScript
-
-## Active Agents
-- code-reviewer
-- nextjs-specialist
-```
-
-**Invalid Agent Names:**
-- Check agent name spelling
-- Verify agent exists in `.claude/agents-global/`
-- Use `./select-agents.sh` to manage agents
-
-**Outdated Content:**
-- Replace "GENTLEMAN MODE" with "MAESTRO MODE"
-- Replace "WRAPUP MODE" with "COMMIT MODE"
-- Run `./migrate.sh` if upgrading from old versions
-
-### When to Validate
-
-- ✅ After manual RULEBOOK edits
-- ✅ Before committing RULEBOOK changes
-- ✅ After using `claude-agents` to modify active agents
-- ✅ In CI/CD pipelines for quality checks
-- ✅ After migrating from old toolkit versions with `claude-migrate`
-
----
-
-## 🌐 Language Switching
-
-### Change Maestro Language Without Reinstalling
-
-Switch between English and Spanish Maestro Mode instantly:
-
-**Toggle Language (Auto-detect current)**
-```bash
-claude-switch-lang
-# Automatically switches to the other language
-```
-
-**Switch to Specific Language**
-```bash
-claude-switch-lang es        # Switch to Spanish
-claude-switch-lang english   # Switch to English
-```
-
-### What Gets Changed
-
-- ✅ **Maestro Communication** - Language for responses and messages
-- ✅ **Automatic Backup** - Creates `.claude/commands/maestro.md.backup`
-
-### What Stays the Same
-
-- ✅ **All Agents** - 72 agents remain unchanged
-- ✅ **RULEBOOK** - Your project patterns preserved
-- ✅ **Settings** - All configurations intact
-- ✅ **Self-Enhancement** - Enabled/disabled state preserved
-- ✅ **Code Language** - Always English, regardless of communication language
-
-### Quick Examples
-
-```bash
-# Currently English → Switch to Spanish
-scripts/switch-language.sh es
-
-# Currently Spanish → Switch to English
-scripts/switch-language.sh en
-
-# Don't know current language? Toggle it
-scripts/switch-language.sh
-
-# Restore previous language
-mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
-```
-
-**No reinstallation required!** Changes take effect immediately when you next activate Maestro.
-
----
-
-## 🔧 Self-Enhancement Toggle
-
-### Enable/Disable Self-Enhancement Without Reinstalling
-
-Control Maestro's learning capability with a simple toggle:
-
-```bash
-claude-enhancement
-# Or use the full path:
-# ~/.claude-global/scripts/toggle-enhancement.sh
-```
-
-### What is Self-Enhancement?
-
-Self-enhancement allows Maestro to:
-- ✅ **Learn from interactions** - Adapts to your feedback
-- ✅ **Remember patterns** - Learns your coding style preferences
-- ✅ **Improve over time** - Gets better at helping you
-- ✅ **Requires approval** - All changes need your explicit approval
-
-When disabled:
-- ⚡ **Static behavior** - Consistent, predictable responses
-- ⚡ **No learning** - Same behavior every session
-- ⚡ **Faster** - No learning overhead
-
-### Usage
-
-**Toggle Current State**
-```bash
-scripts/toggle-enhancement.sh
-# Auto-detects and switches: enabled → disabled or disabled → enabled
-```
-
-**Enable Self-Enhancement**
-```bash
-scripts/toggle-enhancement.sh on
-# or
-scripts/toggle-enhancement.sh enable
-```
-
-**Disable Self-Enhancement**
-```bash
-scripts/toggle-enhancement.sh off
-# or
-scripts/toggle-enhancement.sh disable
-```
-
-**Check Current Status**
-```bash
-scripts/toggle-enhancement.sh status
-```
-
-### Example Output
-
-```bash
-$ scripts/toggle-enhancement.sh
-
-╔══════════════════════════════════════════════════════╗
-║  🔧 Self-Enhancement Toggle                      ║
-╚══════════════════════════════════════════════════════╝
-
-ℹ Running from project directory
-ℹ Detecting current self-enhancement state...
-✓ Self-enhancement is currently: DISABLED
-
-ℹ Toggle mode: DISABLED → ENABLED
-
-ℹ Enabling self-enhancement...
-✓ Self-enhancement enabled
-
-What this means:
-  • Maestro can now learn from interactions
-  • Improvements require your approval
-  • Learning is stored in .claude/commands/self-enhancement.md
-
-════════════════════════════════════════════════════════
-  Self-Enhancement Enabled!
-════════════════════════════════════════════════════════
-
-Next time you use Maestro Mode:
-  • Maestro will be able to learn
-  • All changes require your approval
-  • Learning stored in: .claude/commands/self-enhancement.md
-
-Activate Maestro: /maestro in Claude Code
-```
-
-### How It Works
-
-**When Enabled:**
-- File exists: `.claude/commands/self-enhancement.md`
-- Maestro reads and updates this file as it learns
-- All updates require your approval
-- Learning persists across sessions
-
-**When Disabled:**
-- File removed (backed up to `.backup`)
-- Maestro uses static behavior
-- No learning or adaptation
-- Previous learning preserved in backup
-
-### Safety Features
-
-- ✅ **Automatic Backup** - Creates `.claude/commands/self-enhancement.md.backup` before disabling
-- ✅ **No Reinstallation** - Changes take effect immediately
-- ✅ **Easy Rollback** - Restore from backup anytime
-- ✅ **No Data Loss** - Previous learning always preserved
-
-### Restore Previous Learning
-
-If you disabled self-enhancement and want to restore previous learning:
-
-```bash
-mv .claude/commands/self-enhancement.md.backup .claude/commands/self-enhancement.md
-```
-
-### When to Use Each Mode
-
-**Enable Self-Enhancement:**
-- 👍 Working on a long-term project
-- 👍 Want Maestro to learn your patterns
-- 👍 Willing to approve improvements
-- 👍 Value adaptive assistance
-
-**Disable Self-Enhancement:**
-- 👍 Quick tasks or experiments
-- 👍 Want consistent behavior
-- 👍 Prefer faster responses
-- 👍 Don't want to manage approvals
-
----
-
-## 🪝 Git Hooks Integration
-
-### Automated Code Quality Gates
-
-Automatically validate code and enforce standards on git events:
-
-```bash
-scripts/install-git-hooks.sh --all
-```
-
-### Available Hooks
-
-**pre-commit** - Runs before each commit
-- ✅ Validates RULEBOOK.md if modified
-- ✅ Checks for large files (>1MB)
-- ✅ Detects merge conflict markers
-- ✅ Warns about debugging statements
-- ⚠️ Blocks commit if validation fails
-
-**pre-push** - Runs before pushing to remote
-- ✅ Comprehensive RULEBOOK validation
-- ✅ Checks toolkit version
-- ✅ Ensures project is ready for remote
-- ⚠️ Blocks push if validation fails
-
-**commit-msg** - Validates commit message format
-- ✅ Enforces minimum message length (10 chars)
-- ✅ Suggests conventional commits format
-- ⚠️ Blocks commit if message too short
-- 💡 Warns but allows non-conventional format
-
-**post-merge** - Runs after git pull/merge (informational)
-- 📢 Notifies if RULEBOOK.md changed
-- 📢 Suggests running healthcheck
-- 📢 Detects dependency updates
-- ✅ Non-blocking (informational only)
-
-### Installation
-
-```bash
-# Install all hooks (recommended)
-scripts/install-git-hooks.sh --all
-
-# Install specific hooks
-scripts/install-git-hooks.sh --pre-commit
-scripts/install-git-hooks.sh --pre-push
-scripts/install-git-hooks.sh --commit-msg
-scripts/install-git-hooks.sh --post-merge
-
-# Uninstall all hooks
-scripts/install-git-hooks.sh --uninstall
-```
-
-### Example Output
-
-```bash
-$ scripts/install-git-hooks.sh --all
-
-╔══════════════════════════════════════════════════════╗
-║  🪝 Git Hooks Installation                        ║
-║     Automated code quality & validation           ║
-╚══════════════════════════════════════════════════════╝
-
-✓ Git repository detected
-
-ℹ Installing pre-commit hook...
-✓ pre-commit hook installed
-
-ℹ Installing pre-push hook...
-✓ pre-push hook installed
-
-ℹ Installing commit-msg hook...
-✓ commit-msg hook installed
-
-ℹ Installing post-merge hook...
-✓ post-merge hook installed
-
-Installed Hooks:
-
-  ✓ pre-commit
-  ✓ pre-push
-  ✓ commit-msg
-  ✓ post-merge
-
-All hooks installed successfully!
-
-Hooks can be skipped with:
-  git commit --no-verify
-  git push --no-verify
-```
-
-### Skipping Hooks
-
-Sometimes you need to bypass hooks (use sparingly):
-
-```bash
-# Skip pre-commit and commit-msg hooks
-git commit --no-verify -m "emergency fix"
-
-# Skip pre-push hook
-git push --no-verify
-
-# Skip all hooks for this commit
-git commit --no-verify && git push --no-verify
-```
-
-### Safety Features
-
-- ✅ **Automatic Backup** - Existing hooks are backed up before installation
-- ✅ **Timestamped Backups** - `.git/hooks/pre-commit.backup.YYYYMMDD-HHMMSS`
-- ✅ **Easy Rollback** - Restore from backup if needed
-- ✅ **Clean Uninstall** - Remove all toolkit hooks with `--uninstall`
-
-### When to Use
-
-**Install hooks for:**
-- 👍 Team projects (enforce quality standards)
-- 👍 Open source repositories (maintain consistency)
-- 👍 Long-term projects (prevent quality drift)
-- 👍 CI/CD pipelines (pre-validation before remote)
-
-**Skip hooks for:**
-- 👎 Quick experiments or prototypes
-- 👎 Solo projects where you prefer flexibility
-- 👎 Emergency hotfixes (use --no-verify)
-- 👎 Projects with custom git workflows
-
-### Benefits
-
-**Code Quality:**
-- Catch issues before they reach remote
-- Enforce RULEBOOK compliance
-- Prevent common mistakes
-- Maintain commit message standards
-
-**Team Collaboration:**
-- Consistent quality gates
-- Shared standards enforcement
-- Reduce PR review time
-- Prevent broken builds
-
-**Developer Experience:**
-- Immediate feedback (no waiting for CI)
-- Optional bypass with --no-verify
-- Informational post-merge notifications
-- Easy to install/uninstall
-
----
-
-## 🏥 Health Check
-
-### Verify Your Installation
-
-Run a comprehensive health check to verify installation integrity:
-
-```bash
-claude-health
-# Or use the full path:
-# ~/.claude-global/scripts/healthcheck.sh
-```
-
-### What Gets Checked
-
-The health check validates:
-
-- ✅ **Installation Integrity** - Verifies .claude directory exists
-- ✅ **Directory Structure** - Checks all required directories
-- ✅ **Core Agents** - Validates 10 core agents present
-- ✅ **Specialized Agents** - Checks 68 specialized agents
-- ✅ **Maestro Mode** - Verifies Maestro installation
-- ✅ **RULEBOOK** - Validates RULEBOOK structure and customization
-- ✅ **Version Info** - Shows installed version
-- ✅ **Settings** - Validates settings.local.json syntax
-- ✅ **Common Issues** - Detects duplicate files, old backups
-- ✅ **Documentation** - Checks required docs present
-
-### Health Check Output
-
-```bash
-# Example output:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Health Check Summary
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Total Checks: 25
-  ✓ Passed: 23
-  ⚠ Warnings: 2
-  ✗ Failed: 0
-
-════════════════════════════════════════════════════════
-  ⚠ GOOD - Minor warnings found
-════════════════════════════════════════════════════════
-```
-
-### Exit Codes
-
-- **0** - All checks passed (healthy)
-- **1** - Warnings found (mostly healthy)
-- **2** - Critical failures (needs attention)
-
-### Options
-
-```bash
-scripts/healthcheck.sh --help       # Show help
-scripts/healthcheck.sh --verbose    # Show detailed info
-```
-
-Use health check to diagnose issues before reporting bugs or after updates.
-
----
-
-## 🔄 Updates
-
-### Keeping Your Toolkit Up-to-Date
-
-**Check for Updates**
-```bash
-claude-update --check
-# Shows current and latest versions without installing
-```
-
-**Update Everything (Recommended)**
-```bash
-claude-update
-# Updates: Agents + Maestro + Coordinator
-# Preserves: RULEBOOK, settings, language preference
-# Creates automatic backup
-```
-
-**Partial Updates**
-```bash
-claude-update --agents-only      # Update only agents
-claude-update --maestro-only     # Update only Maestro Mode
-```
-
-### What Gets Preserved
-
-All your customizations are automatically preserved during updates:
-
-- ✅ **RULEBOOK.md** - Your project patterns and conventions
-- ✅ **settings.local.json** - Your Claude Code settings
-- ✅ **Maestro Language** - English or Spanish preference
-- ✅ **Self-Enhancement** - Enabled/disabled state
-
-### Version Management
-
-The toolkit tracks versions in `.claude/.toolkit-version`:
-
-```bash
-# Check current version
-cat .claude/.toolkit-version
-
-# Compare with latest
-scripts/update.sh --check
-```
-
-### Update Safety
-
-- ✅ **Automatic Backup**: Creates `.claude.backup.YYYY-MM-DD-HHMMSS/` before updating
-- ✅ **Preserves Customizations**: RULEBOOK and settings remain intact
-- ✅ **Language Preserved**: Maestro keeps your language preference
-- ✅ **Reversible**: Easy rollback from backup if needed
-
----
-
-## 🔄 Version Migration
-
-### Migrating Between Major Versions
-
-For major version changes (e.g., v1.0.0 → v2.0.0), use the migration script:
-
-```bash
-claude-migrate
-# Or use the full path:
-# ~/.claude-global/scripts/migrate.sh
-```
-
-### What migrate.sh Does
-
-The migration script handles version-specific updates while preserving all your customizations:
-
-**What Gets Migrated:**
-- ✅ **Agents** → Updated to latest version (72 agents)
-- ✅ **Documentation** → Latest guides and templates
-- ✅ **Agent Formats** → Updated to new format if changed
-- ✅ **Maestro Mode** → Updated to latest version
-- ✅ **Version File** → Tracks current version
-
-**What Gets Preserved:**
-- ✅ **RULEBOOK.md** → Your custom configuration (100% preserved)
-- ✅ **settings.json** → Your Claude Code settings
-- ✅ **settings.local.json** → Your local overrides
-- ✅ **Custom modifications** → All changes preserved
-
-**Safety Features:**
-- ✅ **Automatic Backup** → `.claude.migration-backup.YYYY-MM-DD-HHMMSS/`
-- ✅ **RULEBOOK Backup** → `.claude/RULEBOOK.md.pre-migration`
-- ✅ **Version Detection** → Automatically detects current version
-- ✅ **Easy Rollback** → Restore from backup if needed
-
-### When to Use Each Tool
-
-```bash
-# Regular updates (same major version)
-scripts/update.sh               # v1.0.0 → v1.1.0
-
-# Major version migrations
-scripts/migrate.sh              # v1.0.0 → v2.0.0
-
-# Fresh installation
-./install.sh              # New installation or complete reinstall
-```
-
-### Migration Example
-
-```bash
-$ scripts/migrate.sh
-
-🔄 Claude Code Agents Toolkit Migration Tool
-
-✓ Current version detected: 1.0.0
-ℹ Target version: 2.0.0
-
-Migration Plan:
-  • Backup current installation
-  • Preserve RULEBOOK customizations
-  • Preserve settings files
-  • Update agents to 2.0.0
-  • Update documentation
-  • Update version file
-
-Proceed with migration? (y/N): y
-
-ℹ Creating migration backup...
-✓ Backup created: .claude.migration-backup.2026-01-07-104530
-
-ℹ Preserving RULEBOOK customizations...
-⚠ RULEBOOK has custom changes
-  → Custom RULEBOOK will be preserved
-✓ RULEBOOK backed up: .claude/RULEBOOK.md.pre-migration
-
-...
-
-✓ Migration Complete!
-
-What was updated:
-  → Agents: Updated to 2.0.0 (72 agents)
-  → Documentation: Latest version
-  → Version file: 2.0.0
-
-What was preserved:
-  → RULEBOOK.md (your custom version)
-  → settings.json / settings.local.json
-  → All your customizations
-
-Backup location:
-  → .claude.migration-backup.2026-01-07-104530
-```
-
-### Rollback from Migration
-
-If you need to rollback after migration:
-
-```bash
-# Remove new version
-rm -rf .claude
-
-# Restore backup
-mv .claude.migration-backup.2026-01-07-104530 .claude
-
-# Verify
-cat .claude/.toolkit-version
-```
+</details>
 
 ---
 
 ## 🗑️ Uninstallation
 
-### Uninstall Options
-
-**Option 1: Standard Uninstall (Keep RULEBOOK)**
 ```bash
+# Remove agents + personas (keep RULEBOOK)
 claude-uninstall
-# Removes: Agents + Personas (Maestro & Coordinator)
-# Keeps: RULEBOOK.md
-# Creates automatic backup
-```
 
-**Option 2: Full Uninstall (Remove Everything)**
-```bash
+# Remove everything including RULEBOOK
 claude-uninstall --full
-# Removes: Agents + Personas + RULEBOOK
-# Creates automatic backup
 ```
 
-**Option 3: Partial Uninstall**
-```bash
-claude-uninstall --agents-only      # Remove only agents
-claude-uninstall --maestro-only     # Remove only Maestro Mode
-```
-
-### Safety Features
-
-- ✅ **Automatic Backup**: Creates `.claude.backup.YYYY-MM-DD-HHMMSS/` before uninstalling
-- ✅ **Interactive Prompts**: Asks for confirmation before destructive actions
-- ✅ **RULEBOOK Protected**: Preserved by default (unless --full flag used)
-- ✅ **Reversible**: Easy to restore from backup
-
-### Restore from Backup
-
-If you change your mind:
-```bash
-# Remove current .claude directory
-rm -rf .claude
-
-# Restore from backup
-mv .claude.backup.YYYY-MM-DD-HHMMSS .claude
-
-# Or reinstall fresh
-./install.sh
-```
+**Automatic backup** created before uninstalling. Easy to restore from backup.
 
 ---
 
@@ -1885,59 +456,51 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 - How to add new agents
 - Agent quality standards
 - Submission process
-- Code of conduct
 
 **Areas where we need help:**
-- More language specialists (Ruby, Kotlin, Swift, etc.)
+- More language specialists (Ruby, Kotlin, Swift)
 - Platform-specific agents (iOS, Android native)
-- Domain-specific agents (FinTech, HealthTech, etc.)
-- Framework updates (as new versions release)
-- Documentation improvements
+- Domain-specific agents (FinTech, HealthTech)
+- Framework updates as new versions release
 
 ---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
-
-Free for personal and commercial use. Attribution appreciated but not required.
+MIT License - Free for personal and commercial use. Attribution appreciated but not required.
 
 ---
 
 ## 🙏 Acknowledgments
 
 - Inspired by [awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents)
-- Built for the Claude Code community
 - Powered by [Context7](https://context7.com) for latest 2026 documentation
-- All agents created and maintained by the community
+- Built for the Claude Code community
 
 ---
 
 ## 📊 Project Stats
 
-- **Total Agents:** 78 (10 core + 62 specialized)
+- **Total Agents:** 72 (10 core + 62 specialized)
 - **Framework Coverage:** 20+ frameworks
 - **Language Coverage:** 8 languages
 - **Database Coverage:** 8 databases
-- **Lines of Code:** ~50,000+ (agents + docs)
-- **Last Updated:** January 2026
 - **Version:** 1.0.0
+- **Last Updated:** January 2026
 
 ---
 
 ## 🔗 Links
 
-- **Documentation:** [docs/](docs/)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/claude-code-agents-toolkit/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/claude-code-agents-toolkit/discussions)
-- **Claude Code:** [https://claude.com/claude-code](https://claude.com/claude-code)
+- **GitHub:** [Issues](https://github.com/Dsantiagomj/claude-code-agents-toolkit/issues) • [Discussions](https://github.com/Dsantiagomj/claude-code-agents-toolkit/discussions)
+- **Claude Code:** https://claude.com/claude-code
+
+---
+
+**Built with ❤️ by the Claude Code community. Let's build software that doesn't suck. 💪**
 
 ---
 
 ## ⭐ Star History
 
 If this toolkit helps you, consider giving it a star! ⭐
-
----
-
-**Built with ❤️ by the Claude Code community. Let's build software that doesn't suck. 💪**
