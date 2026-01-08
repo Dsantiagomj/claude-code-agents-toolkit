@@ -27,11 +27,9 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Installation options
-INSTALL_LOCAL=false  # Changed: Now global is default, --local is the flag
 MAESTRO_LANG="en"
 SELF_ENHANCEMENT=true
 DRY_RUN=false
-SKIP_WIZARD=false
 YES=false
 
 # Helper functions
@@ -70,30 +68,25 @@ USAGE:
     curl -fsSL URL/install-remote.sh | bash -s -- [OPTIONS]
 
 OPTIONS:
-    --local                 Install locally (copy files to project) [not recommended]
     --lang=LANG            Set Maestro language (en or es) [default: en]
     --skip-self-enhancement Disable self-enhancement mode
-    --skip-wizard          Skip RULEBOOK wizard after installation
     --yes                  Skip all prompts (auto-confirm)
     --dry-run              Show what would be installed without making changes
     --help                 Show this help message
 
-NOTE: Global installation is now the default. The toolkit installs to
-~/.claude-global/ and creates symlinks in your project. This keeps your
-projects clean and allows sharing agents across multiple projects.
+NOTE: The toolkit installs globally to ~/.claude-global/ and creates
+symlinks in your projects. This keeps your projects clean and allows
+sharing agents across multiple projects.
 
 EXAMPLES:
-    # Standard global installation (recommended)
+    # Standard installation (recommended)
     curl -fsSL URL/install-remote.sh | bash
 
     # Spanish Maestro mode
-    curl -fsSL URL/install-remote.sh | bash -s -- --lang=es
+    bash <(curl -fsSL URL/install-remote.sh) --lang=es
 
-    # Local installation (all files in project)
-    curl -fsSL URL/install-remote.sh | bash -s -- --local
-
-    # Skip RULEBOOK wizard
-    curl -fsSL URL/install-remote.sh | bash -s -- --skip-wizard
+    # Auto-confirm (no prompts)
+    curl -fsSL URL/install-remote.sh | bash -s -- --yes
 
 ENVIRONMENT VARIABLES:
     TOOLKIT_REPO_URL       Override repository URL
@@ -107,25 +100,12 @@ EOF
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --local)
-                INSTALL_LOCAL=true
-                shift
-                ;;
-            --global)
-                # Keep for backward compatibility, but it's now the default
-                print_warning "--global is now the default, no need to specify it"
-                shift
-                ;;
             --lang=*)
                 MAESTRO_LANG="${1#*=}"
                 shift
                 ;;
             --skip-self-enhancement)
                 SELF_ENHANCEMENT=false
-                shift
-                ;;
-            --skip-wizard)
-                SKIP_WIZARD=true
                 shift
                 ;;
             --yes|-y)
@@ -284,33 +264,54 @@ download_agents() {
     print_success "Downloaded $downloaded/${#pool_agents[@]} pool agents"
 }
 
-# Download Maestro Mode
-download_maestro() {
+# Download AI personas (Maestro + Coordinator)
+download_personas() {
     local base_dir=$1
     local lang=$2
 
     if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would download Maestro Mode ($lang)"
+        print_info "[DRY RUN] Would download Maestro Mode ($lang) and Coordinator Mode"
         return
     fi
 
-    print_info "Downloading Maestro Mode ($lang)..."
+    print_info "Downloading AI personas..."
 
-    local maestro_file="maestro.md"
-    local source_file
-
-    # English uses maestro.md, others use maestro.{lang}.md
-    if [ "$lang" = "en" ]; then
-        source_file="maestro.md"
+    # Download both Maestro language versions (en and es)
+    if download_file "$REPO_RAW_URL/commands/maestro.md" "$base_dir/commands/maestro.md"; then
+        echo -e "  ${GREEN}✓${NC} Downloaded: maestro.md (English)"
     else
-        source_file="maestro.${lang}.md"
+        print_warning "Failed to download maestro.md"
     fi
 
-    if download_file "$REPO_RAW_URL/commands/$source_file" "$base_dir/commands/$maestro_file"; then
-        print_success "Maestro Mode downloaded"
+    if download_file "$REPO_RAW_URL/commands/maestro.es.md" "$base_dir/commands/maestro.es.md"; then
+        echo -e "  ${GREEN}✓${NC} Downloaded: maestro.es.md (Spanish)"
     else
-        print_warning "Failed to download Maestro Mode"
+        print_warning "Failed to download maestro.es.md"
     fi
+
+    # Download Coordinator
+    if download_file "$REPO_RAW_URL/commands/coordinator.md" "$base_dir/commands/coordinator.md"; then
+        echo -e "  ${GREEN}✓${NC} Downloaded: coordinator.md"
+    else
+        print_warning "Failed to download coordinator.md"
+    fi
+
+    # Download supporting files
+    local supporting_files=(
+        "agent-intelligence.md"
+        "agent-router.md"
+        "workflow-modes.md"
+    )
+
+    for file in "${supporting_files[@]}"; do
+        if download_file "$REPO_RAW_URL/commands/$file" "$base_dir/commands/$file"; then
+            echo -e "  ${GREEN}✓${NC} Downloaded: $file"
+        else
+            print_warning "Failed to download $file"
+        fi
+    done
+
+    print_success "AI personas downloaded (Maestro en/es + Coordinator)"
 }
 
 # Download self-enhancement
@@ -353,13 +354,19 @@ download_scripts() {
 
     local scripts=(
         "init-project.sh"
-        "rulebook-wizard.sh"
-        "questionnaire.sh"
         "select-agents.sh"
         "validate-rulebook.sh"
         "test-agent.sh"
+        "agent-stats.sh"
+        "export-config.sh"
+        "import-config.sh"
+        "install-git-hooks.sh"
+        "migrate.sh"
+        "switch-language.sh"
+        "toggle-enhancement.sh"
         "healthcheck.sh"
         "update.sh"
+        "uninstall.sh"
     )
 
     for script in "${scripts[@]}"; do
@@ -422,14 +429,53 @@ setup_shell_integration() {
 
 # Claude Code Agents Toolkit
 export PATH="$HOME/.claude-global/scripts:$PATH"
+
+# Main commands
 alias claude-init='~/.claude-global/scripts/init-project.sh'
+
+# Agent management
+alias claude-agents='~/.claude-global/scripts/select-agents.sh'
+alias claude-test-agent='~/.claude-global/scripts/test-agent.sh'
+alias claude-stats='~/.claude-global/scripts/agent-stats.sh'
+
+# RULEBOOK
+alias claude-validate='~/.claude-global/scripts/validate-rulebook.sh'
+
+# Configuration
+alias claude-export='~/.claude-global/scripts/export-config.sh'
+alias claude-import='~/.claude-global/scripts/import-config.sh'
+alias claude-switch-lang='~/.claude-global/scripts/switch-language.sh'
+alias claude-enhancement='~/.claude-global/scripts/toggle-enhancement.sh'
+
+# Git hooks
+alias claude-hooks='~/.claude-global/scripts/install-git-hooks.sh'
+
+# Utilities
+alias claude-health='~/.claude-global/scripts/healthcheck.sh'
+alias claude-update='~/.claude-global/scripts/update.sh'
+alias claude-migrate='~/.claude-global/scripts/migrate.sh'
+alias claude-uninstall='~/.claude-global/scripts/uninstall.sh'
 SHELL_CONFIG
 
             print_success "Shell integration added to $shell_config"
         else
             echo ""
-            echo "Add claude-init alias to your shell? This makes initialization easier."
-            echo "Alias: ${CYAN}claude-init${NC} → ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+            echo "Add comprehensive claude-* aliases to your shell?"
+            echo ""
+            echo "This will add ${CYAN}13 aliases${NC} for quick access:"
+            echo "  ${CYAN}claude-init${NC}          - Initialize project (choose Maestro/Coordinator)"
+            echo "  ${CYAN}claude-agents${NC}        - Manage active agents"
+            echo "  ${CYAN}claude-test-agent${NC}    - Browse all 72 agents"
+            echo "  ${CYAN}claude-stats${NC}         - View agent statistics"
+            echo "  ${CYAN}claude-validate${NC}      - Validate RULEBOOK"
+            echo "  ${CYAN}claude-export/import${NC} - Configuration management"
+            echo "  ${CYAN}claude-switch-lang${NC}   - Switch Maestro language"
+            echo "  ${CYAN}claude-enhancement${NC}   - Toggle self-enhancement"
+            echo "  ${CYAN}claude-hooks${NC}         - Install git hooks"
+            echo "  ${CYAN}claude-health${NC}        - Check installation"
+            echo "  ${CYAN}claude-update${NC}        - Update toolkit"
+            echo "  ${CYAN}claude-migrate${NC}       - Migrate versions"
+            echo "  ${CYAN}claude-uninstall${NC}     - Uninstall toolkit"
             echo ""
             read -p "Add to $shell_config? (Y/n): " -n 1 -r
             echo
@@ -439,7 +485,32 @@ SHELL_CONFIG
 
 # Claude Code Agents Toolkit
 export PATH="$HOME/.claude-global/scripts:$PATH"
+
+# Main commands
 alias claude-init='~/.claude-global/scripts/init-project.sh'
+
+# Agent management
+alias claude-agents='~/.claude-global/scripts/select-agents.sh'
+alias claude-test-agent='~/.claude-global/scripts/test-agent.sh'
+alias claude-stats='~/.claude-global/scripts/agent-stats.sh'
+
+# RULEBOOK
+alias claude-validate='~/.claude-global/scripts/validate-rulebook.sh'
+
+# Configuration
+alias claude-export='~/.claude-global/scripts/export-config.sh'
+alias claude-import='~/.claude-global/scripts/import-config.sh'
+alias claude-switch-lang='~/.claude-global/scripts/switch-language.sh'
+alias claude-enhancement='~/.claude-global/scripts/toggle-enhancement.sh'
+
+# Git hooks
+alias claude-hooks='~/.claude-global/scripts/install-git-hooks.sh'
+
+# Utilities
+alias claude-health='~/.claude-global/scripts/healthcheck.sh'
+alias claude-update='~/.claude-global/scripts/update.sh'
+alias claude-migrate='~/.claude-global/scripts/migrate.sh'
+alias claude-uninstall='~/.claude-global/scripts/uninstall.sh'
 SHELL_CONFIG
 
                 print_success "Shell integration added to $shell_config"
@@ -447,80 +518,26 @@ SHELL_CONFIG
                 echo "Reload your shell or run:"
                 echo -e "  ${CYAN}source $shell_config${NC}"
                 echo ""
-                echo "Then use:"
-                echo -e "  ${CYAN}claude-init${NC}     - Initialize project"
-                echo -e "  ${CYAN}select-agents.sh${NC}  - Available from PATH"
+                echo "Then use any ${CYAN}claude-*${NC} command!"
             else
                 print_info "Skipped shell integration"
                 echo ""
-                echo "To add manually, run:"
-                echo -e "  ${CYAN}echo 'export PATH=\"\$HOME/.claude-global/scripts:\$PATH\"' >> $shell_config${NC}"
-                echo -e "  ${CYAN}echo 'alias claude-init=\"~/.claude-global/scripts/init-project.sh\"' >> $shell_config${NC}"
+                echo "All scripts are still available in PATH:"
+                echo -e "  ${CYAN}\$HOME/.claude-global/scripts/${NC}"
+                echo ""
+                echo "Or run directly:"
+                echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
             fi
         fi
     else
         print_info "Could not detect shell config file"
         echo ""
-        echo "To add alias manually, add to your shell config:"
+        echo "To add aliases manually, add to your shell config:"
         echo -e "  ${CYAN}export PATH=\"\$HOME/.claude-global/scripts:\$PATH\"${NC}"
-        echo -e "  ${CYAN}alias claude-init='~/.claude-global/scripts/init-project.sh'${NC}"
+        echo -e "  ${CYAN}# Then add claude-* aliases (see ~/.claude-global/scripts/)${NC}"
     fi
 
     echo ""
-}
-
-# Install to current directory
-install_local() {
-    print_info "Installing to current directory: $(pwd)"
-
-    local base_dir=".claude"
-
-    # Check if already installed
-    if [ -d "$base_dir" ] && [ "$DRY_RUN" = false ]; then
-        print_warning ".claude directory already exists"
-        if [ "$YES" = false ]; then
-            read -p "Overwrite? (y/N): " -n 1 -r
-        echo
-            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-                print_info "Installation cancelled"
-                exit 0
-            fi
-        fi
-
-        # Backup existing installation
-        mv "$base_dir" "${base_dir}.backup-$(date +%Y%m%d-%H%M%S)"
-        print_success "Existing installation backed up"
-    fi
-
-    # Create structure
-    create_directories "$base_dir"
-
-    # Download components
-    download_agents "$base_dir"
-    download_maestro "$base_dir" "$MAESTRO_LANG"
-    download_self_enhancement "$base_dir"
-    download_scripts "$base_dir"
-    create_version_file "$base_dir"
-
-    if [ "$DRY_RUN" = false ]; then
-        print_success "Installation complete!"
-
-        # Run RULEBOOK wizard
-        if [ "$SKIP_WIZARD" = false ] && [ "$YES" = false ]; then
-            echo ""
-            print_info "Now let's set up your RULEBOOK..."
-            echo ""
-            read -p "Run RULEBOOK wizard? (Y/n): " -n 1 -r
-        echo
-            if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-                if [ -f "scripts/rulebook-wizard.sh" ]; then
-                    bash scripts/rulebook-wizard.sh
-                else
-                    print_warning "RULEBOOK wizard not found, skipping"
-                fi
-            fi
-        fi
-    fi
 }
 
 # Install globally
@@ -550,7 +567,7 @@ install_global() {
 
     # Download components
     download_agents "$base_dir"
-    download_maestro "$base_dir" "$MAESTRO_LANG"
+    download_personas "$base_dir" "$MAESTRO_LANG"
     download_self_enhancement "$base_dir"
     download_scripts "$base_dir"
     create_version_file "$base_dir"
@@ -568,8 +585,8 @@ install_global() {
         echo -e "${CYAN}═══════════════════════════════════════════════════════${NC}"
         echo ""
 
-        # Ask if they want to init current directory (unless skipped)
-        if [ "$YES" = false ] && [ "$SKIP_WIZARD" = false ]; then
+        # Ask if they want to init current directory
+        if [ "$YES" = false ]; then
             echo "Current directory: $(pwd)"
             echo ""
             read -p "Initialize this directory as a project? (Y/n): " -n 1 -r
@@ -582,11 +599,13 @@ install_global() {
             else
                 echo ""
                 print_info "To initialize a project later, run:"
+                echo -e "  ${CYAN}claude-init${NC}  (if you added shell integration)"
                 echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
                 echo ""
             fi
         else
             print_info "To initialize a project, run:"
+            echo -e "  ${CYAN}claude-init${NC}  (if you added shell integration)"
             echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
             echo ""
         fi
@@ -607,36 +626,35 @@ show_post_install() {
     echo -e "${GREEN}═══════════════════════════════════════════════════════${NC}"
     echo ""
 
-    if [ "$INSTALL_LOCAL" = false ]; then
-        echo "Global installation: ${BLUE}~/.claude-global/${NC}"
-        echo "  ├── agents/        ${BLUE}72 agents (10 core + 62 pool)${NC}"
-        echo "  ├── commands/      ${BLUE}Maestro Mode + Self-enhancement${NC}"
-        echo "  └── scripts/       ${BLUE}8 management tools${NC}"
+    echo "Global installation: ${BLUE}~/.claude-global/${NC}"
+    echo "  ├── agents/        ${BLUE}72 agents (10 core + 62 pool)${NC}"
+    echo "  ├── commands/      ${BLUE}Maestro (en/es) + Coordinator + Supporting files${NC}"
+    echo "  └── scripts/       ${BLUE}14 management tools${NC}"
+    echo ""
+
+    # Check if shell integration was added
+    local shell_config=""
+    if [ -f "$HOME/.zshrc" ]; then
+        shell_config="$HOME/.zshrc"
+    elif [ -f "$HOME/.bashrc" ]; then
+        shell_config="$HOME/.bashrc"
+    fi
+
+    if [ -n "$shell_config" ] && grep -q "claude-code-agents-toolkit" "$shell_config" 2>/dev/null; then
+        echo "Quick commands (${YELLOW}reload shell first${NC}):"
+        echo -e "  ${CYAN}claude-init${NC}           - Initialize project (choose Maestro/Coordinator)"
+        echo -e "  ${CYAN}claude-agents${NC}         - Manage active agents"
+        echo -e "  ${CYAN}claude-test-agent${NC}     - Browse all 72 agents"
+        echo -e "  ${CYAN}claude-health${NC}         - Check installation"
+        echo -e "  ${CYAN}claude-update${NC}         - Update toolkit"
         echo ""
-
-        # Check if shell integration was added
-        local shell_config=""
-        if [ -f "$HOME/.zshrc" ]; then
-            shell_config="$HOME/.zshrc"
-        elif [ -f "$HOME/.bashrc" ]; then
-            shell_config="$HOME/.bashrc"
-        fi
-
-        if [ -n "$shell_config" ] && grep -q "claude-code-agents-toolkit" "$shell_config" 2>/dev/null; then
-            echo "Quick commands (reload shell first):"
-            echo -e "  ${CYAN}claude-init${NC}           - Initialize a project"
-            echo -e "  ${CYAN}select-agents.sh${NC}      - Manage active agents"
-            echo -e "  ${CYAN}test-agent.sh${NC}         - Browse available agents"
-        else
-            echo "To use in projects:"
-            echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
-            echo ""
-            echo "Or download remotely:"
-            echo -e "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash${NC}"
-        fi
+        echo "See all aliases: ${CYAN}alias | grep claude${NC}"
     else
-        echo "Local installation: ${BLUE}.claude/${NC}"
-        echo "Project config: ${BLUE}RULEBOOK.md${NC}"
+        echo "To use in projects:"
+        echo -e "  ${CYAN}~/.claude-global/scripts/init-project.sh${NC}"
+        echo ""
+        echo "Or use the alias (after adding shell integration):"
+        echo -e "  ${CYAN}claude-init${NC}"
     fi
 
     echo ""
@@ -655,7 +673,6 @@ main() {
         echo -e "${YELLOW}⚠${NC} Auto-confirming prompts. Use 'bash <(curl ...)' for interactive mode"
         echo ""
         YES=true
-        SKIP_WIZARD=true
     fi
 
     print_header
@@ -666,9 +683,10 @@ main() {
     # Show configuration
     echo ""
     print_info "Installation Configuration:"
-    echo "  Mode: $([ "$INSTALL_LOCAL" = true ] && echo "Local (project-only)" || echo "Global (recommended)")"
-    echo "  Location: $([ "$INSTALL_LOCAL" = true ] && echo ".claude/" || echo "~/.claude-global/")"
-    echo "  Maestro Language: $MAESTRO_LANG"
+    echo "  Mode: Global installation"
+    echo "  Location: ~/.claude-global/"
+    echo "  Maestro Language: $MAESTRO_LANG (both en/es will be installed)"
+    echo "  Coordinator: Included"
     echo "  Self-Enhancement: $([ "$SELF_ENHANCEMENT" = true ] && echo "Enabled" || echo "Disabled")"
     echo "  Dry Run: $([ "$DRY_RUN" = true ] && echo "Yes" || echo "No")"
     echo ""
@@ -683,12 +701,8 @@ main() {
         fi
     fi
 
-    # Install (global is now the default)
-    if [ "$INSTALL_LOCAL" = true ]; then
-        install_local
-    else
-        install_global
-    fi
+    # Install globally (only option now)
+    install_global
 
     # Show post-installation message
     show_post_install

@@ -9,151 +9,186 @@
 
 ## 🎯 What Is This?
 
-A production-ready toolkit of **72 specialized AI agents** that work seamlessly with Claude Code to:
+A production-ready toolkit of **72 specialized AI agents** that work with Claude Code through **two AI personas**:
 
-- ✅ Auto-detect your project's tech stack from RULEBOOK.md
-- ✅ Automatically select the right specialists for each task
-- ✅ Route complex tasks to multi-agent pipelines
-- ✅ Enforce your project's patterns and conventions
-- ✅ Maintain code quality through specialized reviews
-- ✅ Scale from simple tasks (0 agents) to critical systems (12+ agents)
+**Choose Your Persona:**
+- **Maestro**: Full-featured with RULEBOOK enforcement, 4-mode workflow, bilingual support
+- **Coordinator**: Lightweight task router with generic best practices, simplified workflow
+
+Both personas provide:
+- ✅ Access to all 72 specialized agents
+- ✅ Automatic task routing and delegation
+- ✅ Code quality enforcement
+- ✅ Production-grade workflows
+- ✅ Context7 integration for latest docs
 
 ---
 
 ## 🚀 Quick Start
 
-### 📡 Remote Installation (Recommended)
+### Step 1: Global Installation (Once)
 
-**Global installation is now the default!** Install once, use in all your projects:
+Install the toolkit globally to `~/.claude-global/`:
 
 ```bash
-# Interactive mode (with prompts and RULEBOOK wizard)
 bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
-
-# Auto-install mode (no prompts, auto-confirms)
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh | bash
-
-# With options
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --lang=es  # Spanish
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh) --local    # Local install (not recommended)
 ```
 
-**What gets installed:**
-
-- **Global** (`~/.claude-global/`): All 72 agents, commands, and scripts (installed once)
-- **Per-project** (`.claude/`): Created when you run `init-project.sh`
-
-**Two-step process:**
-1. **Install globally** (once): Downloads toolkit to `~/.claude-global/` + adds `claude-init` alias
-2. **Initialize projects** (per-project): Run `claude-init` to create symlinks + `RULEBOOK.md`
-
-After installation, simply run **`claude-init`** in any project directory!
-
-This keeps your projects clean while sharing agents across all your work!
-
-**Note:** The installer auto-detects if you're piping (`curl | bash`) and enables non-interactive mode automatically. Use `bash <(curl ...)` for interactive prompts.
-
-### 📦 Repository-Based Installation
-
-For development or contributing:
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Dsantiagomj/claude-code-agents-toolkit
-cd claude-code-agents-toolkit
-
-# 2. Navigate to your project
-cd /path/to/your/project
-
-# 3. Run the installer
-/path/to/toolkit/install.sh
-```
-
-### 🧙 Smart RULEBOOK Wizard
-
-After installation, the wizard will help you set up your RULEBOOK:
-
-```
-🧙 RULEBOOK Wizard - Smart Project Setup
-
-📂 Scanning Current Directory
-  ✓ Found: package.json
-  ✓ Framework: Next.js
-  ✓ Language: TypeScript
-  ✓ Database/ORM: Prisma
-
-🎯 How would you like to create your RULEBOOK?
-
-  [1] Use detected configuration (auto-generate) → Recommended
-  [2] Answer questions interactively
-  [3] Start with minimal template
-  [4] Skip for now
-
-Enter your choice [1-4]:
-```
-
-The wizard:
-- ✅ Scans your current directory for project files
-- ✅ Detects framework, language, database, tools
-- ✅ Shows what it found and if it helped
-- ✅ Auto-generates RULEBOOK with recommended agents
-- ✅ Works in empty directories (uses interactive mode)
-- ✅ Can be run anytime with `scripts/rulebook-wizard.sh`
+This installs:
+- ✅ All 72 agents
+- ✅ Both personas (Maestro + Coordinator)
+- ✅ All utility scripts
+- ✅ Shell aliases (`claude-*` commands)
 
 **Installation time:** < 2 minutes
-**Manual configuration:** Zero (for common stacks)
 
-### 🌍 Using in Multiple Projects
+### Step 2: Initialize Your Project
 
-Since global installation is the default, setting up new projects is fast and easy:
-
-#### Option 1: Quick Init with Alias (Recommended)
-
-If you already have the global installation with shell integration:
+In any project directory, run:
 
 ```bash
-cd ~/my-new-project
 claude-init
 ```
 
-Or use the full path:
+You'll choose your AI persona:
 
-```bash
-cd ~/my-new-project
-~/.claude-global/scripts/init-project.sh
 ```
+🎭 Choose Your AI Persona
 
-Or download and run remotely:
+[1] Maestro - Full-featured with RULEBOOK enforcement
+    → Recommended for production projects
+    • Learns your project patterns (RULEBOOK)
+    • 4-mode workflow (Planning → Dev → Review → Commit)
+    • Smart agent selection based on your stack
+    • Context7 integration for latest docs
+    • Bilingual support (English/Spanish)
 
-```bash
-cd ~/my-new-project
-curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/scripts/init-project.sh | bash
+[2] Coordinator - Lightweight task router
+    → Good for quick prototypes or generic projects
+    • Generic best practices (no RULEBOOK)
+    • Simplified 3-step workflow
+    • Keyword-based agent routing
+    • English only
+
+Enter your choice [1-2]:
 ```
 
 **What it does:**
-- ✅ Checks for global installation at `~/.claude-global/`
-- ✅ Creates `.claude/` with symlinks (instant)
-- ✅ Creates `.claude/agents-active.txt` for project-specific agent selection
+- ✅ Creates `.claude/` with persona-specific symlinks
 - ✅ Adds `.claude/` to `.gitignore`
-- ✅ Runs RULEBOOK wizard for project config
+- ✅ **Maestro**: Prompts RULEBOOK creation on first interaction
+- ✅ **Coordinator**: Ready to use immediately (no RULEBOOK needed)
 
 **Time:** < 10 seconds
 
-#### Option 2: Full Installer
+### Step 3: Start Coding
+
+```bash
+# Open Claude Code in your project
+claude
+
+# Activate your chosen persona
+/maestro      # If you chose Maestro
+/coordinator  # If you chose Coordinator
+```
+
+**First time with Maestro?** It will auto-generate your RULEBOOK by scanning your project files.
+
+**Using Coordinator?** Start delegating tasks immediately - no setup needed.
+
+### 🌍 Using in Multiple Projects
+
+The global installation makes setup instant:
 
 ```bash
 cd ~/my-new-project
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
+claude-init              # Choose persona
+# Done! Ready to use
 ```
 
-The installer detects existing global installation and skips re-downloading agents.
-
 **Benefits:**
-- ✅ Share 72 agents across all your projects
-- ✅ Each project has its own `RULEBOOK.md`
-- ✅ Each project can activate different agents via `agents-active.txt`
-- ✅ Saves disk space (one copy of agents)
-- ✅ Update agents once, applies everywhere
+- ✅ Share 72 agents across all projects
+- ✅ Each project chooses its own persona
+- ✅ Maestro projects have unique RULEBOOKs
+- ✅ Update once, affects all projects
+- ✅ Minimal disk space (symlinks, not copies)
+
+---
+
+## 🎭 Maestro vs Coordinator
+
+Choose the persona that matches your project needs:
+
+| Feature | Maestro | Coordinator |
+|---------|---------|-------------|
+| **Best For** | Production projects, long-term development | Quick prototypes, experiments, generic projects |
+| **RULEBOOK** | ✅ Required - auto-generated on first use | ❌ Not used - generic best practices |
+| **Workflow** | 4-mode (Planning → Dev → Review → Commit) | 3-step (Receive → Delegate → Report) |
+| **Agent Selection** | Smart - based on your tech stack (RULEBOOK) | Keyword-based - generic routing |
+| **Personality** | Direct, confrontational, educational | Professional, neutral, task-focused |
+| **Learning** | ✅ Learns your patterns via RULEBOOK | ❌ No learning - consistent behavior |
+| **Languages** | English + Spanish | English only |
+| **Context7 Integration** | ✅ Fetches latest docs automatically | ✅ Available but not automatic |
+| **Code Quality Gates** | ✅ Enforces RULEBOOK patterns strictly | ✅ Enforces SOLID, DRY, KISS, OWASP |
+| **Test Coverage** | From RULEBOOK (customizable) | 80% default |
+| **Commit Messages** | Matches your project style | Generic conventional commits |
+| **Setup Time** | ~2 min (RULEBOOK generation) | Instant |
+| **Best Practices** | Your project's RULEBOOK | Hardcoded industry standards |
+
+### When to Use Maestro
+
+✅ **Production-grade projects**
+- Long-term development
+- Team collaboration
+- Strict quality requirements
+- Custom coding patterns
+- Bilingual teams (English/Spanish)
+
+✅ **Learning & Growth**
+- Want feedback on code quality
+- Value educational explanations
+- Prefer direct communication
+- Building professional portfolio
+
+✅ **Complex Tech Stacks**
+- Multiple frameworks/tools
+- Custom architecture
+- Specific performance targets
+- Unique security requirements
+
+### When to Use Coordinator
+
+✅ **Quick Projects**
+- Prototypes and MVPs
+- Proof of concepts
+- Hackathons
+- Learning new tech
+
+✅ **Generic Stacks**
+- Standard frameworks (Express, React)
+- No custom patterns
+- Don't need RULEBOOK overhead
+- Prefer faster setup
+
+✅ **Consistency Over Customization**
+- Want predictable behavior
+- Prefer industry standards
+- Don't want to maintain RULEBOOK
+- English-only teams
+
+### Switching Personas
+
+You can change personas anytime:
+
+```bash
+# Reinitialize project with different persona
+claude-init
+# Choose different option [1-2]
+
+# Or manually update symlinks
+ln -sf ~/.claude-global/commands/maestro.md .claude/commands/maestro.md      # Switch to Maestro
+ln -sf ~/.claude-global/commands/coordinator.md .claude/commands/coordinator.md  # Switch to Coordinator
+```
 
 ---
 
@@ -216,23 +251,38 @@ Agents automatically activate based on your project's tech stack (detected from 
 
 ---
 
-## 🎭 Maestro Mode (Optional)
+## 🎭 Maestro Persona
 
-An opinionated AI personality that:
-- Enforces your RULEBOOK patterns strictly
-- Speaks Colombian Spanish or direct English
-- Won't sugarcoat issues with your code
-- Orchestrates agents intelligently
-- Educates you on WHY patterns matter
-- Uses structured 4-mode workflow
+One of two available AI personas for production-grade development:
 
-**Activation:** Type `/maestro` in Claude Code (after installation)
+**Core Capabilities:**
+- ✅ Enforces your RULEBOOK patterns strictly
+- ✅ Auto-generates RULEBOOK on first interaction (hybrid approach)
+- ✅ Bilingual support (English or Spanish)
+- ✅ Orchestrates agents intelligently based on tech stack
+- ✅ Educates you on WHY patterns matter
+- ✅ Structured 4-mode workflow for quality gates
+
+**Activation:** Type `/maestro` in Claude Code (after choosing Maestro during `claude-init`)
 
 **Personality:**
 - Direct, confrontational, no filter
 - Senior Architect with 15+ years experience
 - Genuine educational intent
 - Tony Stark/Jarvis dynamic with you
+
+### RULEBOOK Auto-Generation
+
+On first interaction, Maestro uses a **hybrid approach** to create your RULEBOOK:
+
+**Phase 1: Scan** - Detects project files (package.json, tsconfig.json, etc.)
+**Phase 2: Detect** - Identifies framework, language, database, ORM, styling
+**Phase 3: Show** - Displays what it found
+**Phase 4: Ask** - Requests missing details (coverage target, state management, etc.)
+**Phase 5: Generate** - Creates comprehensive RULEBOOK.md at project root
+**Phase 6: Load** - Reads RULEBOOK and starts enforcing
+
+**Time:** ~2 minutes for full generation
 
 ### 4-Mode Workflow
 
@@ -698,84 +748,78 @@ Continue with installation anyway? (y/N):
 
 ---
 
-## 📋 RULEBOOK Questionnaire
+## 🛠️ Available Commands
 
-### Generate Your Custom RULEBOOK Interactively
+After global installation, these `claude-*` commands are available everywhere:
 
-Don't want to manually create your RULEBOOK? Use the interactive questionnaire:
+### Project Setup
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-init` | Initialize project with persona selection | First time in a new project |
+
+### Agent Management
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-agents` | Interactive agent selector (activate/deactivate) | Managing which agents are active |
+| `claude-test-agent` | Browse, search, and inspect individual agents | Exploring available agents |
+| `claude-stats` | Agent statistics and optimization recommendations | Understanding agent usage |
+
+### RULEBOOK Tools
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-validate` | Validate RULEBOOK.md structure and content | After editing RULEBOOK manually |
+
+### Maintenance
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-health` | Run comprehensive health check | Diagnosing issues |
+| `claude-update` | Update toolkit to latest version | Regular updates |
+| `claude-migrate` | Migrate between major versions | Major version upgrades |
+| `claude-uninstall` | Uninstall toolkit (with backup) | Removing toolkit |
+
+### Customization
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-switch-lang` | Switch Maestro language (en/es) | Changing language preference |
+| `claude-enhancement` | Toggle self-enhancement on/off | Enabling/disabling learning |
+
+### Import/Export
+
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `claude-export` | Export configuration to portable format | Sharing setup with team |
+| `claude-import` | Import configuration from export file | Applying team config |
+
+### Quick Examples
 
 ```bash
-scripts/questionnaire.sh
+# Setup new project
+cd ~/my-project
+claude-init                    # Choose Maestro or Coordinator
+
+# Manage agents
+claude-agents                  # Interactive agent selector
+claude-test-agent --search react  # Find React-related agents
+claude-stats                   # See agent activation stats
+
+# Validate configuration
+claude-validate                # Check RULEBOOK validity
+
+# Maintenance
+claude-health                  # Check installation health
+claude-update                  # Update to latest version
+
+# Customization
+claude-switch-lang es          # Switch Maestro to Spanish
+claude-enhancement on          # Enable self-enhancement
 ```
 
-### What It Does
-
-The questionnaire asks about your project and generates a comprehensive, customized RULEBOOK.md with:
-
-- ✅ **Tech Stack** - Framework, language, database, ORM
-- ✅ **Architecture** - Folder structure, patterns
-- ✅ **State Management** - Redux, Zustand, Context, etc.
-- ✅ **Styling** - Tailwind, CSS Modules, Styled Components
-- ✅ **Testing** - Vitest, Jest, Playwright setup
-- ✅ **API Design** - REST, GraphQL, tRPC patterns
-- ✅ **Code Patterns** - Naming conventions, import order
-- ✅ **Security & Performance** - Best practices
-- ✅ **Active Agents** - Auto-populated based on stack
-
-### Questions Asked
-
-1. **Project Information** - Name and description
-2. **Framework** - Next.js, React, Vue, Express, etc.
-3. **Language** - TypeScript, JavaScript, Python, Go
-4. **State Management** - Redux Toolkit, Zustand, Context
-5. **Styling** - Tailwind, CSS Modules, Styled Components
-6. **Testing** - Vitest, Jest, Playwright, Cypress
-7. **Database** - PostgreSQL, MongoDB, MySQL, Redis
-8. **ORM** - Prisma, Drizzle, TypeORM, Sequelize
-9. **API Type** - REST, GraphQL, tRPC, gRPC
-10. **Deployment** - Vercel, AWS, Docker, etc.
-11. **Code Organization** - File naming, structure
-
-### Example Flow
-
-```bash
-$ scripts/questionnaire.sh
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Framework & Language
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-What is your primary framework?
-
-  [1] Next.js
-  [2] React (CRA/Vite)
-  [3] Vue.js
-  [4] Angular
-  [5] Svelte/SvelteKit
-  [6] Express.js
-  [7] Fastify
-  [8] NestJS
-  [9] Other
-
-Enter choice [1-9]: 1
-
-# ... more questions ...
-
-✓ RULEBOOK generated successfully!
-```
-
-### Output
-
-Creates `.claude/RULEBOOK.md` with:
-- Complete tech stack documentation
-- Recommended folder structure
-- Code organization patterns
-- Testing requirements
-- Security guidelines
-- Performance targets
-- Activated agents list
-
-**Backup:** If RULEBOOK exists, it creates `.claude/RULEBOOK.md.backup` before overwriting.
+**Note:** All commands work from any directory once globally installed. For project-specific commands (like `claude-agents`), run them from within a project initialized with `claude-init`.
 
 ---
 
@@ -786,7 +830,9 @@ Creates `.claude/RULEBOOK.md` with:
 Easily activate/deactivate specific agents with an interactive menu:
 
 ```bash
-scripts/select-agents.sh
+claude-agents
+# Or use the full path:
+# ~/.claude-global/scripts/select-agents.sh
 ```
 
 ### Features
@@ -1101,7 +1147,9 @@ Current Configuration:
 Ensure your RULEBOOK.md is properly formatted and configured:
 
 ```bash
-scripts/validate-rulebook.sh
+claude-validate
+# Or use the full path:
+# ~/.claude-global/scripts/validate-rulebook.sh
 ```
 
 ### Validation Checks
@@ -1218,10 +1266,9 @@ Your project description here
 
 - ✅ After manual RULEBOOK edits
 - ✅ Before committing RULEBOOK changes
-- ✅ After running `scripts/questionnaire.sh`
-- ✅ After using `scripts/select-agents.sh`
+- ✅ After using `claude-agents` to modify active agents
 - ✅ In CI/CD pipelines for quality checks
-- ✅ After migrating from old toolkit versions with `scripts/migrate.sh`
+- ✅ After migrating from old toolkit versions with `claude-migrate`
 
 ---
 
@@ -1233,14 +1280,14 @@ Switch between English and Spanish Maestro Mode instantly:
 
 **Toggle Language (Auto-detect current)**
 ```bash
-scripts/switch-language.sh
+claude-switch-lang
 # Automatically switches to the other language
 ```
 
 **Switch to Specific Language**
 ```bash
-scripts/switch-language.sh es        # Switch to Spanish
-scripts/switch-language.sh english   # Switch to English
+claude-switch-lang es        # Switch to Spanish
+claude-switch-lang english   # Switch to English
 ```
 
 ### What Gets Changed
@@ -1283,7 +1330,9 @@ mv .claude/commands/maestro.md.backup .claude/commands/maestro.md
 Control Maestro's learning capability with a simple toggle:
 
 ```bash
-scripts/toggle-enhancement.sh
+claude-enhancement
+# Or use the full path:
+# ~/.claude-global/scripts/toggle-enhancement.sh
 ```
 
 ### What is Self-Enhancement?
@@ -1562,7 +1611,9 @@ git commit --no-verify && git push --no-verify
 Run a comprehensive health check to verify installation integrity:
 
 ```bash
-scripts/healthcheck.sh
+claude-health
+# Or use the full path:
+# ~/.claude-global/scripts/healthcheck.sh
 ```
 
 ### What Gets Checked
@@ -1621,22 +1672,22 @@ Use health check to diagnose issues before reporting bugs or after updates.
 
 **Check for Updates**
 ```bash
-scripts/update.sh --check
+claude-update --check
 # Shows current and latest versions without installing
 ```
 
 **Update Everything (Recommended)**
 ```bash
-scripts/update.sh
-# Updates: Agents + Maestro Mode
+claude-update
+# Updates: Agents + Maestro + Coordinator
 # Preserves: RULEBOOK, settings, language preference
 # Creates automatic backup
 ```
 
 **Partial Updates**
 ```bash
-scripts/update.sh --agents-only      # Update only agents
-scripts/update.sh --maestro-only     # Update only Maestro Mode
+claude-update --agents-only      # Update only agents
+claude-update --maestro-only     # Update only Maestro Mode
 ```
 
 ### What Gets Preserved
@@ -1676,7 +1727,9 @@ scripts/update.sh --check
 For major version changes (e.g., v1.0.0 → v2.0.0), use the migration script:
 
 ```bash
-scripts/migrate.sh
+claude-migrate
+# Or use the full path:
+# ~/.claude-global/scripts/migrate.sh
 ```
 
 ### What migrate.sh Does
@@ -1784,23 +1837,23 @@ cat .claude/.toolkit-version
 
 **Option 1: Standard Uninstall (Keep RULEBOOK)**
 ```bash
-scripts/uninstall.sh
-# Removes: Agents + Maestro Mode
+claude-uninstall
+# Removes: Agents + Personas (Maestro & Coordinator)
 # Keeps: RULEBOOK.md
 # Creates automatic backup
 ```
 
 **Option 2: Full Uninstall (Remove Everything)**
 ```bash
-scripts/uninstall.sh --full
-# Removes: Agents + Maestro Mode + RULEBOOK
+claude-uninstall --full
+# Removes: Agents + Personas + RULEBOOK
 # Creates automatic backup
 ```
 
 **Option 3: Partial Uninstall**
 ```bash
-scripts/uninstall.sh --agents-only      # Remove only agents
-scripts/uninstall.sh --maestro-only     # Remove only Maestro Mode
+claude-uninstall --agents-only      # Remove only agents
+claude-uninstall --maestro-only     # Remove only Maestro Mode
 ```
 
 ### Safety Features
