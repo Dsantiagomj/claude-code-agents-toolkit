@@ -431,6 +431,12 @@ show_performance() {
 # ============================================================================
 
 main() {
+  # Validate environment (skip for --help)
+  if [ "${1:-}" != "--help" ] && [ "${1:-}" != "-h" ]; then
+    check_global_installation || exit 1
+    check_project_initialization || exit 1
+  fi
+
   case "${1:-}" in
     --help|-h)
       show_help

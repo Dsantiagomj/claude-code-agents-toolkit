@@ -19,6 +19,12 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # ============================================================================
+# VERSION
+# ============================================================================
+
+TOOLKIT_VERSION="1.0.0"
+
+# ============================================================================
 # PATHS
 # ============================================================================
 # NOTE: Installation is ALWAYS global at ~/.claude-global/
@@ -499,6 +505,156 @@ confirm_action() {
     else
         return 1
     fi
+}
+
+# ============================================================================
+# VALIDATION FUNCTIONS
+# ============================================================================
+
+# Check if global installation exists
+check_global_installation() {
+    if [ ! -d "$GLOBAL_DIR" ]; then
+        print_error "Global installation not found at $GLOBAL_DIR"
+        echo ""
+        echo "Please install the toolkit first:"
+        echo "  bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh)"
+        echo ""
+        return 1
+    fi
+    return 0
+}
+
+# Check if project is initialized
+check_project_initialization() {
+    if [ ! -d "$CLAUDE_LOCAL_DIR" ]; then
+        print_error "Project not initialized"
+        echo ""
+        echo "Please initialize this project first:"
+        echo "  ~/.claude-global/scripts/init-project.sh"
+        echo ""
+        return 1
+    fi
+    return 0
+}
+
+# Check if RULEBOOK exists (for Maestro mode)
+check_rulebook_exists() {
+    if [ ! -f "$RULEBOOK_LOCAL" ]; then
+        print_warning "RULEBOOK not found at $RULEBOOK_LOCAL"
+        echo ""
+        echo "This is normal for Coordinator mode or first-time Maestro use."
+        echo "RULEBOOK will be created on first /maestro interaction."
+        echo ""
+        return 1
+    fi
+    return 0
+}
+
+# Validate agent file exists
+validate_agent_file() {
+    local agent="$1"
+    local category="$2"  # core or pool/XX-category
+
+    if [ -z "$agent" ]; then
+        print_error "Agent name required"
+        return 1
+    fi
+
+    # Check in core
+    if [ -f "${AGENTS_DIR_GLOBAL}/core/${agent}.md" ]; then
+        return 0
+    fi
+
+    # Check in all pool subdirectories
+    for dir in "${AGENTS_DIR_GLOBAL}"/pool/*/; do
+        if [ -f "${dir}${agent}.md" ]; then
+            return 0
+        fi
+    done
+
+    print_error "Agent file not found: ${agent}.md"
+    return 1
+}
+
+# Validate environment (comprehensive check)
+validate_environment() {
+    local errors=0
+
+    # Check global installation
+    if ! check_global_installation; then
+        ((errors++))
+    fi
+
+    # Check agents directory
+    if [ ! -d "$AGENTS_DIR_GLOBAL" ]; then
+        print_error "Agents directory not found: $AGENTS_DIR_GLOBAL"
+        ((errors++))
+    fi
+
+    # Check commands directory
+    if [ ! -d "$COMMANDS_DIR_GLOBAL" ]; then
+        print_error "Commands directory not found: $COMMANDS_DIR_GLOBAL"
+        ((errors++))
+    fi
+
+    # Check toolkit version file
+    if [ ! -f "$TOOLKIT_VERSION_FILE" ]; then
+        print_warning "Version file not found: $TOOLKIT_VERSION_FILE"
+    fi
+
+    if [ $errors -gt 0 ]; then
+        return 1
+    fi
+
+    return 0
+}
+
+# Check if running from project directory
+require_project_directory() {
+    if [ ! -d "$CLAUDE_LOCAL_DIR" ]; then
+        print_error "This script must be run from a project directory"
+        echo ""
+        echo "Current directory: $(pwd)"
+        echo "Expected: A directory with $CLAUDE_LOCAL_DIR/"
+        echo ""
+        echo "To initialize this project:"
+        echo "  ~/.claude-global/scripts/init-project.sh"
+        echo ""
+        exit 1
+    fi
+}
+
+# Check if running from toolkit repository
+is_toolkit_repository() {
+    if [ -f "install.sh" ] && [ -d "agents" ] && [ -d "commands" ]; then
+        return 0
+    fi
+    return 1
+}
+
+# Get installed toolkit version
+get_installed_version() {
+    if [ -f "$TOOLKIT_VERSION_FILE" ]; then
+        cat "$TOOLKIT_VERSION_FILE"
+    else
+        echo "unknown"
+    fi
+}
+
+# Check if version file matches expected version
+check_version_match() {
+    local installed_version=$(get_installed_version)
+
+    if [ "$installed_version" != "$TOOLKIT_VERSION" ]; then
+        print_warning "Version mismatch detected"
+        echo "  Expected: $TOOLKIT_VERSION"
+        echo "  Installed: $installed_version"
+        echo ""
+        echo "Consider running: ~/.claude-global/scripts/update.sh"
+        echo ""
+        return 1
+    fi
+    return 0
 }
 
 # ============================================================================

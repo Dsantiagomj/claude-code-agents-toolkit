@@ -20,16 +20,7 @@ print_header() {
     echo ""
 }
 
-# Check if RULEBOOK exists
-check_rulebook() {
-    if [ ! -f "$RULEBOOK_LOCAL" ]; then
-        print_error "RULEBOOK.md not found"
-        echo ""
-        echo "Please run ./install.sh first to create a RULEBOOK"
-        echo ""
-        exit 1
-    fi
-}
+# Note: check_rulebook_exists is now in common.sh
 
 # Get list of currently active agents from RULEBOOK
 get_active_agents() {
@@ -296,8 +287,16 @@ main() {
         exit 0
     fi
 
-    # Check RULEBOOK exists
-    check_rulebook
+    # Validate environment
+    check_global_installation || exit 1
+    check_project_initialization || exit 1
+
+    # Check RULEBOOK exists (required for this script)
+    if ! check_rulebook_exists; then
+        print_error "RULEBOOK.md is required for agent selection"
+        echo "Please initialize Maestro mode first or run this from a Maestro project."
+        exit 1
+    fi
 
     # Load currently active agents
     get_active_agents
