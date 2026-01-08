@@ -6,13 +6,9 @@
 
 set -e  # Exit on error
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Source common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/common.sh"
 
 # Validation results
 ERRORS=0
@@ -28,13 +24,10 @@ print_header() {
     echo ""
 }
 
+# Override print functions to include counters
 print_pass() {
     echo -e "${GREEN}✓${NC} $1"
     ((PASSED++))
-}
-
-print_info() {
-    echo -e "${BLUE}ℹ${NC} $1"
 }
 
 print_warning() {
