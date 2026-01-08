@@ -119,7 +119,7 @@ check_global_installation() {
         print_error "Global installation not found at ~/.claude-global/"
         echo ""
         echo "Please install the toolkit first:"
-        echo -e "${CYAN}bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)${NC}"
+        echo -e "${CYAN}bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh)${NC}"
         echo ""
         exit 1
     fi

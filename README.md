@@ -31,7 +31,7 @@ Both personas provide:
 Install the toolkit globally to `~/.claude-global/`:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install-remote.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/Dsantiagomj/claude-code-agents-toolkit/main/install.sh)
 ```
 
 This installs:
