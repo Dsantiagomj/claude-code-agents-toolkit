@@ -52,198 +52,198 @@ get_agent_description() {
       echo "Analyzes project structure, identifies technical debt, suggests improvements"
       ;;
     # Frontend
-    nextjs-specialist)
-      echo "Next.js expert: App Router, RSC, Server Actions, ISR, SSR, SSG, routing"
+    angular-specialist)
+      echo "Angular expert: Components, services, RxJS, dependency injection"
+      ;;
+    animation-specialist)
+      echo "Animation expert: CSS animations, GSAP, Framer Motion, performance optimization"
+      ;;
+    css-architect)
+      echo "CSS expert: Modern CSS, architecture, responsive design, performance"
       ;;
     react-specialist)
       echo "React expert: Hooks, Context, performance, component patterns, state management"
       ;;
-    vue-specialist)
-      echo "Vue.js expert: Composition API, Pinia, Vue Router, reactivity system"
-      ;;
-    angular-specialist)
-      echo "Angular expert: Components, services, RxJS, dependency injection"
-      ;;
     svelte-specialist)
       echo "Svelte expert: Reactive programming, stores, SvelteKit"
       ;;
-    solid-specialist)
-      echo "Solid.js expert: Fine-grained reactivity, JSX, SolidStart"
+    tailwind-expert)
+      echo "Tailwind CSS expert: Utility-first design, customization, best practices"
       ;;
-    qwik-specialist)
-      echo "Qwik expert: Resumability, lazy loading, QwikCity"
+    ui-accessibility)
+      echo "Accessibility expert: WCAG, ARIA, screen readers, inclusive design"
       ;;
-    astro-specialist)
-      echo "Astro expert: Islands architecture, static sites, integrations"
+    vue-specialist)
+      echo "Vue.js expert: Composition API, Pinia, Vue Router, reactivity system"
       ;;
     # Backend
     express-specialist)
       echo "Express.js expert: Middleware, routing, error handling, REST APIs"
       ;;
-    nestjs-specialist)
-      echo "NestJS expert: Modules, dependency injection, decorators, guards, interceptors"
+    fastify-expert)
+      echo "Fastify expert: High-performance APIs, plugins, validation, schema-based"
       ;;
-    fastify-specialist)
-      echo "Fastify expert: High-performance APIs, plugins, validation"
-      ;;
-    hono-specialist)
-      echo "Hono expert: Edge computing, ultralight framework, middleware"
-      ;;
-    koa-specialist)
-      echo "Koa.js expert: Async middleware, context, error handling"
-      ;;
-    adonis-specialist)
-      echo "AdonisJS expert: MVC framework, ORM, authentication"
-      ;;
-    feathers-specialist)
-      echo "FeathersJS expert: Real-time APIs, services, hooks"
-      ;;
-    sails-specialist)
-      echo "Sails.js expert: MVC framework, WebSockets, Waterline ORM"
-      ;;
-    # Full-Stack
-    remix-specialist)
-      echo "Remix expert: Loader/action pattern, progressive enhancement, nested routes"
-      ;;
-    nuxt-specialist)
-      echo "Nuxt.js expert: Vue SSR, auto-imports, file-based routing"
-      ;;
-    sveltekit-specialist)
-      echo "SvelteKit expert: Full-stack Svelte, load functions, endpoints"
-      ;;
-    solidstart-specialist)
-      echo "SolidStart expert: Solid SSR, routing, data loading"
-      ;;
-    analog-specialist)
-      echo "Analog expert: Angular SSR, file-based routing, Vite"
-      ;;
-    fresh-specialist)
-      echo "Fresh expert: Deno, islands architecture, no build step"
-      ;;
-    # Databases
-    postgres-expert)
-      echo "PostgreSQL expert: Schema design, queries, indexes, transactions, performance tuning"
-      ;;
-    mongodb-expert)
-      echo "MongoDB expert: Document modeling, aggregation pipelines, indexes, sharding"
-      ;;
-    mysql-expert)
-      echo "MySQL expert: Relational design, queries, optimization, replication"
-      ;;
-    redis-specialist)
-      echo "Redis expert: Caching, pub/sub, data structures, sessions"
-      ;;
-    prisma-orm-specialist)
-      echo "Prisma expert: Schema modeling, migrations, queries, relations, type safety"
-      ;;
-    drizzle-orm-specialist)
-      echo "Drizzle ORM expert: Type-safe queries, schema-first design"
-      ;;
-    typeorm-specialist)
-      echo "TypeORM expert: Entity modeling, migrations, relations"
-      ;;
-    sequelize-specialist)
-      echo "Sequelize expert: ORM patterns, migrations, associations"
-      ;;
-    # Languages
-    typescript-pro)
-      echo "TypeScript expert: Advanced types, generics, type guards, utility types"
-      ;;
-    javascript-modernizer)
-      echo "JavaScript expert: ES2024+, functional programming, async patterns"
-      ;;
-    python-specialist)
-      echo "Python expert: Type hints, async/await, dataclasses, decorators, best practices"
-      ;;
-    go-specialist)
-      echo "Go expert: Concurrency, goroutines, channels, interfaces"
-      ;;
-    rust-specialist)
-      echo "Rust expert: Ownership, lifetimes, traits, async Rust"
-      ;;
-    java-specialist)
-      echo "Java expert: Spring Boot, JVM, concurrency, design patterns"
-      ;;
-    csharp-specialist)
-      echo "C# expert: .NET, LINQ, async/await, Entity Framework"
-      ;;
-    php-specialist)
-      echo "PHP expert: Laravel, Symfony, modern PHP, PSR standards"
-      ;;
-    # Infrastructure
-    docker-specialist)
-      echo "Docker expert: Containerization, multi-stage builds, compose, optimization"
-      ;;
-    kubernetes-expert)
-      echo "Kubernetes expert: Deployments, services, ingress, helm, best practices"
-      ;;
-    aws-cloud-specialist)
-      echo "AWS expert: EC2, S3, Lambda, RDS, CloudFormation, best practices"
-      ;;
-    gcp-specialist)
-      echo "GCP expert: Compute Engine, Cloud Run, GKE, Cloud Functions"
-      ;;
-    azure-specialist)
-      echo "Azure expert: App Service, Functions, AKS, Cosmos DB"
-      ;;
-    terraform-specialist)
-      echo "Terraform expert: IaC, modules, state management, providers"
-      ;;
-    ci-cd-specialist)
-      echo "CI/CD expert: GitHub Actions, GitLab CI, Jenkins, deployment pipelines"
-      ;;
-    nginx-specialist)
-      echo "Nginx expert: Reverse proxy, load balancing, caching, SSL"
-      ;;
-    monitoring-specialist)
-      echo "Monitoring expert: Prometheus, Grafana, logging, alerting"
-      ;;
-    # Testing
-    jest-testing-specialist)
-      echo "Jest expert: Unit tests, mocks, snapshots, coverage, best practices"
-      ;;
-    vitest-specialist)
-      echo "Vitest expert: Fast unit testing, Vite integration, UI mode"
-      ;;
-    playwright-specialist)
-      echo "Playwright expert: E2E tests, browser automation, parallel execution"
-      ;;
-    cypress-specialist)
-      echo "Cypress expert: E2E testing, component testing, visual testing"
-      ;;
-    testing-library-specialist)
-      echo "Testing Library expert: User-centric tests, accessibility, best practices"
-      ;;
-    storybook-specialist)
-      echo "Storybook expert: Component documentation, visual testing, addons"
-      ;;
-    msw-specialist)
-      echo "MSW expert: API mocking, service workers, testing patterns"
-      ;;
-    # Specialized
     graphql-specialist)
       echo "GraphQL expert: Schema design, resolvers, Apollo, subscriptions, performance"
+      ;;
+    koa-expert)
+      echo "Koa.js expert: Async middleware, context, error handling"
+      ;;
+    microservices-architect)
+      echo "Microservices expert: Service design, communication patterns, distributed systems"
+      ;;
+    nest-specialist)
+      echo "NestJS expert: Modules, dependency injection, decorators, guards, interceptors"
       ;;
     rest-api-architect)
       echo "REST API expert: Design, versioning, authentication, rate limiting, best practices"
       ;;
-    websocket-specialist)
-      echo "WebSocket expert: Real-time communication, Socket.io, scaling"
+    websocket-expert)
+      echo "WebSocket expert: Real-time communication, Socket.io, scaling, bidirectional data"
+      ;;
+    # Full-Stack
+    astro-specialist)
+      echo "Astro expert: Islands architecture, static sites, content collections, integrations"
+      ;;
+    nextjs-specialist)
+      echo "Next.js expert: App Router, RSC, Server Actions, ISR, SSR, SSG, routing"
+      ;;
+    nuxt-specialist)
+      echo "Nuxt.js expert: Vue SSR, auto-imports, file-based routing, Nitro server"
+      ;;
+    remix-specialist)
+      echo "Remix expert: Loader/action pattern, progressive enhancement, nested routes"
+      ;;
+    solidstart-specialist)
+      echo "SolidStart expert: Solid SSR, routing, data loading, server functions"
+      ;;
+    sveltekit-specialist)
+      echo "SvelteKit expert: Full-stack Svelte, load functions, endpoints, adapters"
+      ;;
+    # Databases
+    drizzle-specialist)
+      echo "Drizzle ORM expert: Type-safe queries, schema-first design, migrations"
+      ;;
+    mongodb-expert)
+      echo "MongoDB expert: Document modeling, aggregation pipelines, indexes, sharding"
+      ;;
+    mysql-specialist)
+      echo "MySQL expert: Relational design, queries, optimization, replication"
+      ;;
+    postgres-expert)
+      echo "PostgreSQL expert: Schema design, queries, indexes, transactions, performance tuning"
+      ;;
+    prisma-specialist)
+      echo "Prisma expert: Schema modeling, migrations, queries, relations, type safety"
+      ;;
+    redis-specialist)
+      echo "Redis expert: Caching, pub/sub, data structures, sessions, persistence"
+      ;;
+    sequelize-expert)
+      echo "Sequelize expert: ORM patterns, migrations, associations, transactions"
+      ;;
+    typeorm-expert)
+      echo "TypeORM expert: Entity modeling, decorators, migrations, relations"
+      ;;
+    # Languages
+    csharp-specialist)
+      echo "C# expert: .NET, LINQ, async/await, Entity Framework, ASP.NET Core"
+      ;;
+    go-specialist)
+      echo "Go expert: Concurrency, goroutines, channels, interfaces, performance"
+      ;;
+    java-specialist)
+      echo "Java expert: Spring Boot, JVM, concurrency, design patterns, streams"
+      ;;
+    javascript-modernizer)
+      echo "JavaScript expert: ES2024+, functional programming, async patterns, modules"
+      ;;
+    php-modernizer)
+      echo "PHP expert: Laravel, Symfony, modern PHP 8.x+, PSR standards, composer"
+      ;;
+    python-specialist)
+      echo "Python expert: Type hints, async/await, dataclasses, decorators, best practices"
+      ;;
+    rust-expert)
+      echo "Rust expert: Ownership, lifetimes, traits, async Rust, zero-cost abstractions"
+      ;;
+    typescript-pro)
+      echo "TypeScript expert: Advanced types, generics, type guards, utility types, strict mode"
+      ;;
+    # Infrastructure
+    aws-cloud-specialist)
+      echo "AWS expert: EC2, S3, Lambda, RDS, CloudFormation, best practices, serverless"
+      ;;
+    cicd-automation-specialist)
+      echo "CI/CD expert: GitHub Actions, GitLab CI, Jenkins, deployment pipelines, automation"
+      ;;
+    cloudflare-edge-specialist)
+      echo "Cloudflare expert: Workers, Pages, CDN, DDoS protection, edge computing"
+      ;;
+    docker-specialist)
+      echo "Docker expert: Containerization, multi-stage builds, compose, optimization"
+      ;;
+    kubernetes-expert)
+      echo "Kubernetes expert: Deployments, services, ingress, helm, best practices, scaling"
+      ;;
+    monitoring-observability-specialist)
+      echo "Monitoring expert: Prometheus, Grafana, logging, alerting, distributed tracing"
+      ;;
+    nginx-load-balancer-specialist)
+      echo "Nginx expert: Reverse proxy, load balancing, caching, SSL/TLS, performance"
+      ;;
+    terraform-iac-specialist)
+      echo "Terraform expert: IaC, modules, state management, providers, workspaces"
+      ;;
+    vercel-deployment-specialist)
+      echo "Vercel expert: Deployment, edge functions, serverless, preview environments"
+      ;;
+    # Testing
+    cypress-specialist)
+      echo "Cypress expert: E2E testing, component testing, visual testing, fixtures"
+      ;;
+    jest-testing-specialist)
+      echo "Jest expert: Unit tests, mocks, snapshots, coverage, best practices"
+      ;;
+    playwright-e2e-specialist)
+      echo "Playwright expert: E2E tests, browser automation, parallel execution, traces"
+      ;;
+    storybook-testing-specialist)
+      echo "Storybook expert: Component documentation, visual testing, addons, interactions"
+      ;;
+    test-automation-strategist)
+      echo "Test automation expert: Test strategy, frameworks, CI/CD integration, best practices"
+      ;;
+    testing-library-specialist)
+      echo "Testing Library expert: User-centric tests, accessibility, queries, best practices"
+      ;;
+    vitest-specialist)
+      echo "Vitest expert: Fast unit testing, Vite integration, UI mode, snapshots"
+      ;;
+    # Specialized
+    ai-ml-integration-specialist)
+      echo "AI/ML expert: Model integration, deployment, MLOps, TensorFlow, PyTorch, inference"
+      ;;
+    blockchain-web3-specialist)
+      echo "Blockchain/Web3 expert: Smart contracts, dApps, Ethereum, Solidity, wallets"
+      ;;
+    browser-extension-specialist)
+      echo "Browser extension expert: Chrome/Firefox extensions, WebExtensions API, manifest v3"
+      ;;
+    cli-tools-specialist)
+      echo "CLI tools expert: Command-line applications, argument parsing, interactive prompts"
       ;;
     data-pipeline-specialist)
-      echo "Data pipeline expert: ETL, streaming, batch processing, orchestration"
+      echo "Data pipeline expert: ETL, streaming, batch processing, orchestration, Airflow"
       ;;
-    ml-specialist)
-      echo "ML expert: Model training, deployment, MLOps, TensorFlow, PyTorch"
+    electron-desktop-specialist)
+      echo "Electron expert: Desktop apps, IPC, native integrations, cross-platform development"
       ;;
-    blockchain-specialist)
-      echo "Blockchain expert: Smart contracts, Web3, Ethereum, Solidity"
+    game-development-specialist)
+      echo "Game development expert: Game engines, physics, rendering, multiplayer, optimization"
       ;;
-    mobile-specialist)
-      echo "Mobile expert: React Native, Flutter, iOS, Android"
-      ;;
-    desktop-specialist)
-      echo "Desktop expert: Electron, Tauri, cross-platform applications"
+    react-native-mobile-specialist)
+      echo "React Native expert: Mobile apps, navigation, native modules, iOS/Android deployment"
       ;;
     *)
       echo "Specialized AI agent"
