@@ -101,96 +101,96 @@ CORE_AGENTS=(
 
 # Frontend frameworks (8 agents)
 FRONTEND_AGENTS=(
-    "nextjs-specialist"
-    "react-specialist"
-    "vue-specialist"
     "angular-specialist"
+    "animation-specialist"
+    "css-architect"
+    "react-specialist"
     "svelte-specialist"
-    "solid-specialist"
-    "qwik-specialist"
-    "astro-specialist"
+    "tailwind-expert"
+    "ui-accessibility"
+    "vue-specialist"
 )
 
 # Backend frameworks (8 agents)
 BACKEND_AGENTS=(
     "express-specialist"
-    "nestjs-specialist"
-    "fastify-specialist"
-    "hono-specialist"
-    "koa-specialist"
-    "adonis-specialist"
-    "feathers-specialist"
-    "sails-specialist"
+    "fastify-expert"
+    "graphql-specialist"
+    "koa-expert"
+    "microservices-architect"
+    "nest-specialist"
+    "rest-api-architect"
+    "websocket-expert"
 )
 
 # Full-stack frameworks (6 agents)
 FULLSTACK_AGENTS=(
-    "remix-specialist"
+    "astro-specialist"
+    "nextjs-specialist"
     "nuxt-specialist"
-    "sveltekit-specialist"
+    "remix-specialist"
     "solidstart-specialist"
-    "analog-specialist"
-    "fresh-specialist"
+    "sveltekit-specialist"
 )
 
 # Programming languages (8 agents)
 LANGUAGE_AGENTS=(
-    "typescript-pro"
-    "javascript-modernizer"
-    "python-specialist"
-    "go-specialist"
-    "rust-specialist"
-    "java-specialist"
     "csharp-specialist"
-    "php-specialist"
+    "go-specialist"
+    "java-specialist"
+    "javascript-modernizer"
+    "php-modernizer"
+    "python-specialist"
+    "rust-expert"
+    "typescript-pro"
 )
 
 # Databases & ORMs (8 agents)
 DATABASE_AGENTS=(
-    "postgres-expert"
+    "drizzle-specialist"
     "mongodb-expert"
-    "mysql-expert"
+    "mysql-specialist"
+    "postgres-expert"
+    "prisma-specialist"
     "redis-specialist"
-    "prisma-orm-specialist"
-    "drizzle-orm-specialist"
-    "typeorm-specialist"
-    "sequelize-specialist"
+    "sequelize-expert"
+    "typeorm-expert"
 )
 
 # Infrastructure & DevOps (9 agents)
 INFRASTRUCTURE_AGENTS=(
+    "aws-cloud-specialist"
+    "cicd-automation-specialist"
+    "cloudflare-edge-specialist"
     "docker-specialist"
     "kubernetes-expert"
-    "aws-cloud-specialist"
-    "gcp-specialist"
-    "azure-specialist"
-    "terraform-specialist"
-    "ci-cd-specialist"
-    "nginx-specialist"
-    "monitoring-specialist"
+    "monitoring-observability-specialist"
+    "nginx-load-balancer-specialist"
+    "terraform-iac-specialist"
+    "vercel-deployment-specialist"
 )
 
 # Testing frameworks (7 agents)
 TESTING_AGENTS=(
-    "jest-testing-specialist"
-    "vitest-specialist"
-    "playwright-specialist"
     "cypress-specialist"
+    "jest-testing-specialist"
+    "playwright-e2e-specialist"
+    "storybook-testing-specialist"
+    "test-automation-strategist"
     "testing-library-specialist"
-    "storybook-specialist"
-    "msw-specialist"
+    "vitest-specialist"
 )
 
 # Specialized domains (8 agents)
 SPECIALIZED_AGENTS=(
-    "graphql-specialist"
-    "rest-api-architect"
-    "websocket-specialist"
+    "ai-ml-integration-specialist"
+    "blockchain-web3-specialist"
+    "browser-extension-specialist"
+    "cli-tools-specialist"
     "data-pipeline-specialist"
-    "ml-specialist"
-    "blockchain-specialist"
-    "mobile-specialist"
-    "desktop-specialist"
+    "electron-desktop-specialist"
+    "game-development-specialist"
+    "react-native-mobile-specialist"
 )
 
 # Agent counts

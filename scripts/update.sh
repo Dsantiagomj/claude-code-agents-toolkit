@@ -180,7 +180,7 @@ restore_settings() {
 
 # Update agents
 update_agents() {
-    print_update "Updating agents (78 agents)..."
+    print_update "Updating agents (72 agents)..."
 
     # Remove old agents
     if [ -d ".claude/agents-global" ]; then
@@ -198,7 +198,7 @@ update_agents() {
     cp "$TOOLKIT_DIR/templates/AGENT_SELECTION_GUIDE.md" .claude/agents-global/
     cp "$TOOLKIT_DIR/templates/MCP_INTEGRATION_GUIDE.md" .claude/agents-global/
 
-    print_success "Agents updated (78 agents)"
+    print_success "Agents updated (72 agents)"
 }
 
 # Update Maestro Mode
@@ -393,7 +393,7 @@ main() {
 
     if [ "$AGENTS_ONLY" = true ]; then
         echo "  • Mode: Agents only"
-        echo "  • Will update: 78 agents"
+        echo "  • Will update: 72 agents"
         echo "  • Will preserve: Maestro Mode, RULEBOOK"
     elif [ "$MAESTRO_ONLY" = true ]; then
         echo "  • Mode: Maestro only"
@@ -433,7 +433,7 @@ main() {
     # Perform update based on flags
     if [ "$AGENTS_ONLY" = true ]; then
         update_agents
-        UPDATED_ITEMS="  → Agents (78 agents)\n"
+        UPDATED_ITEMS="  → Agents (72 agents)\n"
     elif [ "$MAESTRO_ONLY" = true ]; then
         update_maestro
         UPDATED_ITEMS="  → Maestro Mode\n"
@@ -441,7 +441,7 @@ main() {
         # Full update
         update_agents
         update_maestro
-        UPDATED_ITEMS="  → Agents (78 agents)\n  → Maestro Mode\n"
+        UPDATED_ITEMS="  → Agents (72 agents)\n  → Maestro Mode\n"
     fi
 
     # Restore preserved items

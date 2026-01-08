@@ -302,7 +302,7 @@ main() {
         echo "  [9] Specialized Domains (8)"
         echo ""
         echo "Quick Actions:"
-        echo "  [A] Activate All Agents (78)"
+        echo "  [A] Activate All Agents (72)"
         echo "  [D] Deactivate All (keep core 10)"
         echo "  [S] Show Current Selection"
         echo "  [Q] Save & Quit"

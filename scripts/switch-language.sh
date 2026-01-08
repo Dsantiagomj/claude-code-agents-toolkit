@@ -156,7 +156,7 @@ show_summary() {
     echo ""
 
     echo -e "${GREEN}What stayed the same:${NC}"
-    echo "  → All agents (78 agents)"
+    echo "  → All agents (72 agents)"
     echo "  → RULEBOOK.md"
     echo "  → Settings"
     echo "  → Self-enhancement configuration"

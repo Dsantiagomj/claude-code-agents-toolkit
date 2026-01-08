@@ -200,7 +200,7 @@ update_agents() {
     cp "$(dirname "$0")/templates/AGENT_SELECTION_GUIDE.md" .claude/agents-global/
     cp "$(dirname "$0")/templates/MCP_INTEGRATION_GUIDE.md" .claude/agents-global/
 
-    print_success "Agents updated: 78 agents (10 core + 68 specialized)"
+    print_success "Agents updated: 72 agents (10 core + 62 pool)"
     echo ""
 }
 
@@ -220,7 +220,7 @@ show_summary() {
     echo ""
 
     echo -e "${GREEN}What was updated:${NC}"
-    echo "  → Agents: Updated to $TARGET_VERSION (78 agents)"
+    echo "  → Agents: Updated to $TARGET_VERSION (72 agents)"
     echo "  → Documentation: Latest version"
     echo "  → Version file: $TARGET_VERSION"
     echo ""
@@ -270,7 +270,7 @@ main() {
                 echo "  --help        Show this help message"
                 echo ""
                 echo "What gets migrated:"
-                echo "  • Agents → Updated to latest version (78 agents)"
+                echo "  • Agents → Updated to latest version (72 agents)"
                 echo "  • Documentation → Latest guides and templates"
                 echo "  • Version file → Updated to track current version"
                 echo ""

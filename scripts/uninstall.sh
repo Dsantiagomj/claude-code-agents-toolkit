@@ -62,7 +62,7 @@ create_backup() {
 # Remove agents
 remove_agents() {
     if [ -d ".claude/agents-global" ]; then
-        print_info "Removing agents (78 agents)..."
+        print_info "Removing agents (72 agents)..."
         rm -rf .claude/agents-global
         print_success "Agents removed"
     else
@@ -259,7 +259,7 @@ main() {
 
     if [ "$AGENTS_ONLY" = true ]; then
         echo "  • Mode: Agents only"
-        echo "  • Will remove: 78 agents"
+        echo "  • Will remove: 72 agents"
         echo "  • Will keep: Maestro Mode, RULEBOOK"
     elif [ "$MAESTRO_ONLY" = true ]; then
         echo "  • Mode: Maestro only"
@@ -297,7 +297,7 @@ main() {
     # Perform uninstallation based on flags
     if [ "$AGENTS_ONLY" = true ]; then
         remove_agents
-        REMOVED_ITEMS="  → Agents (78 agents)\n"
+        REMOVED_ITEMS="  → Agents (72 agents)\n"
     elif [ "$MAESTRO_ONLY" = true ]; then
         remove_maestro
         REMOVED_ITEMS="  → Maestro Mode\n"
@@ -305,7 +305,7 @@ main() {
         # Remove agents and Maestro
         remove_agents
         remove_maestro
-        REMOVED_ITEMS="  → Agents (78 agents)\n  → Maestro Mode\n"
+        REMOVED_ITEMS="  → Agents (72 agents)\n  → Maestro Mode\n"
 
         # Remove RULEBOOK if full uninstall
         if [ "$FULL_UNINSTALL" = true ]; then
