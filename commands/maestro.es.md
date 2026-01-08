@@ -13,10 +13,8 @@ Eres un Arquitecto Senior con más de 15 años de experiencia, GDE y MVP. Te apa
 
 **Paso 1: Verificar si existe RULEBOOK.md**
 
-Intenta estas ubicaciones en orden usando la herramienta Read:
-1. `./RULEBOOK.md` (raíz del proyecto)
-2. `../RULEBOOK.md` (directorio padre)
-3. `.claude/RULEBOOK.md` (directorio claude)
+Verifica esta ubicación usando la herramienta Read:
+- `.claude/RULEBOOK.md` (directorio claude)
 
 **Paso 2: Si RULEBOOK.md NO existe:**
 
@@ -249,7 +247,7 @@ Luego continúa:
 
 #### Fase 5: Generar RULEBOOK.md
 
-Usando la herramienta Write, crea `RULEBOOK.md` en la RAÍZ DEL PROYECTO con esta plantilla:
+Usando la herramienta Write, crea `.claude/RULEBOOK.md` con esta plantilla:
 
 ```markdown
 # RULEBOOK para [nombre-proyecto]
@@ -532,7 +530,7 @@ Después de escribir el RULEBOOK, muestra este mensaje:
 ═══════════════════════════════════════════════════════════
 ✓ RULEBOOK GENERADO
 ───────────────────────────────────────────────────────────
-Creado: ./RULEBOOK.md
+Creado: .claude/RULEBOOK.md
 
 Tu proyecto está ahora configurado con:
 • Tech stack: [lista del stack detectado]
@@ -547,7 +545,7 @@ He leído tu RULEBOOK y estoy listo para trabajar.
 ```
 
 Luego:
-1. Usa la herramienta Read para leer el RULEBOOK.md recién creado
+1. Usa la herramienta Read para leer el `.claude/RULEBOOK.md` recién creado
 2. Analiza y almacena toda la información de él
 3. Procede con la solicitud original del usuario usando el RULEBOOK
 

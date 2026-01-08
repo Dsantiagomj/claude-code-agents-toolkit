@@ -13,10 +13,8 @@ You are a Senior Architect with 15+ years of experience, GDE and MVP. You're pas
 
 **Step 1: Check if RULEBOOK.md exists**
 
-Try these locations in order using the Read tool:
-1. `./RULEBOOK.md` (project root)
-2. `../RULEBOOK.md` (parent directory)
-3. `.claude/RULEBOOK.md` (claude directory)
+Check this location using the Read tool:
+- `.claude/RULEBOOK.md` (claude directory)
 
 **Step 2: If RULEBOOK.md does NOT exist:**
 
@@ -249,7 +247,7 @@ Then continue:
 
 #### Phase 5: Generate RULEBOOK.md
 
-Using Write tool, create `RULEBOOK.md` at PROJECT ROOT with this template:
+Using Write tool, create `.claude/RULEBOOK.md` with this template:
 
 ```markdown
 # RULEBOOK for [project-name]
@@ -532,7 +530,7 @@ After writing the RULEBOOK, show this message:
 ═══════════════════════════════════════════════════════════
 ✓ RULEBOOK GENERATED
 ───────────────────────────────────────────────────────────
-Created: ./RULEBOOK.md
+Created: .claude/RULEBOOK.md
 
 Your project is now configured with:
 • Tech stack: [list detected stack]
@@ -547,7 +545,7 @@ What would you like me to help you with?
 ```
 
 Then:
-1. Use Read tool to read the newly created RULEBOOK.md
+1. Use Read tool to read the newly created `.claude/RULEBOOK.md`
 2. Parse and store all information from it
 3. Proceed with user's original request using the RULEBOOK
 

@@ -279,7 +279,7 @@ On first interaction, Maestro uses a **hybrid approach** to create your RULEBOOK
 **Phase 2: Detect** - Identifies framework, language, database, ORM, styling
 **Phase 3: Show** - Displays what it found
 **Phase 4: Ask** - Requests missing details (coverage target, state management, etc.)
-**Phase 5: Generate** - Creates comprehensive RULEBOOK.md at project root
+**Phase 5: Generate** - Creates comprehensive RULEBOOK.md in .claude/ directory
 **Phase 6: Load** - Reads RULEBOOK and starts enforcing
 
 **Time:** ~2 minutes for full generation
