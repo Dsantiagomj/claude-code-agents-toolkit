@@ -21,15 +21,24 @@ NC='\033[0m' # No Color
 # ============================================================================
 # PATHS
 # ============================================================================
+# NOTE: Installation is ALWAYS global at ~/.claude-global/
+# Project .claude/ directories contain symlinks + project-specific config only
 
+# Global installation paths (always here)
 GLOBAL_DIR="${HOME}/.claude-global"
-RULEBOOK_LOCAL=".claude/RULEBOOK.md"
-RULEBOOK_GLOBAL="${GLOBAL_DIR}/RULEBOOK.md"
 AGENTS_DIR_GLOBAL="${GLOBAL_DIR}/agents"
-AGENTS_DIR_LOCAL=".claude/agents"
-COMMANDS_DIR="${GLOBAL_DIR}/commands"
+COMMANDS_DIR_GLOBAL="${GLOBAL_DIR}/commands"
 SCRIPTS_DIR="${GLOBAL_DIR}/scripts"
 TOOLKIT_VERSION_FILE="${GLOBAL_DIR}/.toolkit-version"
+
+# Local project paths (project-specific config + symlinks to global)
+CLAUDE_LOCAL_DIR=".claude"
+RULEBOOK_LOCAL="${CLAUDE_LOCAL_DIR}/RULEBOOK.md"
+COMMANDS_LOCAL_SYMLINK="${CLAUDE_LOCAL_DIR}/commands"  # Symlink to COMMANDS_DIR_GLOBAL
+AGENTS_LOCAL_SYMLINK="${CLAUDE_LOCAL_DIR}/agents"      # Symlink to AGENTS_DIR_GLOBAL
+SETTINGS_LOCAL_FILE="${CLAUDE_LOCAL_DIR}/settings.local.json"
+AGENTS_ACTIVE_FILE="${CLAUDE_LOCAL_DIR}/agents-active.txt"
+VERSION_LOCAL_FILE="${CLAUDE_LOCAL_DIR}/.toolkit-version"
 
 # ============================================================================
 # PRINT FUNCTIONS

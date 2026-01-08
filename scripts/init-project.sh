@@ -99,10 +99,10 @@ check_existing() {
 create_project_structure() {
     print_info "Creating project directory..."
 
-    mkdir -p .claude/commands
+    mkdir -p "$COMMANDS_LOCAL_SYMLINK"
 
     # Symlink toolkit version (for health checks)
-    ln -sf "$HOME/.claude-global/.toolkit-version" .claude/.toolkit-version
+    ln -sf "$TOOLKIT_VERSION_FILE" "$VERSION_LOCAL_FILE"
 
     # Persona-specific symlinks (only main command)
     if [ "$SELECTED_PERSONA" = "maestro" ]; then
@@ -110,9 +110,9 @@ create_project_structure() {
 
         # Symlink Maestro command (language-specific)
         if [ "$MAESTRO_LANG" = "en" ]; then
-            ln -sf "$HOME/.claude-global/commands/maestro.md" .claude/commands/maestro.md
+            ln -sf "${COMMANDS_DIR_GLOBAL}/maestro.md" "${COMMANDS_LOCAL_SYMLINK}/maestro.md"
         else
-            ln -sf "$HOME/.claude-global/commands/maestro.es.md" .claude/commands/maestro.md
+            ln -sf "${COMMANDS_DIR_GLOBAL}/maestro.es.md" "${COMMANDS_LOCAL_SYMLINK}/maestro.md"
         fi
 
         print_success "Maestro mode configured ($MAESTRO_LANG)"
@@ -121,14 +121,14 @@ create_project_structure() {
         print_info "Setting up Coordinator mode..."
 
         # Symlink Coordinator command
-        ln -sf "$HOME/.claude-global/commands/coordinator.md" .claude/commands/coordinator.md
+        ln -sf "${COMMANDS_DIR_GLOBAL}/coordinator.md" "${COMMANDS_LOCAL_SYMLINK}/coordinator.md"
 
         print_success "Coordinator mode configured"
         print_info "Supporting files will be read from ~/.claude-global/commands/"
     fi
 
     # Create empty agents-active.txt (project-specific file)
-    touch .claude/agents-active.txt
+    touch "$AGENTS_ACTIVE_FILE"
 
     print_success "Project structure created based on $SELECTED_PERSONA persona"
 }
@@ -196,8 +196,8 @@ show_completion() {
     if [ "$SELECTED_PERSONA" = "maestro" ]; then
         echo "  Language: ${BLUE}$MAESTRO_LANG${NC}"
     fi
-    echo "  Directory: ${BLUE}.claude/${NC} (symlinks to global)"
-    echo "  Global installation: ${BLUE}~/.claude-global/${NC}"
+    echo "  Directory: ${BLUE}${CLAUDE_LOCAL_DIR}/${NC} (symlinks to global)"
+    echo "  Global installation: ${BLUE}${GLOBAL_DIR}${NC}"
     echo ""
 
     echo "Useful commands:"

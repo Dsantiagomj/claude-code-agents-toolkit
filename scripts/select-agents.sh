@@ -22,7 +22,7 @@ print_header() {
 
 # Check if RULEBOOK exists
 check_rulebook() {
-    if [ ! -f ".claude/RULEBOOK.md" ]; then
+    if [ ! -f "$RULEBOOK_LOCAL" ]; then
         print_error "RULEBOOK.md not found"
         echo ""
         echo "Please run ./install.sh first to create a RULEBOOK"
@@ -33,9 +33,9 @@ check_rulebook() {
 
 # Get list of currently active agents from RULEBOOK
 get_active_agents() {
-    if grep -q "## Active Agents" .claude/RULEBOOK.md 2>/dev/null; then
+    if grep -q "## Active Agents" $RULEBOOK_LOCAL 2>/dev/null; then
         # Extract agents from RULEBOOK (between ## Active Agents and next ##)
-        sed -n '/## Active Agents/,/^##/p' .claude/RULEBOOK.md | grep '^-' | sed 's/^- //' | sed 's/ .*//' > /tmp/active_agents.txt
+        sed -n '/## Active Agents/,/^##/p' $RULEBOOK_LOCAL | grep '^-' | sed 's/^- //' | sed 's/ .*//' > /tmp/active_agents.txt
     else
         # No active agents section
         touch /tmp/active_agents.txt
@@ -206,13 +206,13 @@ save_to_rulebook() {
     echo ""
 
     # Backup RULEBOOK
-    cp .claude/RULEBOOK.md .claude/RULEBOOK.md.backup
+    cp $RULEBOOK_LOCAL $RULEBOOK_LOCAL.backup
 
     # Get current active agents
     local active_agents=$(cat /tmp/active_agents.txt | sort | tr '\n' ' ')
 
     # Update RULEBOOK - replace the Active Agents section
-    if grep -q "## Active Agents" .claude/RULEBOOK.md; then
+    if grep -q "## Active Agents" $RULEBOOK_LOCAL; then
         # Section exists, replace it
         awk -v agents="$active_agents" '
         /^## Active Agents/ {
@@ -231,20 +231,20 @@ save_to_rulebook() {
         !in_section {
             print
         }
-        ' .claude/RULEBOOK.md > .claude/RULEBOOK.md.tmp
-        mv .claude/RULEBOOK.md.tmp .claude/RULEBOOK.md
+        ' $RULEBOOK_LOCAL > $RULEBOOK_LOCAL.tmp
+        mv $RULEBOOK_LOCAL.tmp $RULEBOOK_LOCAL
     else
         # Section doesn't exist, add it
-        echo "" >> .claude/RULEBOOK.md
-        echo "## Active Agents" >> .claude/RULEBOOK.md
-        echo "" >> .claude/RULEBOOK.md
+        echo "" >> $RULEBOOK_LOCAL
+        echo "## Active Agents" >> $RULEBOOK_LOCAL
+        echo "" >> $RULEBOOK_LOCAL
         cat /tmp/active_agents.txt | sort | while read -r agent; do
-            echo "- $agent" >> .claude/RULEBOOK.md
+            echo "- $agent" >> $RULEBOOK_LOCAL
         done
     fi
 
     print_success "Changes saved to RULEBOOK.md"
-    print_info "Backup created: .claude/RULEBOOK.md.backup"
+    print_info "Backup created: $RULEBOOK_LOCAL.backup"
     echo ""
 
     local count=$(wc -l < /tmp/active_agents.txt)
@@ -259,7 +259,7 @@ main() {
         echo "Usage: ./select-agents.sh"
         echo ""
         echo "Interactive menu to activate/deactivate Claude Code agents."
-        echo "Changes are saved to .claude/RULEBOOK.md"
+        echo "Changes are saved to $RULEBOOK_LOCAL"
         echo ""
         echo "Features:"
         echo "  • Browse agents by category (Frontend, Backend, etc.)"

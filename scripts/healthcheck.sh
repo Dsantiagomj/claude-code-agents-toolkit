@@ -61,7 +61,7 @@ check_core_directories() {
     print_section "Core Directory Structure"
 
     print_check "Checking commands directory"
-    if [ -d ".claude/commands" ]; then
+    if [ -d "$COMMANDS_LOCAL_SYMLINK" ]; then
         hc_print_pass
     else
         hc_print_warn "Missing commands directory (Maestro/Coordinator not installed)"
@@ -73,7 +73,7 @@ check_version() {
     print_section "Version Information"
 
     print_check "Checking .toolkit-version file"
-    local version_file=".claude/.toolkit-version"
+    local version_file="$VERSION_LOCAL_FILE"
 
     if [ -f "$version_file" ]; then
         local version=$(cat "$version_file")
@@ -90,12 +90,12 @@ check_mode_installation() {
 
     # Check for Maestro
     print_check "Checking Maestro mode (maestro.md)"
-    if [ -f ".claude/commands/maestro.md" ] || [ -L ".claude/commands/maestro.md" ]; then
+    if [ -f "${COMMANDS_LOCAL_SYMLINK}/maestro.md" ] || [ -L "${COMMANDS_LOCAL_SYMLINK}/maestro.md" ]; then
         hc_print_pass
 
         # Check language version
-        if [ -L ".claude/commands/maestro.md" ]; then
-            local target=$(readlink ".claude/commands/maestro.md")
+        if [ -L "${COMMANDS_LOCAL_SYMLINK}/maestro.md" ]; then
+            local target=$(readlink "${COMMANDS_LOCAL_SYMLINK}/maestro.md")
             if [[ "$target" == *"maestro.es.md" ]]; then
                 echo -e "    ${BLUE}→${NC} Language: Spanish (symlink)"
             else
@@ -104,7 +104,7 @@ check_mode_installation() {
         fi
     else
         print_check "Checking Coordinator mode (coordinator.md)"
-        if [ -f ".claude/commands/coordinator.md" ] || [ -L ".claude/commands/coordinator.md" ]; then
+        if [ -f "${COMMANDS_LOCAL_SYMLINK}/coordinator.md" ] || [ -L "${COMMANDS_LOCAL_SYMLINK}/coordinator.md" ]; then
             hc_print_pass
             echo -e "    ${BLUE}→${NC} Mode: Coordinator (lightweight)"
         else
@@ -166,12 +166,12 @@ check_settings() {
     print_section "Settings Configuration"
 
     print_check "Checking settings.local.json"
-    if [ -f ".claude/settings.local.json" ]; then
+    if [ -f "$SETTINGS_LOCAL_FILE" ]; then
         hc_print_pass
 
         # Validate JSON syntax
         if command -v python3 &> /dev/null; then
-            if python3 -m json.tool .claude/settings.local.json > /dev/null 2>&1; then
+            if python3 -m json.tool $SETTINGS_LOCAL_FILE > /dev/null 2>&1; then
                 echo -e "    ${GREEN}→${NC} Valid JSON syntax"
             else
                 echo -e "    ${RED}→${NC} Invalid JSON syntax"
@@ -215,7 +215,7 @@ check_global_installation() {
 
         # Check for key global directories
         print_check "Checking global commands directory"
-        if [ -d "$COMMANDS_DIR" ]; then
+        if [ -d "$COMMANDS_DIR_GLOBAL" ]; then
             hc_print_pass
         else
             hc_print_warn "Missing global commands directory"
@@ -241,10 +241,10 @@ check_agents_active() {
     print_section "Active Agents Configuration"
 
     print_check "Checking agents-active.txt"
-    if [ -f ".claude/agents-active.txt" ]; then
+    if [ -f "$AGENTS_ACTIVE_FILE" ]; then
         hc_print_pass
 
-        local count=$(wc -l < ".claude/agents-active.txt" 2>/dev/null | tr -d ' ')
+        local count=$(wc -l < "$AGENTS_ACTIVE_FILE" 2>/dev/null | tr -d ' ')
         if [ $count -gt 0 ]; then
             echo -e "    ${BLUE}→${NC} $count active agents listed"
         else

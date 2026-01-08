@@ -44,8 +44,8 @@ print_error() {
 check_rulebook_exists() {
     print_info "Checking RULEBOOK.md existence..."
 
-    if [ ! -f ".claude/RULEBOOK.md" ]; then
-        print_error "RULEBOOK.md not found at .claude/RULEBOOK.md"
+    if [ ! -f "$RULEBOOK_LOCAL" ]; then
+        print_error "RULEBOOK.md not found at $RULEBOOK_LOCAL"
         echo ""
         echo "Create a RULEBOOK by running:"
         echo "  ./install.sh                  # Generates from template"
@@ -71,7 +71,7 @@ check_required_sections() {
     local all_present=true
 
     for section in "${required_sections[@]}"; do
-        if grep -q "## $section" .claude/RULEBOOK.md; then
+        if grep -q "## $section" $RULEBOOK_LOCAL; then
             print_pass "Section found: $section"
         else
             print_error "Missing required section: ## $section"
@@ -86,7 +86,7 @@ check_required_sections() {
 check_duplicate_sections() {
     print_info "Checking for duplicate sections..."
 
-    local duplicates=$(grep "^## " .claude/RULEBOOK.md | sort | uniq -d)
+    local duplicates=$(grep "^## " $RULEBOOK_LOCAL | sort | uniq -d)
 
     if [ -z "$duplicates" ]; then
         print_pass "No duplicate sections found"
@@ -104,7 +104,7 @@ check_duplicate_sections() {
 validate_active_agents() {
     print_info "Validating Active Agents section..."
 
-    if ! grep -q "## Active Agents" .claude/RULEBOOK.md; then
+    if ! grep -q "## Active Agents" $RULEBOOK_LOCAL; then
         print_warning "Active Agents section missing"
         echo "  → Add '## Active Agents' section to enable agent activation"
         echo ""
@@ -112,7 +112,7 @@ validate_active_agents() {
     fi
 
     # Check if agents are listed
-    local agent_count=$(sed -n '/## Active Agents/,/^##/p' .claude/RULEBOOK.md | grep '^-' | wc -l | tr -d ' ')
+    local agent_count=$(sed -n '/## Active Agents/,/^##/p' $RULEBOOK_LOCAL | grep '^-' | wc -l | tr -d ' ')
 
     if [ "$agent_count" -eq 0 ]; then
         print_warning "No agents listed in Active Agents section"
@@ -148,7 +148,7 @@ validate_agent_names() {
 
     # Get agents from RULEBOOK
     local invalid_found=false
-    sed -n '/## Active Agents/,/^##/p' .claude/RULEBOOK.md | grep '^-' | sed 's/^- //' | while read -r agent; do
+    sed -n '/## Active Agents/,/^##/p' $RULEBOOK_LOCAL | grep '^-' | sed 's/^- //' | while read -r agent; do
         # Check if agent exists in valid agents
         if [[ ! " ${valid_agents[@]} " =~ " ${agent} " ]]; then
             print_warning "Unknown agent in RULEBOOK: $agent"
@@ -165,7 +165,7 @@ validate_agent_names() {
 check_tech_stack() {
     print_info "Checking Tech Stack section..."
 
-    if ! grep -q "## Tech Stack" .claude/RULEBOOK.md; then
+    if ! grep -q "## Tech Stack" $RULEBOOK_LOCAL; then
         print_warning "Tech Stack section missing"
         echo "  → Recommended: Add '## Tech Stack' to document your stack"
         echo ""
@@ -175,7 +175,7 @@ check_tech_stack() {
     print_pass "Tech Stack section exists"
 
     # Check for common tech stack items
-    local stack_content=$(sed -n '/## Tech Stack/,/^##/p' .claude/RULEBOOK.md)
+    local stack_content=$(sed -n '/## Tech Stack/,/^##/p' $RULEBOOK_LOCAL)
 
     if echo "$stack_content" | grep -qi "framework"; then
         print_pass "Framework documented"
@@ -216,7 +216,7 @@ check_markdown_format() {
 
             prev_level=$current_level
         fi
-    done < .claude/RULEBOOK.md
+    done < $RULEBOOK_LOCAL
 
     if [ "$format_issues" = false ]; then
         print_pass "Markdown heading hierarchy is correct"
@@ -234,7 +234,7 @@ check_markdown_format() {
         fi
 
         prev_line="$line"
-    done < .claude/RULEBOOK.md
+    done < $RULEBOOK_LOCAL
 
     print_pass "Basic markdown formatting validated"
     echo ""
@@ -247,14 +247,14 @@ check_outdated_content() {
     local outdated_found=false
 
     # Check for old naming (GENTLEMAN MODE)
-    if grep -qi "GENTLEMAN MODE" .claude/RULEBOOK.md; then
+    if grep -qi "GENTLEMAN MODE" $RULEBOOK_LOCAL; then
         print_warning "Outdated naming detected: 'GENTLEMAN MODE'"
         echo "  → Update to 'MAESTRO MODE'"
         outdated_found=true
     fi
 
     # Check for old naming (WRAPUP MODE)
-    if grep -qi "WRAPUP MODE" .claude/RULEBOOK.md; then
+    if grep -qi "WRAPUP MODE" $RULEBOOK_LOCAL; then
         print_warning "Outdated naming detected: 'WRAPUP MODE'"
         echo "  → Update to 'COMMIT MODE'"
         outdated_found=true
@@ -271,13 +271,13 @@ check_outdated_content() {
 check_permissions() {
     print_info "Checking file permissions..."
 
-    if [ -r ".claude/RULEBOOK.md" ]; then
+    if [ -r "$RULEBOOK_LOCAL" ]; then
         print_pass "RULEBOOK is readable"
     else
         print_error "RULEBOOK is not readable"
     fi
 
-    if [ -w ".claude/RULEBOOK.md" ]; then
+    if [ -w "$RULEBOOK_LOCAL" ]; then
         print_pass "RULEBOOK is writable"
     else
         print_warning "RULEBOOK is not writable (read-only)"
