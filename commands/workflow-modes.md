@@ -4,6 +4,8 @@
 
 **Integration**: Works with Maestro Mode and Agent Intelligence to provide structured development workflow.
 
+**Examples**: See `workflow-examples.md` for detailed scenarios.
+
 ---
 
 ## Overview
@@ -11,7 +13,7 @@
 Every task goes through **4 distinct modes**:
 
 ```
-📋 PLANNING MODE → 💻 DEVELOPMENT MODE → 🔍 REVIEW MODE → 📦 COMMIT MODE
+📋 PLANNING → 💻 DEVELOPMENT → 🔍 REVIEW → 📦 COMMIT
 ```
 
 Each mode has:
@@ -25,8 +27,8 @@ Each mode has:
 ## Mode 1: 📋 PLANNING MODE
 
 ### When to Enter
-- **Automatically** when user requests a new task/feature
-- **Manually** when user says "plan this" or "let's plan"
+- **Automatically**: User requests a new task/feature
+- **Manually**: User says "plan this" or "let's plan"
 
 ### Mode Indicator
 ```
@@ -40,180 +42,40 @@ Complexity: [Trivial/Simple/Moderate/Complex/Critical]
 
 ### Responsibilities
 
-**1. Understand the Task**
-```markdown
-**Task Analysis:**
-- What: [What user wants to achieve]
-- Why: [Business/technical reasoning]
-- Scope: [What's included, what's not]
-- Dependencies: [Existing code, external services]
-```
+1. **Understand the Task**
+   - What: User's goal
+   - Why: Business/technical reasoning
+   - Scope: Inclusions and exclusions
+   - Dependencies: Existing code, external services
 
-**2. Check Project Context**
-```bash
-# Read project standards
-Read .claude/RULEBOOK.md
+2. **Check Project Context**
+   - Read `.claude/RULEBOOK.md`
+   - Check existing patterns (Grep/Glob)
+   - Understand current structure
 
-# Check existing patterns
-Grep [relevant patterns]
-Glob **/*[similar files]*
+3. **Assess Complexity**
+   - Lines of Code: [estimate]
+   - Files Affected: [count]
+   - New Patterns: [yes/no]
+   - Risk Level: [low/medium/high/critical]
+   - → Final Complexity: [Trivial/Simple/Moderate/Complex/Critical]
 
-# Understand current structure
-Read [related files]
-```
+4. **Select Agents** (based on RULEBOOK)
+   - Phase 1 - Design: architecture-advisor, etc.
+   - Phase 2 - Implementation: framework specialists
+   - Phase 3 - Quality: test-strategist, code-reviewer
 
-**3. Assess Complexity**
-```yaml
-Complexity Assessment:
-  Lines of Code: [estimate]
-  Files Affected: [count]
-  New Patterns: [yes/no]
-  Risk Level: [low/medium/high/critical]
-
-  → Complexity: [Trivial/Simple/Moderate/Complex/Critical]
-```
-
-**4. Select Agents**
-```yaml
-Recommended Agents (based on .claude/RULEBOOK.md):
-  Phase 1 - Design:
-    - architecture-advisor: [specific task]
-    - [other agents]: [specific tasks]
-
-  Phase 2 - Implementation:
-    - [framework-specialist]: [specific task]
-    - [language-specialist]: [specific task]
-
-  Phase 3 - Quality:
-    - test-strategist: [specific task]
-    - code-reviewer: [specific task]
-
-Total Agents: [count]
-Estimated Time: [hours]
-```
-
-**5. Create Step-by-Step Plan**
-```markdown
-**Development Plan:**
-
-**Step 1: [Name]** (Estimated: Xmin)
-- Task: [Detailed description]
-- Files: [Files to create/modify]
-- Agent: [Agent to use, if any]
-- Output: [Expected result]
-
-**Step 2: [Name]** (Estimated: Xmin)
-- Task: [Detailed description]
-- Files: [Files to create/modify]
-- Agent: [Agent to use, if any]
-- Output: [Expected result]
-
-[Continue for all steps...]
-
-**Total Estimated Time:** [sum of all steps]
-```
-
-**6. Ask Clarifying Questions**
-```markdown
-**Questions Before We Proceed:**
-
-1. [Question about scope/requirements]
-2. [Question about preferences/approach]
-3. [Question about edge cases/constraints]
-
-Please provide input to refine the plan.
-```
+5. **Create Step-by-Step Plan**
+   - Each step: Name, files, agent, estimated time
+   - Include questions for clarification
+   - Show total estimated time
 
 ### Exit Criteria
+- User answers clarifying questions
+- User says **"ok"**, **"proceed"**, or **"let's do it"**
 
-User must provide:
-- ✅ Answers to clarifying questions (if any)
-- ✅ Approval of the plan: "ok", "proceed", "let's do it", "go ahead"
-- ✅ OR: Modifications to the plan
-
-### Example Planning Mode Output
-
-```
-═══════════════════════════════════════════════════════════
-📋 PLANNING MODE ACTIVE
-───────────────────────────────────────────────────────────
-Task: Add user profile editing functionality
-Complexity: Moderate (3 files, ~150 LOC, existing patterns)
-───────────────────────────────────────────────────────────
-
-**Task Analysis:**
-- What: Allow users to edit name, email, avatar
-- Why: Core user management feature
-- Scope: UI form + API endpoint + validation
-- Dependencies: User auth system, file upload for avatar
-
-**Project Context (from RULEBOOK.md):**
-- Framework: Next.js 16 + React 19
-- State: Zustand (global) + TanStack Query (server)
-- Styling: Shadcn/ui + Tailwind
-- Testing: Vitest + Testing Library (80% coverage)
-
-**Complexity Assessment:**
-- Lines of Code: ~150
-- Files Affected: 3 new, 2 modified
-- New Patterns: No (follow existing profile patterns)
-- Risk Level: Medium (touches user data)
-→ Complexity: Moderate
-
-**Recommended Agents:**
-Phase 1 - Design:
-  - architecture-advisor: Review component architecture
-
-Phase 2 - Implementation:
-  - react-specialist: Build ProfileEditForm component
-  - tailwind-expert: Style the form
-
-Phase 3 - Quality:
-  - test-strategist: Plan test coverage
-  - vitest-specialist: Write tests
-  - code-reviewer: Final review
-
-Total Agents: 5
-Estimated Time: 2-3 hours
-
-**Development Plan:**
-
-Step 1: Create ProfileEditForm Component (30min)
-- Files: src/features/profile/components/ProfileEditForm/
-- Agent: react-specialist
-- Output: Form component with validation
-
-Step 2: Add tRPC Mutation (20min)
-- Files: src/features/profile/server/router.ts
-- Agent: None (follow existing pattern)
-- Output: user.updateProfile procedure
-
-Step 3: Add Styling (15min)
-- Files: ProfileEditForm.tsx
-- Agent: tailwind-expert
-- Output: Responsive, accessible form
-
-Step 4: Write Tests (30min)
-- Files: ProfileEditForm.test.tsx, router.test.ts
-- Agent: vitest-specialist
-- Output: 80%+ coverage
-
-Step 5: Code Review (15min)
-- Agent: code-reviewer
-- Output: Quality verification
-
-Total Estimated Time: 1h 50min
-
-**Questions Before We Proceed:**
-
-1. Should avatar upload be included now or separate feature?
-2. Do you want email change to require verification?
-3. Any specific validation rules beyond required fields?
-
-Please answer these questions, then say "ok" to proceed.
-
-═══════════════════════════════════════════════════════════
-```
+### Example
+See `workflow-examples.md` → Example 1
 
 ---
 
@@ -221,562 +83,251 @@ Please answer these questions, then say "ok" to proceed.
 
 ### When to Enter
 - After user approves the plan from Planning Mode
-- User says: "ok", "proceed", "let's do it", "approved"
 
 ### Mode Indicator
 ```
 ═══════════════════════════════════════════════════════════
 💻 DEVELOPMENT MODE ACTIVE
 ───────────────────────────────────────────────────────────
-Following plan from Planning Mode
-Progress: Step X of Y
+Current Step: X/Y - [Step Name]
+Agent: [agent-name]
+Estimated: [time]
 ───────────────────────────────────────────────────────────
 ```
 
 ### Responsibilities
 
-**1. Execute Plan Step by Step**
-```markdown
-💻 Development Mode: Step X of Y
+1. **Execute Plan Step by Step**
+   - Follow RULEBOOK patterns strictly
+   - Delegate to agents as planned
+   - Show progress after each step
 
-**Current Step:** [Step name]
-**Agent:** [Agent being used]
-**Task:** [What I'm doing now]
+2. **Handle Blockers**
+   - If blocker found: Pause and ask user
+   - Suggest alternatives
+   - Wait for user decision
 
-[Show progress/output]
-
-✓ Step X complete
-→ Moving to Step X+1...
-```
-
-**2. Follow RULEBOOK Strictly**
-- Read `.claude/RULEBOOK.md` before each step
-- Follow project patterns exactly
-- Use project's tech stack
-- Respect coding standards
-
-**3. Delegate to Agents (if planned)**
-```markdown
-Delegating to [agent-name]:
-- Task: [Specific task]
-- Expected output: [What we need]
-- RULEBOOK requirements: [From project]
-
-[Agent working...]
-
-Agent output received, verifying against RULEBOOK...
-✓ Verified, proceeding.
-```
-
-**4. Keep User Informed**
-```markdown
-Progress Update:
-✓ Step 1: Create component structure
-✓ Step 2: Add form validation
-→ Step 3: Add styling (current)
-  Step 4: Write tests
-  Step 5: Code review
-```
-
-**5. Handle Blockers**
-```markdown
-⚠️ Blocker Encountered in Step X:
-Issue: [What's blocking]
-Options:
-1. [Option 1]
-2. [Option 2]
-
-Which approach do you prefer?
-```
+3. **Keep User Informed**
+   - Progress updates (X/Y steps complete)
+   - Show what's being created
+   - Highlight any deviations from plan
 
 ### Exit Criteria
+- All plan steps completed successfully
+- **Automatic transition** to Review Mode
 
-- ✅ All planned steps completed
-- ✅ Code compiles/builds successfully
-- ✅ Basic manual testing done (if applicable)
-- ✅ Ready for review
-
-**Automatic transition** to Review Mode when complete.
-
-### Example Development Mode Output
-
-```
-═══════════════════════════════════════════════════════════
-💻 DEVELOPMENT MODE ACTIVE
-───────────────────────────────────────────────────────────
-Following plan from Planning Mode
-Progress: Step 2 of 5
-───────────────────────────────────────────────────────────
-
-Progress Update:
-✓ Step 1: Create ProfileEditForm component (30min)
-  → Created: src/features/profile/components/ProfileEditForm/
-  → Files: ProfileEditForm.tsx, ProfileEditForm.types.ts, index.ts
-  → Validation: React Hook Form + Zod (per RULEBOOK)
-
-→ Step 2: Add tRPC Mutation (current - 20min estimated)
-  Task: Create user.updateProfile procedure
-  Reading RULEBOOK for tRPC patterns...
-
-  [Creating mutation...]
-
-  ✓ Created: src/features/profile/server/router.ts
-  ✓ Added: updateProfile procedure with auth check
-  ✓ Validation: Zod schema matches frontend
-  ✓ Error handling: User-friendly messages
-
-  Step 2: ✓ Complete
-
-→ Moving to Step 3: Add Styling...
-
-═══════════════════════════════════════════════════════════
-```
+### Example
+See `workflow-examples.md` → Example 2
 
 ---
 
 ## Mode 3: 🔍 REVIEW MODE
 
 ### When to Enter
-- **Automatically** after Development Mode completes
-- All code is written and functional
+- Automatically after all development steps complete
+- Manually if user says "review this"
 
 ### Mode Indicator
 ```
 ═══════════════════════════════════════════════════════════
 🔍 REVIEW MODE ACTIVE
 ───────────────────────────────────────────────────────────
-Development complete, awaiting your review and feedback
-───────────────────────────────────────────────────────────
 ```
 
 ### Responsibilities
 
-**1. Summary of Changes**
-```markdown
-**Development Complete! Here's what was built:**
+1. **Show Complete Summary**
+   - Files changed (new, modified, deleted)
+   - Lines of code added/removed
+   - Test coverage achieved
+   - Test results
 
-Files Created:
-  • src/features/profile/components/ProfileEditForm/
-    - ProfileEditForm.tsx (95 lines)
-    - ProfileEditForm.types.ts (15 lines)
-    - ProfileEditForm.test.tsx (120 lines)
-    - index.ts (2 lines)
+2. **Verify RULEBOOK Compliance**
+   - Framework patterns followed?
+   - Styling conventions met?
+   - Testing requirements satisfied?
+   - Code quality standards met?
+   - Accessibility/Performance targets?
 
-Files Modified:
-  • src/features/profile/server/router.ts (+45 lines)
-  • src/features/profile/index.ts (+2 lines)
+3. **Run Agent Reviews**
+   - code-reviewer: Code quality check
+   - test-strategist: Test coverage validation
+   - security-auditor: Security scan (if applicable)
 
-Total Changes:
-  • Files: 6 (4 new, 2 modified)
-  • Lines Added: 277
-  • Lines Deleted: 0
-  • Test Coverage: 85% (exceeds 80% requirement)
+4. **Request Feedback**
+   - Show all changes
+   - Ask for user feedback
+   - Make adjustments if needed
 
-**Key Features:**
-  ✓ Profile editing form with validation
-  ✓ Email change (no verification yet - as discussed)
-  ✓ Avatar upload (placeholder - to be implemented)
-  ✓ tRPC mutation with auth check
-  ✓ Full test coverage
-  ✓ RULEBOOK compliant (Zustand + TanStack Query)
-```
+5. **Iterate Until Approved**
+   - User provides feedback → Make changes → Show updated review
+   - Repeat until user approves
 
-**2. RULEBOOK Compliance Check**
-```markdown
-**RULEBOOK Compliance Verification:**
-
-✓ Component Structure: Folder pattern followed
-✓ State Management: TanStack Query for mutation
-✓ Styling: Shadcn/ui + Tailwind (per priority)
-✓ TypeScript: Strict mode, no `any` types
-✓ Testing: 85% coverage (exceeds 80% minimum)
-✓ Documentation: TSDoc on all functions
-✓ Error Handling: User-friendly messages
-✓ Accessibility: WCAG 2.1 AA compliant
-✓ Responsive: Mobile-first design
-
-All RULEBOOK requirements met ✓
-```
-
-**3. Request User Review**
-```markdown
-**Please Review:**
-
-1. **Functionality**: Does it work as expected?
-2. **Code Quality**: Any improvements needed?
-3. **Edge Cases**: Any scenarios I missed?
-4. **UX/UI**: Happy with the design?
-
-**Your Feedback:**
-- What works well?
-- What needs changes?
-- Any bugs or issues?
-
-Type your feedback, or say "looks good" / "approved" to proceed to commit mode.
-```
-
-**4. Handle Feedback**
-
-User provides feedback → Make adjustments → Show changes → Ask for review again
-
-**Loop until user approves:**
-```markdown
-Feedback received: [User's feedback]
-
-Making adjustments:
-1. [Change 1]
-2. [Change 2]
-...
-
-Changes made. Please review again.
-```
+6. **Adjust RULEBOOK if Needed**
+   - If new patterns emerged, update RULEBOOK
+   - Initiate self-enhancement process (Maestro mode)
 
 ### Exit Criteria
+- User says **"looks good"**, **"approved"**, **"lgtm"**, or similar
 
-User says:
-- ✅ "looks good"
-- ✅ "todo ok"
-- ✅ "approved"
-- ✅ "ship it"
-- ✅ Any confirmation that review is complete
-
-**Automatic transition** to Commit Mode when approved.
-
-### Example Review Mode Output
-
-```
-═══════════════════════════════════════════════════════════
-🔍 REVIEW MODE ACTIVE
-───────────────────────────────────────────────────────────
-Development complete, awaiting your review and feedback
-───────────────────────────────────────────────────────────
-
-**Development Complete! Here's what was built:**
-
-Files Created:
-  • src/features/profile/components/ProfileEditForm/
-    - ProfileEditForm.tsx (95 lines)
-    - ProfileEditForm.types.ts (15 lines)
-    - ProfileEditForm.test.tsx (120 lines)
-    - index.ts (2 lines)
-
-Files Modified:
-  • src/features/profile/server/router.ts (+45 lines)
-  • src/features/profile/index.ts (+2 lines)
-
-Total Changes:
-  • Files: 6 (4 new, 2 modified)
-  • Lines Added: 277
-  • Test Coverage: 85%
-
-**RULEBOOK Compliance:**
-✓ All requirements met
-
-**Please Review:**
-1. Test the form: http://localhost:3000/profile/edit
-2. Check validation: Try submitting empty/invalid data
-3. Verify styling: Check mobile and desktop views
-
-**Your Feedback:**
-What do you think? Any changes needed?
-
-Say "looks good" to proceed to commit, or provide feedback for adjustments.
-
-═══════════════════════════════════════════════════════════
-```
+### Example
+See `workflow-examples.md` → Example 3
 
 ---
 
 ## Mode 4: 📦 COMMIT MODE
 
 ### When to Enter
-- After user approves in Review Mode
-- User confirms ready to commit
+- After user approves changes in Review Mode
 
 ### Mode Indicator
 ```
 ═══════════════════════════════════════════════════════════
 📦 COMMIT MODE ACTIVE
 ───────────────────────────────────────────────────────────
-Preparing final commit
-───────────────────────────────────────────────────────────
 ```
 
 ### Responsibilities
 
-**1. Analyze Existing Commit Style**
-```bash
-# Read recent commits to match style
-git log --oneline -10
+1. **Analyze Commit Style**
+   - Run `git log --oneline -5`
+   - Detect patterns: Conventional Commits, Angular, custom
+   - Match project's existing style
 
-# Detect commit format:
-# - Conventional Commits? (feat:, fix:, etc.)
-# - Semantic? (Add, Update, Fix)
-# - Custom format?
-```
+2. **Delegate to Specialized Agents** (if needed)
+   - For complex changes: Evaluate and generate commit messages
+   - For gitflow enforcement: Ensure branch strategy compliance
 
-**2. Generate Commit Message**
-```markdown
-**Generated Commit Message:**
+3. **Generate Commit Message**
+   - Follow detected style
+   - Clear, descriptive subject
+   - Body if needed (complex changes)
+   - Include Co-Authored-By line
 
-Following project's commit style (Conventional Commits detected):
+4. **Show Files to Commit**
+   - List all staged files
+   - Show change statistics
+   - Preview commit message
 
-─────────────────────────────────────────────────────────
-feat(profile): add user profile editing functionality
+5. **Request Final Approval**
+   - Show proposed commit
+   - Ask user to confirm
 
-- Create ProfileEditForm component with validation
-- Add user.updateProfile tRPC mutation
-- Implement email and name editing
-- Add responsive styling with Tailwind
-- Include full test coverage (85%)
-
-Changes:
-- 4 files created (ProfileEditForm component + tests)
-- 2 files modified (router.ts, index.ts)
-- 277 lines added
-
-Test coverage: 85% (exceeds 80% requirement)
-RULEBOOK compliant: All standards met
-
-🤖 Generated with Claude Code
-Co-Authored-By: Claude <noreply@anthropic.com>
-─────────────────────────────────────────────────────────
-```
-
-**3. Show Files to Commit**
-```bash
-Files to be committed:
-  new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.tsx
-  new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.types.ts
-  new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.test.tsx
-  new file:   src/features/profile/components/ProfileEditForm/index.ts
-  modified:   src/features/profile/server/router.ts
-  modified:   src/features/profile/index.ts
-```
-
-**4. Request Final Approval**
-```markdown
-**Ready to Commit:**
-
-Commit message matches your project's style ✓
-All files staged ✓
-
-Do you approve this commit?
-- Say "yes" or "commit" to create the commit
-- Say "edit message" to modify the commit message
-- Provide different message if you want to change it
-```
-
-**5. Execute Commit (ONLY after approval)**
-```bash
-# User approved
-git add [files]
-git commit -m "[message]"
-
-✓ Commit created: [commit hash]
-```
-
-**6. Return to Idle**
-```markdown
-✓ Commit created successfully!
-✓ Task complete!
-
-Returning to normal mode. Ready for next task.
-```
+6. **CRITICAL**: **Only commit after user says "yes" or "commit"**
+   - Never auto-commit
+   - Always wait for explicit approval
 
 ### Exit Criteria
+- User says **"yes"**, **"commit"**, or **"go ahead"**
+- Commit created successfully
 
-- ✅ User approves commit message
-- ✅ Commit is created
-- ✅ Return to idle/normal mode
-
-### Important Rules
-
-**NEVER commit without user approval:**
-- ❌ Don't auto-commit
-- ❌ Don't commit on "looks good" (that's for Review Mode)
-- ✅ Only commit when user explicitly approves in Commit Mode
-
-### Example Commit Mode Output
-
-```
-═══════════════════════════════════════════════════════════
-📦 COMMIT MODE ACTIVE
-───────────────────────────────────────────────────────────
-Preparing final commit
-───────────────────────────────────────────────────────────
-
-Analyzing project commit style...
-✓ Detected: Conventional Commits format
-
-**Generated Commit Message:**
-
-─────────────────────────────────────────────────────────
-feat(profile): add user profile editing functionality
-
-- Create ProfileEditForm component with validation
-- Add user.updateProfile tRPC mutation
-- Implement email and name editing
-- Add responsive styling with Tailwind
-- Include full test coverage (85%)
-
-RULEBOOK compliant: ✓
-Test coverage: 85%
-
-🤖 Generated with Claude Code
-Co-Authored-By: Claude <noreply@anthropic.com>
-─────────────────────────────────────────────────────────
-
-**Files to be committed:**
-
-new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.tsx
-new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.types.ts
-new file:   src/features/profile/components/ProfileEditForm/ProfileEditForm.test.tsx
-new file:   src/features/profile/components/ProfileEditForm/index.ts
-modified:   src/features/profile/server/router.ts
-modified:   src/features/profile/index.ts
-
-**Ready to commit?**
-- Say "yes" or "commit" to create the commit
-- Say "edit message" to modify it
-- Or provide your own commit message
-
-═══════════════════════════════════════════════════════════
-```
+### Example
+See `workflow-examples.md` → Example 4
 
 ---
 
 ## Mode Transitions
 
+### Transition Map
+
 ```
-User: "Add profile editing"
-    ↓
-[📋 PLANNING MODE]
-  → Analyze task
-  → Check RULEBOOK
-  → Select agents
-  → Create plan
-  → Ask questions
-    ↓
-User: "ok, proceed"
-    ↓
-[💻 DEVELOPMENT MODE]
-  → Execute plan
-  → Step by step
-  → Keep user informed
-  → Handle blockers
-    ↓
-All steps complete
-    ↓
-[🔍 REVIEW MODE]
-  → Show changes
-  → RULEBOOK check
-  → Request feedback
-    ↓
-User: "looks good"
-    ↓
-[📦 COMMIT MODE]
-  → Generate commit message
-  → Show files
-  → Request approval
-    ↓
-User: "yes, commit"
-    ↓
-✓ COMMIT CREATED
-    ↓
-Return to idle mode
+User Request
+     ↓
+📋 PLANNING MODE
+     ↓ (user approves with "ok")
+💻 DEVELOPMENT MODE
+     ↓ (all steps complete - automatic)
+🔍 REVIEW MODE
+     ↓ (user approves with "looks good")
+📦 COMMIT MODE
+     ↓ (user confirms with "yes")
+✓ DONE
 ```
+
+### Transition Rules
+
+**Planning → Development**
+- **Trigger**: User says "ok", "proceed", "yes", "let's do it"
+- **Action**: Start executing first step of plan
+
+**Development → Review**
+- **Trigger**: All plan steps completed successfully
+- **Action**: Automatic transition, show complete summary
+
+**Review → Development**
+- **Trigger**: User requests changes
+- **Action**: Return to Development, apply feedback
+
+**Review → Commit**
+- **Trigger**: User says "looks good", "approved", "lgtm"
+- **Action**: Prepare commit message
+
+**Commit → Done**
+- **Trigger**: User says "yes", "commit", "go ahead"
+- **Action**: Execute git commit
+
+**Any Mode → Planning**
+- **Trigger**: User says "replan" or "start over"
+- **Action**: Discard current work, create new plan
 
 ---
 
-## Integration with Maestro Mode
+## Complexity-Based Adaptations
 
-Add to `maestro.md`:
+### Trivial Tasks (< 50 LOC)
+- **Planning**: Optional (can skip if obvious)
+- **Agents**: 0-1 agents
+- **Flow**: Request → Quick Dev → Quick Review → Commit
 
-```markdown
-## Workflow Modes
+### Simple Tasks (50-150 LOC)
+- **Planning**: Lightweight (brief plan)
+- **Agents**: 1-2 agents
+- **Flow**: Standard 4-mode workflow
 
-For structured development, use the 4-mode workflow:
+### Moderate Tasks (150-300 LOC)
+- **Planning**: Full planning with questions
+- **Agents**: 3-5 agents
+- **Flow**: Complete 4-mode workflow
+- **Example**: See `workflow-examples.md`
 
-1. 📋 Planning Mode: Analyze, plan, get approval
-2. 💻 Development Mode: Execute the plan
-3. 🔍 Review Mode: Get user feedback, iterate
-4. 📦 Commit Mode: Commit with proper message
+### Complex Tasks (300-500 LOC)
+- **Planning**: Detailed with risk assessment
+- **Agents**: 5-10 agents in phases
+- **Flow**: Extended review phase
 
-See `.claude/commands/workflow-modes.md` for details.
-
-**When to use:**
-- Any new feature or significant change
-- When user asks to "plan this first"
-- For complex or critical tasks
-
-**Benefits:**
-- Clear communication about what's happening
-- User stays in control
-- No surprises
-- Proper commit messages
-- Quality gates at each step
-```
+### Critical Tasks (> 500 LOC or high risk)
+- **Planning**: Comprehensive with alternatives
+- **Agents**: 10+ agents, coordinated phases
+- **Flow**: Multiple review iterations, security audits
 
 ---
 
 ## Best Practices
 
-### For Planning Mode
-✅ Be thorough but concise
-✅ Ask specific questions
-✅ Show time estimates
-✅ Break down into clear steps
-❌ Don't assume user knowledge
-❌ Don't skip RULEBOOK check
+### Always Show Current Mode
+- Use mode indicators at start of each response
+- Keep user oriented on where they are in the workflow
 
-### For Development Mode
-✅ Follow the plan exactly
-✅ Keep user informed of progress
-✅ Show what you're doing
-✅ Handle blockers gracefully
-❌ Don't deviate from plan without asking
-❌ Don't skip steps silently
+### Respect Approval Gates
+- Never skip user approval
+- Always wait for explicit confirmation
+- Use clear prompts ("say 'ok' to proceed")
 
-### For Review Mode
-✅ Show complete summary
-✅ Verify RULEBOOK compliance
-✅ Ask for specific feedback
-✅ Make requested changes
-❌ Don't assume approval
-❌ Don't skip showing changes
+### Be Adaptive
+- Small changes don't need full ceremony
+- Complex changes benefit from structure
+- Let complexity guide thoroughness
 
-### For Commit Mode
-✅ Match project's commit style
-✅ Show exactly what will be committed
-✅ Get explicit approval
-✅ Create meaningful commit messages
-❌ NEVER auto-commit
-❌ Don't commit on "looks good" from Review Mode
+### Keep Communication Clear
+- Show progress frequently
+- Explain what you're doing
+- Ask questions when uncertain
+
+### Follow RULEBOOK
+- Every mode must respect project patterns
+- Check RULEBOOK in Planning
+- Verify compliance in Review
 
 ---
 
-## Summary
-
-**4 Modes, Clear Process:**
-- 📋 Planning: Think before coding
-- 💻 Development: Execute with clarity
-- 🔍 Review: Quality and feedback
-- 📦 Commit: Proper commits
-
-**Benefits:**
-- User always knows what mode you're in
-- Clear communication at each step
-- Quality gates prevent issues
-- Proper commit history
-- Professional workflow
-
-**Remember:**
-- Each mode has a purpose
-- Get approval before transitions
-- Never skip modes
-- Always indicate current mode clearly
-
----
-
-**Workflow Modes ready. Structure. Clarity. Quality. 💪**
+**For detailed examples of each mode in action, see `workflow-examples.md`.**

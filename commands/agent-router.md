@@ -4,6 +4,8 @@
 
 **Integration**: Works with `maestro.md` and `agent-intelligence.md` to provide smart agent selection.
 
+**Routing Rules**: See `agent-routing-rules.json` for detailed routing tables.
+
 ---
 
 ## Quick Reference
@@ -12,550 +14,101 @@
 # The router:
 # 1. Reads .claude/RULEBOOK.md to understand your stack
 # 2. Analyzes the task type and complexity
-# 3. Selects appropriate agents
+# 3. Selects appropriate agents from agent-routing-rules.json
 # 4. Provides delegation instructions
 # 5. Returns verification checklist
 ```
 
 ---
 
-## Auto-Detection Rules
+## How It Works
 
-### Project Stack Detection
+### Step 1: Read Project Context
 
-**Source**: `.claude/RULEBOOK.md` - "Tech Stack" section
+**Source**: `.claude/RULEBOOK.md`
 
-```yaml
-# Router reads RULEBOOK.md and detects:
-frontend_framework: [next.js, react, vue, angular, etc.]
-backend_framework: [express, fastify, nest, etc.]
-language: [typescript, javascript, python, go, etc.]
-database: [postgresql, mongodb, mysql, etc.]
-orm: [prisma, typeorm, drizzle, etc.]
-testing: [vitest, jest, playwright, etc.]
-styling: [tailwind, css-modules, etc.]
-state_management: [zustand, redux, context, etc.]
-```
+Extract:
+- Frontend framework (Next.js, React, Vue, etc.)
+- Backend framework (Express, NestJS, Fastify, etc.)
+- Language (TypeScript, JavaScript, Python, etc.)
+- Database & ORM (PostgreSQL + Prisma, MongoDB, etc.)
+- Testing stack (Vitest, Jest, Playwright, etc.)
+- Styling approach (Tailwind, CSS Modules, etc.)
+- State management (Zustand, Redux, Context, etc.)
 
-### Task Type Detection
+### Step 2: Detect Task Type
 
-**Detection patterns**:
+**Patterns** (from `agent-routing-rules.json`):
 
-```javascript
-// New Feature
-patterns: ["create", "add", "implement", "build", "new", "feature"]
-complexity: HIGH
-agents_needed: 5-10
+| Task Type | Keywords | Complexity | Agents |
+|-----------|----------|------------|--------|
+| New Feature | create, add, implement, build | HIGH | 5-10 |
+| Bug Fix | fix, bug, error, broken | LOW-MEDIUM | 1-3 |
+| Refactoring | refactor, improve, clean | MEDIUM | 2-4 |
+| Performance | optimize, performance, slow | MEDIUM-HIGH | 2-5 |
+| Security | security, vulnerability, audit | HIGH-CRITICAL | 3-6 |
+| Testing | test, coverage, unit test | LOW-MEDIUM | 2-3 |
+| Documentation | document, docs, readme | LOW | 1-2 |
 
-// Bug Fix
-patterns: ["fix", "bug", "error", "broken", "not working", "issue"]
-complexity: LOW-MEDIUM
-agents_needed: 1-3
-
-// Refactoring
-patterns: ["refactor", "improve", "clean", "restructure", "optimize code"]
-complexity: MEDIUM
-agents_needed: 2-4
-
-// Performance
-patterns: ["optimize", "performance", "slow", "speed up", "bundle"]
-complexity: MEDIUM-HIGH
-agents_needed: 2-5
-
-// Security
-patterns: ["security", "vulnerability", "audit", "secure", "owasp"]
-complexity: HIGH-CRITICAL
-agents_needed: 3-6
-
-// Testing
-patterns: ["test", "coverage", "testing", "unit test", "e2e"]
-complexity: LOW-MEDIUM
-agents_needed: 2-3
-
-// Documentation
-patterns: ["document", "docs", "readme", "documentation"]
-complexity: LOW
-agents_needed: 1-2
-```
-
----
-
-## Routing Table
-
-### Route 1: New Feature → Feature Development Pipeline
+### Step 3: Assess Complexity
 
 ```yaml
-Trigger: User wants to create/add new functionality
+Factors:
+  - Lines of Code (LOC estimate)
+  - Files Affected (count)
+  - New Patterns (yes/no)
+  - Risk Level (low/medium/high/critical)
+
+Complexity Levels:
+  Trivial: < 10 LOC, 1 file, no agents
+  Simple: 10-50 LOC, 1 file, 1 agent
+  Moderate: 50-200 LOC, 2-4 files, 2-4 agents
+  Complex: 200-500 LOC, 5-10 files, 5-10 agents
+  Critical: > 500 LOC, > 10 files, 10+ agents
+```
+
+### Step 4: Select Route
+
+**Routes** (from `agent-routing-rules.json`):
+
+1. **New Feature** → Feature Development Pipeline (7 steps)
+2. **Bug Fix** → Debugging Pipeline (4 steps)
+3. **Refactoring** → Code Improvement Pipeline (4 steps)
+4. **Performance** → Optimization Pipeline (5 steps)
+5. **Security** → Security Audit Pipeline (6 steps)
+6. **Testing** → Test Development Pipeline (3 steps)
+7. **Documentation** → Documentation Pipeline (3 steps)
+
+Each route defines:
+- Agent sequence
+- Task for each agent
+- Expected output
+- Review checkpoints
+
+### Step 5: Delegate to Agents
+
+**Format**:
+
+```yaml
+Task: [user request]
+Route: [selected route name]
+Complexity: [level]
 
 Agents Pipeline:
-  Step 1 - Architecture:
-    agent: architecture-advisor
-    task: Design feature architecture
-    output: Feature structure, data flow, tech decisions
-
-  Step 2 - Database (if needed):
-    agent: [database-orm-specialist from RULEBOOK]
-    task: Design database schema and queries
-    output: Schema models, migrations, queries
-
-  Step 3 - Backend (if applicable):
-    agent: [api-specialist from RULEBOOK]
-    task: Design API endpoints
-    output: Router structure, input/output schemas
-
-  Step 4 - Frontend (if applicable):
-    agents:
-      - [framework-specialist from RULEBOOK]: Component architecture
-      - [styling-specialist from RULEBOOK]: Styling approach
-      - [language-specialist from RULEBOOK]: Type definitions
-    output: Component structure, styling plan, types
-
-  Step 5 - Quality:
-    agents:
-      - test-strategist: Test planning
-      - [testing-specialist from RULEBOOK]: Test implementation
-    output: Test files, coverage report
-
-  Step 6 - Review:
-    agents:
-      - code-reviewer: Code quality review
-      - security-auditor: Security check (if applicable)
-      - [ui-accessibility if UI]: Accessibility audit
-    output: Review report, improvements
-
-Maestro Oversight:
-  - Approve architecture (Step 1)
-  - Verify RULEBOOK compliance (all steps)
-  - Final review before merge
-
-Estimated Time: 2-4 hours (complex feature)
-Agent Count: 8-10
-```
-
-### Route 2: Bug Fix → Debugging Pipeline
-
-```yaml
-Trigger: User reports something broken
-
-Agents Pipeline:
-  Step 1 - Investigation:
-    agent: project-analyzer
-    task: Analyze codebase, find root cause
-    output: Bug location, cause analysis
-
-  Step 2 - Fix Implementation:
-    agent: [framework-specialist from RULEBOOK]
-    task: Implement fix following patterns
-    output: Fixed code, explanation
-
-  Step 3 - Regression Prevention:
-    agents:
-      - test-strategist: Design regression test
-      - [testing-specialist from RULEBOOK]: Implement test
-    output: Test file covering bug scenario
-
-  Step 4 - Verification:
-    agent: code-reviewer
-    task: Review fix quality
-    output: Approval or revision requests
-
-Maestro Oversight:
-  - Verify fix doesn't violate RULEBOOK
-  - Check for similar bugs elsewhere
-  - Ensure proper error handling
-  - Approve test coverage
-
-Estimated Time: 30min - 2 hours
-Agent Count: 3-4
-```
-
-### Route 3: Refactoring → Code Improvement Pipeline
-
-```yaml
-Trigger: User wants to improve existing code
-
-Agents Pipeline:
-  Step 1 - Analysis:
-    agents:
-      - refactoring-specialist: Analyze refactoring opportunities
-      - architecture-advisor: Validate approach
-    output: Refactoring plan, improvement metrics
-
-  Step 2 - Implementation:
-    agents:
-      - [framework-specialist from RULEBOOK]: Execute refactoring
-      - [language-specialist from RULEBOOK]: Update types
-    output: Refactored code
-
-  Step 3 - Verification:
-    agents:
-      - test-strategist: Ensure test coverage
-      - performance-optimizer: Measure improvements
-      - code-reviewer: Review changes
-    output: Test report, metrics, review
-
-Maestro Oversight:
-  - Approve refactoring plan
-  - Verify RULEBOOK patterns maintained
-  - Check improvement metrics
-  - Ensure no functionality lost
-
-Estimated Time: 1-3 hours
-Agent Count: 5-7
-```
-
-### Route 4: Performance → Optimization Pipeline
-
-```yaml
-Trigger: User wants to improve performance
-
-Agents Pipeline:
-  Step 1 - Profiling:
-    agents:
-      - performance-optimizer: Identify bottlenecks
-      - [framework-specialist from RULEBOOK]: Framework-specific analysis
-    output: Performance report, bottleneck list
-
-  Step 2 - Optimization:
-    agents:
-      - [framework-specialist from RULEBOOK]: Implement optimizations
-      - monitoring-observability-specialist: Add metrics
-    output: Optimized code, monitoring setup
-
-  Step 3 - Verification:
-    agents:
-      - performance-optimizer: Measure improvements
-      - test-strategist: Add performance tests
-    output: Before/after metrics, tests
-
-Maestro Oversight:
-  - Approve optimization tradeoffs
-  - Verify metrics improve significantly
-  - Ensure no functionality sacrificed
-  - Check RULEBOOK compliance
-
-Estimated Time: 2-4 hours
-Agent Count: 5-6
-```
-
-### Route 5: Security → Security Audit Pipeline
-
-```yaml
-Trigger: User needs security audit/fix
-
-Agents Pipeline:
-  Step 1 - Comprehensive Audit:
-    agents:
-      - security-auditor: OWASP Top 10 scan
-      - [framework-specialist from RULEBOOK]: Framework security
-      - [language-specialist from RULEBOOK]: Type safety audit
-    output: Vulnerability report (Critical/High/Medium/Low)
-
-  Step 2 - Prioritized Remediation:
-    For each CRITICAL/HIGH vulnerability:
-      agents:
-        - security-auditor: Implement fix
-        - [framework-specialist from RULEBOOK]: Framework-specific fix
-      output: Fixed code, security improvements
-
-  Step 3 - Testing:
-    agents:
-      - test-strategist: Security test planning
-      - [testing-specialist from RULEBOOK]: Security test implementation
-    output: Security tests, 100% coverage
-
-  Step 4 - Re-Audit:
-    agents:
-      - security-auditor: Verify all fixes
-      - code-reviewer: Review security code
-    output: Clean audit report
-
-Maestro Oversight:
-  - CRITICAL: Review EVERY security change
-  - Verify OWASP Top 10 compliance
-  - Demand 100% test coverage (no exceptions)
-  - Multiple verification rounds
-  - Final security approval
-
-Estimated Time: 4-8 hours (comprehensive audit)
-Agent Count: 6-8
-Critical Level: MAXIMUM OVERSIGHT
-```
-
-### Route 6: Testing → Test Development Pipeline
-
-```yaml
-Trigger: User wants to add/improve tests
-
-Agents Pipeline:
-  Step 1 - Strategy:
-    agent: test-strategist
-    task: Analyze coverage gaps, plan tests
-    output: Test strategy, coverage plan
-
-  Step 2 - Implementation:
-    agents:
-      - [unit-testing-specialist from RULEBOOK]: Unit/integration tests
-      - [component-testing-specialist from RULEBOOK]: Component tests
-      - [e2e-testing-specialist from RULEBOOK]: E2E tests (if needed)
-    output: Test files, coverage report
-
-  Step 3 - Review:
-    agents:
-      - code-reviewer: Test quality review
-      - test-strategist: Coverage verification
-    output: Quality report, coverage %
-
-Maestro Oversight:
-  - Enforce coverage minimum (check RULEBOOK)
-  - Verify test quality (not just quantity)
-  - Check edge cases covered
-  - Approve test strategy
-
-Estimated Time: 1-3 hours
-Agent Count: 3-4
-```
-
-### Route 7: Documentation → Documentation Pipeline
-
-```yaml
-Trigger: User needs documentation
-
-Agents Pipeline:
-  Step 1 - Documentation:
-    agents:
-      - documentation-engineer: Write/update docs
-      - [framework-specialist from RULEBOOK]: Technical accuracy
-    output: Documentation files
-
-  Step 2 - Review:
-    agent: code-reviewer
-    task: Review documentation quality
-    output: Approval or improvements
-
-Maestro Oversight:
-  - Verify documentation standards (check RULEBOOK)
-  - Check code examples work
-  - Verify completeness
-
-Estimated Time: 30min - 2 hours
-Agent Count: 2-3
-```
-
----
-
-## Complexity-Based Routing
-
-### Trivial Tasks (No Agents)
-
-```yaml
-Characteristics:
-  - Single file change
-  - <10 lines of code
-  - Clear existing pattern in RULEBOOK
-  - No architecture impact
-
-Examples:
-  - "Add a prop to Button component"
-  - "Fix typo in error message"
-  - "Update import path"
-
-Routing Decision: Maestro handles directly
-Agent Count: 0
-```
-
-### Simple Tasks (1 Agent)
-
-```yaml
-Characteristics:
-  - Single file or small module
-  - <50 lines of code
-  - Existing pattern to follow (in RULEBOOK)
-  - Low risk
-
-Examples:
-  - "Add validation to input field"
-  - "Create simple utility function"
-  - "Update component styling"
-
-Routing Decision: Maestro + 1 specialist for verification
-Agent Count: 1
-Agent Examples: [framework-specialist from RULEBOOK]
-```
-
-### Moderate Tasks (2-4 Agents)
-
-```yaml
-Characteristics:
-  - Multiple files
-  - 50-200 lines of code
-  - Some new patterns
-  - Medium risk
-
-Examples:
-  - "Add filtering to data list"
-  - "Create reusable form component"
-  - "Refactor store structure"
-
-Routing Decision: Maestro orchestrates 2-4 specialists
-Agent Count: 2-4
-Agent Examples (from RULEBOOK):
-  - framework-specialist + styling-specialist
-  - refactoring-specialist + language-specialist
-```
-
-### Complex Tasks (5-10 Agents)
-
-```yaml
-Characteristics:
-  - Full feature development
-  - >200 lines of code
-  - New architecture
-  - High risk
-
-Examples:
-  - "Add analytics dashboard"
-  - "Implement multi-tenant system"
-  - "Build real-time notifications"
-
-Routing Decision: Full multi-agent pipeline
-Agent Count: 5-10
-Agent Examples: Full pipeline (architecture → implementation → quality)
-```
-
-### Critical Tasks (All Relevant Agents)
-
-```yaml
-Characteristics:
-  - Security/auth/payments
-  - Data integrity
-  - Production impact
-  - Zero-defect requirement
-
-Examples:
-  - "Security audit of auth system"
-  - "Payment processing implementation"
-  - "Data migration script"
-
-Routing Decision: All relevant agents + maximum oversight
-Agent Count: 6-12
-Agent Examples: Full audit team + multiple verification rounds
-```
-
----
-
-## Smart Routing Examples
-
-### Example 1: Simple Request
-
-```
-User: "Add a loading state to the form"
-
-Router Analysis:
-  - Task Type: Simple enhancement
-  - Complexity: Low
-  - Files Affected: 1 (form component)
-  - Lines of Code: ~10
-  - Risk: Low
-
-Routing Decision: Trivial → No agents needed
-
-Output to Maestro:
-"Handle directly. Add loading state following existing pattern in RULEBOOK.
-Check other forms for consistency.
-No agents needed for this simple change."
-```
-
-### Example 2: Moderate Request
-
-```
-User: "Add filtering by date range and category"
-
-Router Analysis:
-  - Task Type: Feature enhancement
-  - Complexity: Moderate
-  - Files Affected: 3-4 (list component, hooks, types)
-  - Lines of Code: ~150
-  - Risk: Medium
-
-Routing Decision: Moderate → Delegate to 3 agents
-
-Output to Maestro:
-"Delegate to agent pipeline:
-[Read RULEBOOK.md to get framework and styling]
-1. [framework-specialist]: Design filter UI components
-2. [styling-specialist]: Style filter controls
-3. [testing-specialist]: Add filter tests
-
-Your role: Verify state management approach (check RULEBOOK),
-approve filter logic, ensure RULEBOOK compliance."
-```
-
-### Example 3: Complex Request
-
-```
-User: "Add analytics dashboard with charts"
-
-Router Analysis:
-  - Task Type: New feature
-  - Complexity: High
-  - Files Affected: 10+ (new feature module)
-  - Lines of Code: ~500
-  - Risk: High
-  - Architecture Impact: Yes
-
-Routing Decision: Complex → Full pipeline (8 agents)
-
-Output to Maestro:
-"Route to Feature Development Pipeline:
-[Read RULEBOOK.md to get stack]
-1. architecture-advisor: Design analytics feature
-2. [database-specialist from RULEBOOK]: Analytics queries
-3. [framework-specialist from RULEBOOK]: Chart components
-4. [styling-specialist from RULEBOOK]: Dashboard layout
-5. [language-specialist from RULEBOOK]: Analytics types
-6. test-strategist: Test strategy
-7. [testing-specialist from RULEBOOK]: Test implementation
-8. code-reviewer: Final review
-
-Your role: Approve architecture, verify RULEBOOK at each step,
-final review. Estimated time: 3-4 hours."
-```
-
-### Example 4: Critical Request
-
-```
-User: "Security audit of the entire application"
-
-Router Analysis:
-  - Task Type: Security audit
-  - Complexity: Critical
-  - Scope: Entire application
-  - Risk: Critical
-  - Special Handling: Maximum oversight
-
-Routing Decision: Critical → Security Audit Pipeline
-
-Output to Maestro:
-"CRITICAL TASK - Route to Security Audit Pipeline:
-[Read RULEBOOK.md for tech stack]
-1. security-auditor: OWASP Top 10 scan
-2. [framework-specialist from RULEBOOK]: Framework security
-3. [language-specialist from RULEBOOK]: Type safety audit
-4. test-strategist: Security test coverage audit
-5. [For each vulnerability]:
-   - security-auditor: Implement fix
-   - [testing-specialist from RULEBOOK]: Add security test
-6. security-auditor: Re-audit
-7. code-reviewer: Final review
-
-Your role: MAXIMUM OVERSIGHT
-- Review EVERY security change
-- Demand 100% test coverage (check RULEBOOK requirement)
-- Multiple verification rounds
-- No compromises on security
-
-Estimated time: 6-8 hours. This is serious business!"
+  Step 1 - [Phase]:
+    agent: [agent-name]
+    task: [specific task]
+    output: [expected result]
+
+  Step 2 - [Phase]:
+    agent: [agent-name]
+    task: [specific task]
+    output: [expected result]
+
+  [... more steps ...]
+
+Total Agents: [count]
+Estimated Time: [hours]
 ```
 
 ---
@@ -563,42 +116,38 @@ Estimated time: 6-8 hours. This is serious business!"
 ## Router Decision Logic
 
 ```javascript
-function routeTask(taskDescription, projectRULEBOOK) {
-  // 1. Read RULEBOOK.md
-  const stack = parseRULEBOOK(projectRULEBOOK);
+function routeTask(userRequest, rulebook) {
+  // 1. Detect task type
+  const taskType = detectTaskType(userRequest);
 
-  // 2. Detect task type
-  const taskType = detectTaskType(taskDescription);
+  // 2. Assess complexity
+  const complexity = assessComplexity(userRequest, rulebook);
 
-  // 3. Assess complexity
-  const complexity = assessComplexity(taskDescription, stack);
-
-  // 4. Check criticality
-  const isCritical = checkCriticality(taskDescription);
-
-  // 5. Select routing strategy
-  if (isCritical) {
-    return routes.CRITICAL_PIPELINE;
-  } else if (complexity === 'trivial') {
-    return routes.DIRECT_HANDLING;
-  } else if (complexity === 'simple') {
-    return routes.SINGLE_AGENT;
-  } else if (complexity === 'moderate') {
-    return routes.MULTI_AGENT;
-  } else if (complexity === 'complex') {
-    return routes.FULL_PIPELINE;
+  // 3. Handle based on complexity
+  if (complexity === 'trivial') {
+    return { agents: [], approach: 'direct_fix' };
   }
 
-  // 6. Select specific agents from RULEBOOK
-  const agents = selectAgentsFromStack(taskType, complexity, stack);
+  if (complexity === 'simple') {
+    return {
+      agents: [selectSingleSpecialist(taskType, rulebook)],
+      approach: 'single_agent'
+    };
+  }
 
-  // 7. Generate delegation instructions
+  // 4. Select route from routing rules
+  const route = ROUTING_RULES.routes[taskType];
+
+  // 5. Resolve agents from RULEBOOK
+  const resolvedAgents = route.steps.map(step => {
+    return resolveAgent(step.agent, rulebook);
+  });
+
   return {
-    route: selectedRoute,
-    agents: agents,
-    pipeline: pipelineSteps,
-    maestroRole: oversightRequirements,
-    estimatedTime: timeEstimate
+    route: route.name,
+    agents: resolvedAgents,
+    steps: route.steps,
+    approach: 'multi_agent_pipeline'
   };
 }
 ```
@@ -609,33 +158,78 @@ function routeTask(taskDescription, projectRULEBOOK) {
 
 ### Maestro Calls Router
 
-```markdown
-# In maestro.md:
+When Maestro enters **PLANNING MODE**, it calls the router:
+
+```yaml
+# Maestro internal call:
+routing = agent_router.route(
+  user_request = "add user profile editing",
+  rulebook = read(".claude/RULEBOOK.md")
+)
+
+# Router returns:
+{
+  task_type: "new_feature",
+  complexity: "moderate",
+  route: "Feature Development Pipeline",
+  agents: [
+    architecture-advisor,
+    prisma-specialist,
+    nextjs-specialist,
+    tailwind-expert,
+    vitest-specialist,
+    code-reviewer
+  ],
+  steps: [...],
+  estimated_time: "2-3 hours"
+}
+
+# Maestro uses this to build the plan
+```
+
+---
 
 ## Complex Task Handling
 
-When you encounter a complex task:
+### Multi-Route Tasks
 
-1. Read `.claude/RULEBOOK.md` to understand project stack
-2. Read `.claude/commands/agent-router.md`
-3. Let the router analyze the task
-4. Follow the routing decision
-5. Maintain your oversight role
+Some tasks require multiple routes:
+
+**Example**: "Add authentication + profile editing"
+
+```yaml
+Router breaks down:
+  Task 1: Add authentication
+    Route: Feature Development Pipeline
+    Focus: Auth system
+
+  Task 2: Add profile editing
+    Route: Feature Development Pipeline
+    Focus: Profile feature
+    Dependency: Requires Task 1
+
+Suggestion: Split into 2 separate tasks or combine agents
 ```
 
 ### Router Auto-Suggest
 
-```
-User: [complex task]
+For complex requests, router can suggest:
 
-Maestro:
-"Let me check the router for the best approach..."
-[Reads .claude/RULEBOOK.md for stack]
-[Reads agent-router.md for routing logic]
-[Gets routing decision]
+```yaml
+User: "Make the app faster"
 
-"Router suggests: Full Feature Pipeline with 8 agents based on your stack.
-Want me to proceed with this approach?"
+Router Analysis:
+  Too vague - multiple routes possible:
+  1. Performance Route (optimize existing code)
+  2. Refactoring Route (improve code structure)
+  3. Infrastructure Route (caching, CDN, etc.)
+
+Router Response:
+  "Can you clarify what aspect of performance?
+   - Page load speed?
+   - API response time?
+   - Bundle size?
+   - Database queries?"
 ```
 
 ---
@@ -644,44 +238,37 @@ Want me to proceed with this approach?"
 
 ### Routing Do's ✅
 
-- Read RULEBOOK.md before routing
-- Analyze task thoroughly
-- Consider project context
-- Match complexity to agent count
-- Provide clear delegation instructions
-- Verify agent output at each step
-- Maestro maintains oversight always
+- **Always read RULEBOOK first** - Stack context is critical
+- **Match agents to stack** - Use detected specialists
+- **Scale with complexity** - More complex = more agents
+- **Use routes from JSON** - Consistent agent pipelines
+- **Verify outputs** - Each agent has expected output
 
 ### Routing Don'ts ❌
 
-- Don't route without reading RULEBOOK
-- Don't over-delegate simple tasks
-- Don't under-delegate critical tasks
-- Don't skip complexity assessment
-- Don't ignore RULEBOOK requirements
-- Don't let agents override RULEBOOK
-- Don't delegate without clear instructions
+- **Don't hardcode agents** - Always resolve from RULEBOOK
+- **Don't skip complexity assessment** - Drives agent count
+- **Don't ignore task type** - Different routes for different tasks
+- **Don't over-route trivial tasks** - Direct fix when possible
+- **Don't under-route critical tasks** - Use all relevant agents
 
 ---
 
-## Summary
+## Quick Routing Guide
 
-The Agent Router provides:
+**For Maestro/Coordinator**: When routing a task, follow this pattern:
 
-✅ RULEBOOK-driven stack detection
-✅ Automatic task type detection
-✅ Complexity-based agent selection
-✅ Pre-defined routing pipelines
-✅ Clear delegation instructions
-✅ Verification checklists
-✅ Integration with Maestro Mode
-
-**Remember**:
-- RULEBOOK.md is the source of truth
-- Router reads it to understand your stack
-- Agents are selected based on YOUR project
-- Maestro makes final decisions
+```markdown
+1. Read .claude/RULEBOOK.md
+2. Detect task type (see agent-routing-rules.json)
+3. Assess complexity
+4. Select route from agent-routing-rules.json
+5. Resolve agents from RULEBOOK stack
+6. Build pipeline with steps from route
+7. Delegate to agents in sequence
+8. Verify each output
+```
 
 ---
 
-**Agent Router ready. Route smart. Build fast. Follow the RULEBOOK. 💪**
+**For detailed routing tables and rules, see `agent-routing-rules.json`.**
