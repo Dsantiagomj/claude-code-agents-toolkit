@@ -351,6 +351,7 @@ download_scripts() {
     # Scripts go to base_dir/scripts for global installs
     local scripts_dir="$base_dir/scripts"
     mkdir -p "$scripts_dir"
+    mkdir -p "$scripts_dir/lib"
 
     local scripts=(
         "init-project.sh"
@@ -377,6 +378,13 @@ download_scripts() {
             print_warning "Failed to download: $script"
         fi
     done
+
+    # Download lib/common.sh (required by all scripts)
+    if download_file "$REPO_RAW_URL/scripts/lib/common.sh" "$scripts_dir/lib/common.sh"; then
+        echo -e "  ${GREEN}✓${NC} Downloaded: lib/common.sh"
+    else
+        print_warning "Failed to download: lib/common.sh"
+    fi
 
     print_success "Management scripts downloaded"
 }
